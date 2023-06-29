@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.nju</groupId>
-    <artifactId>project</artifactId>
+    <artifactId>staticSlicer</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <parent>
@@ -85,6 +85,17 @@
             <version>3.24.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-io</artifactId>
+            <version>1.5.1</version>
+        </dependency>
 
     </dependencies>
 
