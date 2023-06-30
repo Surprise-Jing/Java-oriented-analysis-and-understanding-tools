@@ -53,7 +53,6 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
-        <!--ctrl+f9重启 没什么用-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -62,12 +61,6 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-        <!-- 使用
-            @Data自动生成get/set/toString方法
-            @NoArgsConstructor无参构造
-            @AllArgsConstructor全参构造
-            @Slf4j使用log.info()日志
-        -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -91,6 +84,7 @@
             <artifactId>javaparser-symbol-solver-core</artifactId>
             <version>3.24.0</version>
         </dependency>
+
 
     </dependencies>
 
