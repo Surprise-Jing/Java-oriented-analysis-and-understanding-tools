@@ -1,0 +1,17 @@
+strict digraph G {
+  0 [ label="ENTER testFunction" ];
+  1 [ label="EXIT testFunction" ];
+  2 [ label="int sum = 0;" ];
+  3 [ label="int prod = 1;" ];
+  4 [ label="int i = 0;" ];
+  5 [ label="while (i < 10)" ];
+  6 [ label="i = i + 1;" ];
+  7 [ label="if (prod > 100 / i)" ];
+  8 [ label="i = i - 1;" ];
+  9 [ label="break;" ];
+  10 [ label="sum = sum + i;" ];
+  11 [ label="prod = prod * i;" ];
+  12 [ label="System.out.println(i);" ];
+  13 [ label="System.out.println(sum);" ];
+  14 [ label="System.out.println(prod);" ];
+}

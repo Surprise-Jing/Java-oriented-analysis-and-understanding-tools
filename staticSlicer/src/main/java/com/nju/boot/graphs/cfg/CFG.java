@@ -6,7 +6,7 @@ import com.nju.boot.graphs.Graph;
 import com.nju.boot.nodes.GraphNode;
 
 public class CFG extends Graph<MethodDeclaration> {
-    private boolean built = false;
+    protected boolean built = false;
 
     public CFG(){
         super();
@@ -24,4 +24,5 @@ public class CFG extends Graph<MethodDeclaration> {
         methodDeclaration.accept(new CFGBuilder(this), null);
         built = true;
     }
+
 }

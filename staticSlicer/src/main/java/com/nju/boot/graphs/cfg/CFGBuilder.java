@@ -25,7 +25,7 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
 
     protected Deque<List<GraphNode<SwitchEntry>>> switchEntriesStack = new LinkedList<>();
 
-    CFGBuilder(CFG cfg){
+    protected CFGBuilder(CFG cfg){
         this.cfg = cfg;
     }
 
@@ -184,8 +184,10 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
     @Override
     public void visit(MethodDeclaration methodDeclaration, Void arg){
         cfg.buildRootNode("ENTER " + methodDeclaration.getNameAsString(), methodDeclaration);
+        GraphNode<?>exitNode = cfg.buildExitNode("EXIT " + methodDeclaration.getNameAsString(), methodDeclaration);
         processingNodes.add(cfg.getRootNode().orElse(null));
         methodDeclaration.getBody().get().accept(this, arg);
+        connectTo(exitNode);
     }
 
 
