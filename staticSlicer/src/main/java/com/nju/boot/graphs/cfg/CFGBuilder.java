@@ -25,6 +25,8 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
 
     protected Deque<List<GraphNode<SwitchEntry>>> switchEntriesStack = new LinkedList<>();
 
+    protected List<GraphNode<ReturnStmt>> returnList = new LinkedList<>();
+
     protected CFGBuilder(CFG cfg){
         this.cfg = cfg;
     }
@@ -59,7 +61,7 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
 
     @Override
     public void visit(IfStmt ifStmt, Void arg){
-        GraphNode<?> condNode = connectTo(ifStmt, String.format("if (%s)", ifStmt.getCondition()));
+        GraphNode<?> condNode = connectTo(ifStmt, ifStmt.getCondition().toString());
 
         ifStmt.getThenStmt().accept(this, arg);
         List<GraphNode<?>> thenNodes = new LinkedList<>(processingNodes);
@@ -92,7 +94,7 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
     public void visit(SwitchStmt switchStmt, Void arg){
         switchEntriesStack.push(new LinkedList<>());
         breakStack.push(new LinkedList<>());
-        GraphNode<?> condNode = connectTo(switchStmt, String.format("switch (%s)", switchStmt.getSelector()));
+        GraphNode<?> condNode = connectTo(switchStmt, switchStmt.getSelector().toString());
         for(SwitchEntry switchEntry : switchStmt.getEntries()){
             switchEntry.accept(this, arg);
             processingNodes.add(condNode);
@@ -104,7 +106,7 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
 
     @Override
     public void visit(WhileStmt whileStmt, Void arg){
-        GraphNode<?> condNode = connectTo(whileStmt, String.format("while (%s)", whileStmt.getCondition()));
+        GraphNode<?> condNode = connectTo(whileStmt, whileStmt.getCondition().toString());
         breakStack.push(new LinkedList<>());
         continueStack.push(new LinkedList<>());
 
@@ -123,7 +125,7 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
         //???
         doStmt.getBody().accept(this, arg);
 
-        GraphNode<?> condNode = connectTo(doStmt, String.format("while (%s)", doStmt.getCondition()));
+        GraphNode<?> condNode = connectTo(doStmt, doStmt.getCondition().toString());
         processingNodes.addAll(breakStack.pop());
     }
 
@@ -134,12 +136,13 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
         forStmt.getInitialization().forEach(this::connectTo);
 
         Expression condition = forStmt.getCompare().orElse(new BooleanLiteralExpr(true));
-        GraphNode<?> condNode = connectTo(forStmt, String.format("%s", condition));
+        GraphNode<?> condNode = connectTo(forStmt, condition.toString());
 
         forStmt.getBody().accept(this, arg);
-        forStmt.getUpdate().forEach(this::connectTo);
 
         processingNodes.addAll(continueStack.pop());
+        forStmt.getUpdate().forEach(this::connectTo);
+
         connectTo(condNode);
         processingNodes.addAll(breakStack.pop());
     }
@@ -177,16 +180,18 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
 
     @Override
     public void visit(ReturnStmt returnStmt, Void arg){
-        connectTo(returnStmt);
+        GraphNode<ReturnStmt> node = connectTo(returnStmt);
+        returnList.add(node);
         clearProcessing();
     }
 
     @Override
     public void visit(MethodDeclaration methodDeclaration, Void arg){
         cfg.buildRootNode("ENTER " + methodDeclaration.getNameAsString(), methodDeclaration);
-        GraphNode<?>exitNode = cfg.buildExitNode("EXIT " + methodDeclaration.getNameAsString(), methodDeclaration);
+        GraphNode<?> exitNode = cfg.buildExitNode("EXIT " + methodDeclaration.getNameAsString(), methodDeclaration);
         processingNodes.add(cfg.getRootNode().orElse(null));
         methodDeclaration.getBody().get().accept(this, arg);
+        returnList.stream().filter(n-> !processingNodes.contains(n)).forEach(processingNodes::add);
         connectTo(exitNode);
     }
 

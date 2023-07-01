@@ -15,19 +15,17 @@ public class GraphNode<N extends Node> {
     private final String instruction;
     private final N astNode;
 
-    private final Set<String> declaredVariables;
+    //private final Set<String> declaredVariables;
     private final Set<String> definedVariables;
     private final Set<String> usedVariables;
 
     GraphNode(int id, String instruction, @NotNull N astNode,
-              Collection<String> declaredVariables,
               Collection<String> definedVariables,
               Collection<String> usedVariables) {
         this.id = id;
         this.instruction = instruction;
         this.astNode = astNode;
 
-        this.declaredVariables = new HashSet<>(declaredVariables);
         this.definedVariables = new HashSet<>(definedVariables);
         this.usedVariables = new HashSet<>(usedVariables);
     }
@@ -37,13 +35,13 @@ public class GraphNode<N extends Node> {
                 instruction,
                 astNode,
                 new HashSet<>(0),
-                new HashSet<>(0),
                 new HashSet<>(0)
         );
+        extractVariables(astNode);
+    }
 
-        if (astNode instanceof Statement) {
-            //extractVariables((Statement) astNode);
-        }
+    private void extractVariables(N astNode) {
+        new VariableVisitor<>(this).extract(astNode);
     }
 
 
@@ -63,9 +61,6 @@ public class GraphNode<N extends Node> {
         return astNode;
     }
 
-    public void addDeclaredVariable(String variable) {
-        declaredVariables.add(variable);
-    }
 
     public void addDefinedVariable(String variable) {
         definedVariables.add(variable);
@@ -95,10 +90,6 @@ public class GraphNode<N extends Node> {
         return Objects.hash(getId(), getInstruction(), getAstNode());
     }
 
-    public Set<String> getDeclaredVariables() {
-        return declaredVariables;
-    }
-
     public Set<String> getDefinedVariables() {
         return definedVariables;
     }
@@ -110,4 +101,6 @@ public class GraphNode<N extends Node> {
     public String getInstruction() {
         return instruction;
     }
+
+
 }

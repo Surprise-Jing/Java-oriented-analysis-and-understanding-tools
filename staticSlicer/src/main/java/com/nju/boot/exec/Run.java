@@ -25,19 +25,18 @@ import java.util.Optional;
 
 public class Run {
 
-    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test6.java").toString();
+    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test5.java").toString();
 
-    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test6.dot").toString();
-
+    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test5.dot").toString();
 
     public static void main(String[] args) {
 
         File file = new File(PROGRAM);
         try{
             CFG cfg = buildCFG(file);
-            ACFG acfg = buildACFG(file);
+            //ACFG acfg = buildACFG(file);
             printCFG(cfg);
-            printGraph(acfg,"acfg_test6.dot");
+            //printGraph(acfg,"acfg_test6.dot");
 
         }
         catch (FileNotFoundException e){
@@ -99,7 +98,8 @@ public class Run {
         dotExporter.setVertexAttributeProvider(
                 v->{
                     Map<String, Attribute> map = new HashMap<>();
-                    map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
+                    map.put("label", DefaultAttribute.createAttribute(v.getInstruction()
+                            + "\n def = " + v.getDefinedVariables() + " use = " + v.getUsedVariables()));
                     return map;
                 }
         );
