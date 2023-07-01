@@ -51,8 +51,7 @@ public class PDG extends Graph<MethodDeclaration> {
         built = true;
     }
     public void buildControlDependency(){
-
-
+        new ControlDependencyBuilder(this).build();
     }
     public void buildDataDependency(){
 

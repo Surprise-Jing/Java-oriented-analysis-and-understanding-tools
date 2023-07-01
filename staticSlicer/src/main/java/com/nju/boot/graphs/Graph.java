@@ -62,6 +62,9 @@ public abstract class Graph<RootN extends Node> extends DefaultDirectedGraph<Gra
     public Optional<GraphNode<?>> getRootNode(){
         return Optional.ofNullable(root);
     }
+    public Optional<GraphNode<?>> getExitNode(){
+        return Optional.ofNullable(exit);
+    }
 
 
 }

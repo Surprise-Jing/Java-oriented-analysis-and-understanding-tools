@@ -9,6 +9,7 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.graphs.pdg.DominatorTree;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.PathUtils;
@@ -38,6 +39,9 @@ public class Run {
             ACFG acfg = buildACFG(file);
             printCFG(cfg);
             printGraph(acfg,"acfg_test6.dot");
+            DominatorTree dt = new DominatorTree();
+            dt.build(cfg);
+            printGraph(dt,"dominatorTree.dot");
 
         }
         catch (FileNotFoundException e){
