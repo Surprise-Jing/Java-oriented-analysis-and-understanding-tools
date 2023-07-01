@@ -16,7 +16,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DominatorTree extends Graph<MethodDeclaration> {
-
+    public DominatorTree(CFG cfg){
+        this.cfg = cfg;
+    }
+    CFG cfg;
     boolean built = false;
     Map<GraphNode<?>,GraphNode<?>>doms = new HashMap<>();
     Stack<GraphNode<?>>postOrder = new Stack<>();
@@ -41,30 +44,30 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         }
         return -1;
     }
-    public void DFS(CFG cfg){
+    public void DFS(){
         Set<GraphNode<?>> visited=  new HashSet<>();
         GraphNode<?>root = cfg.getRootNode().get();
-        DFS(cfg,root,visited);
+        DFS(root,visited);
 
     }
-    public void DFS(CFG cfg,GraphNode<?> n,Set<GraphNode<?>>visited){
+    public void DFS(GraphNode<?> n,Set<GraphNode<?>>visited){
         visited.add(n);
         for(Edge e:cfg.outgoingEdgesOf(n)){
             GraphNode<?>target = cfg.getEdgeTarget(e);
             if(!visited.contains(target))
-                DFS(cfg,target,visited);
+                DFS(target,visited);
         }
         postOrder.push(n);
     }
 
-    public void build(CFG cfg){
-        if(built)return;
+    public DominatorTree build(){
+        if(built)return this;
         built = true;
         cfg.vertexSet().stream().forEach(this::addVertex);
 
         GraphIterator<GraphNode<?>, Edge> it = new DepthFirstIterator<>(cfg);
 
-        DFS(cfg);
+        DFS();
         while(!postOrder.isEmpty()){
             GraphNode<?> g = postOrder.pop();
             reversedPostOrder.add(g);
@@ -105,11 +108,27 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         }
 
         for(GraphNode<?>vertex :doms.keySet()){
-            if(doms.get(vertex)!=null)
+            if(doms.get(vertex)!=null&&doms.get(vertex)!=vertex)
             addEdge(doms.get(vertex),vertex,new DummyEdge());
         }
-
+        return this;
     }
-
+    /**returns if a dominates b*/
+    public boolean dominates(GraphNode<?>a,GraphNode<?>b){
+        if(containsEdge(a,b))return true;
+        else{
+            GraphNode<?> parentOfB = getParent(b);
+            if(parentOfB == null) return false;
+            return dominates(a,parentOfB);
+        }
+    }
+    public GraphNode<?>getParent(GraphNode<?>node){
+        Set<Edge> incomingEdges = this.incomingEdgesOf(node);
+        assert (incomingEdges.size()<=1);
+        if(incomingEdges.isEmpty())return null;
+        Edge incomingEdge = incomingEdges.stream().collect(Collectors.toList()).get(0);
+        GraphNode<?> parent = getEdgeSource(incomingEdge);
+        return parent;
+    }
 
 }

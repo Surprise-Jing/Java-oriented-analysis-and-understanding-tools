@@ -15,7 +15,23 @@ public class ControlDependencyBuilder {
         this.cfg = pdg.cfg;
     }
     public void build(){
-
+        DominatorTree postDominatorTree = new DominatorTree(cfg.reverse());
+        postDominatorTree.build();
+        for(Edge controlFlowEdge:cfg.edgeSet()){
+            GraphNode<?> src = cfg.getEdgeSource(controlFlowEdge),
+                    target = cfg.getEdgeTarget(controlFlowEdge);
+            if(postDominatorTree.dominates(target,src)){
+                continue;
+            }
+            else{
+                GraphNode<?>n = target;
+                while(!postDominatorTree.dominates(n,src)){
+                    //n is control dependent on src
+                    pdg.addControlDependencyEdge(src,n);
+                    n = postDominatorTree.getParent(n);
+                }
+            }
+        }
     }
     public Set<GraphNode<?>>getLatestPostDominator(GraphNode<?> node){
         return null;

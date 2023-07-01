@@ -39,9 +39,13 @@ public class Run {
             ACFG acfg = buildACFG(file);
             printCFG(cfg);
             printGraph(acfg,"acfg_test6.dot");
-            DominatorTree dt = new DominatorTree();
-            dt.build(cfg);
+            DominatorTree dt = new DominatorTree(acfg.reverse());
+            dt.build();
             printGraph(dt,"dominatorTree.dot");
+            PDG pdg =new PDG();
+            pdg.buildFromCFG(acfg);
+            printGraph(pdg,"PDG.dot");
+
 
         }
         catch (FileNotFoundException e){
