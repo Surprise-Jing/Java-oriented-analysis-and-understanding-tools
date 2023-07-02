@@ -3,4 +3,7 @@ public class CFG_Test1 {
         int a = 0;
         System.out.println(a);
     }
+    public int like(){
+        return 0;
+    }
 }
