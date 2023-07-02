@@ -34,26 +34,27 @@ public class PDG extends Graph<MethodDeclaration> {
     private boolean built = false;
     public void build(MethodDeclaration methodDeclaration){
         if(built)return;
-        built = true;
         cfg = new ACFG();
-        cfg.build(methodDeclaration);
-        cfg.vertexSet().stream().forEach(this::addNode);
-        buildControlDependency();
-        buildDataDependency();
+        buildFromACFG(cfg);
 
     }
     public void buildFromACFG(ACFG acfg){
+        if(built) return;
+        built = true;
         this.cfg = acfg;
-        cfg.vertexSet().stream().forEach(this::addNode);
+        cfg.vertexSet().stream().forEach(vertex->{
+            if(vertex!=cfg.getExitNode().get())
+                this.addVertex(vertex);
+        });
         buildControlDependency();
         buildDataDependency();
-        built = true;
+
     }
     public void buildControlDependency(){
         new ControlDependencyBuilder(this).build();
     }
     public void buildDataDependency(){
-
+        new DataDependencyBuilder(this).build();
     }
     public void addControlDependencyEdge(GraphNode<?> from, GraphNode<?> to, ControlDependencyEdge controlDependencyEdge){
         this.addEdge(from,to,controlDependencyEdge);

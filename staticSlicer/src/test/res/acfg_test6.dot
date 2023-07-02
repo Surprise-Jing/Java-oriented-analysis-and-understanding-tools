@@ -6,7 +6,7 @@ strict digraph G {
   4 [ label="int i = 0" ];
   5 [ label="i < 10" ];
   6 [ label="i = i + 1;" ];
-  7 [ label="if (prod > 100 / i)" ];
+  7 [ label="prod > 100 / i" ];
   8 [ label="i = i - 1;" ];
   9 [ label="break;" ];
   10 [ label="sum = sum + i;" ];
