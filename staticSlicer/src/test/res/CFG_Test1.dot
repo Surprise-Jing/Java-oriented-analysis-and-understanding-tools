@@ -6,7 +6,7 @@ strict digraph G {
   2 [ label="int a = 0;
  def = [a] use = []" ];
   3 [ label="System.out.println(a);
- def = [] use = [a, System]" ];
+ def = [] use = [a]" ];
   0 -> 2;
   2 -> 3;
   3 -> 1;

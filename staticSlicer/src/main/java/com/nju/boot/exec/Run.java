@@ -25,9 +25,9 @@ import java.util.Optional;
 
 public class Run {
 
-    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test7.java").toString();
+    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test1.java").toString();
 
-    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test7.dot").toString();
+    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test1.dot").toString();
 
     public static void main(String[] args) {
 
