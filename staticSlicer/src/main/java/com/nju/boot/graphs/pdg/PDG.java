@@ -35,6 +35,7 @@ public class PDG extends Graph<MethodDeclaration> {
     public void build(MethodDeclaration methodDeclaration){
         if(built)return;
         cfg = new ACFG();
+        cfg.build(methodDeclaration);
         buildFromACFG(cfg);
 
     }
@@ -65,8 +66,10 @@ public class PDG extends Graph<MethodDeclaration> {
     public void addDataDependencyEdge(GraphNode<?> from, GraphNode<?> to, DataDependencyEdge dataDependencyEdge){
         this.addEdge(from,to,dataDependencyEdge);
     }
-    public void addDataDependencyEdge(GraphNode<?> from, GraphNode<?> to){
-        addDataDependencyEdge(from, to, new DataDependencyEdge());
+    public DataDependencyEdge addDataDependencyEdge(GraphNode<?> from, GraphNode<?> to){
+        DataDependencyEdge newEdge = new DataDependencyEdge();
+        addDataDependencyEdge(from, to, newEdge);
+        return newEdge;
     }
 
 }

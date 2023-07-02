@@ -1,11 +1,14 @@
 package com.nju.boot.graphs.pdg;
 
 import com.github.javaparser.ast.Node;
+import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.DummyEdge;
+import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
 
+import javax.xml.crypto.Data;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +47,18 @@ public class DataDependencyBuilder {
         for (String variable:definedVariables){
             if(usedVariables.contains(variable)){
                 //the src node is data-dependent on target
-                pdg.addDataDependencyEdge(target,src);
+                //未考虑两个节点直接同时存在同方向的数据依赖和控制依赖的情况
+                Edge e = pdg.getEdge(target,src);
+                if(e!=null){
+                    assert e instanceof DataDependencyEdge;
+                    ((DataDependencyEdge) e).addDependentVariable(variable);
+                }
+                else{
+                    e = pdg.addDataDependencyEdge(target,src);
+                    ((DataDependencyEdge) e).addDependentVariable(variable);
+                }
+
+
                 //delete the killed variable from the usedVariable set
                 usedVariables.remove(variable);
             }

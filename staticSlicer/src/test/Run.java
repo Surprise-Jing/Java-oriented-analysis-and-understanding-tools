@@ -1,5 +1,3 @@
-package com.nju.boot.exec;
-
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
@@ -16,6 +14,7 @@ import com.nju.boot.util.PathUtils;
 import org.jgrapht.nio.Attribute;
 import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.dot.DOTExporter;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 
 import java.io.*;
@@ -29,8 +28,8 @@ public class Run {
     public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test6.java").toString();
 
     public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test6.dot").toString();
-
-    public static void main(String[] args) {
+    @Test
+    public void testMain() {
 
         File file = new File(PROGRAM);
         try{
