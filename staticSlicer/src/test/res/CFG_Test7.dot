@@ -1,33 +1,62 @@
 strict digraph G {
-  0 [ label="ENTER main" ];
-  1 [ label="EXIT main" ];
-  2 [ label="Scanner sc = new Scanner(System.in);" ];
-  3 [ label="System.out.println(\"输入一个数据:\");" ];
-  4 [ label="int week = sc.nextInt();" ];
-  5 [ label="switch (week)" ];
-  6 [ label="case 1" ];
-  7 [ label="System.out.println(\"星期一\");" ];
-  8 [ label="break;" ];
-  9 [ label="case 2" ];
-  10 [ label="System.out.println(\"星期二\");" ];
-  11 [ label="break;" ];
-  12 [ label="case 3" ];
-  13 [ label="System.out.println(\"星期三\");" ];
-  14 [ label="break;" ];
-  15 [ label="case 4" ];
-  16 [ label="System.out.println(\"星期四\");" ];
-  17 [ label="break;" ];
-  18 [ label="case 5" ];
-  19 [ label="System.out.println(\"星期五\");" ];
-  20 [ label="break;" ];
-  21 [ label="case 6" ];
-  22 [ label="System.out.println(\"星期六\");" ];
-  23 [ label="break;" ];
-  24 [ label="case 7" ];
-  25 [ label="System.out.println(\"星期日\");" ];
-  26 [ label="default" ];
-  27 [ label="System.out.println(\"非法数据\");" ];
-  28 [ label="break;" ];
+  0 [ label="ENTER main
+ def = [] use = []" ];
+  1 [ label="EXIT main
+ def = [] use = []" ];
+  2 [ label="Scanner sc = new Scanner(System.in);
+ def = [sc] use = []" ];
+  3 [ label="System.out.println(\"输入一个数据:\");
+ def = [] use = []" ];
+  4 [ label="int week = sc.nextInt();
+ def = [week] use = [sc]" ];
+  5 [ label="switch (week)
+ def = [] use = [week]" ];
+  6 [ label="case 1
+ def = [] use = []" ];
+  7 [ label="System.out.println(\"星期一\");
+ def = [] use = []" ];
+  8 [ label="break;
+ def = [] use = []" ];
+  9 [ label="case 2
+ def = [] use = []" ];
+  10 [ label="System.out.println(\"星期二\");
+ def = [] use = []" ];
+  11 [ label="break;
+ def = [] use = []" ];
+  12 [ label="case 3
+ def = [] use = []" ];
+  13 [ label="System.out.println(\"星期三\");
+ def = [] use = []" ];
+  14 [ label="break;
+ def = [] use = []" ];
+  15 [ label="case 4
+ def = [] use = []" ];
+  16 [ label="System.out.println(\"星期四\");
+ def = [] use = []" ];
+  17 [ label="break;
+ def = [] use = []" ];
+  18 [ label="case 5
+ def = [] use = []" ];
+  19 [ label="System.out.println(\"星期五\");
+ def = [] use = []" ];
+  20 [ label="break;
+ def = [] use = []" ];
+  21 [ label="case 6
+ def = [] use = []" ];
+  22 [ label="System.out.println(\"星期六\");
+ def = [] use = []" ];
+  23 [ label="break;
+ def = [] use = []" ];
+  24 [ label="case 7
+ def = [] use = []" ];
+  25 [ label="System.out.println(\"星期日\");
+ def = [] use = []" ];
+  26 [ label="default
+ def = [] use = []" ];
+  27 [ label="System.out.println(\"非法数据\");
+ def = [] use = []" ];
+  28 [ label="break;
+ def = [] use = []" ];
   0 -> 2;
   2 -> 3;
   3 -> 4;

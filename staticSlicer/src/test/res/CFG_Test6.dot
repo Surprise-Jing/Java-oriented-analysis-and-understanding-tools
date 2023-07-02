@@ -1,19 +1,34 @@
 strict digraph G {
-  0 [ label="ENTER testFunction" ];
-  1 [ label="EXIT testFunction" ];
-  2 [ label="int sum = 0;" ];
-  3 [ label="int prod = 1;" ];
-  4 [ label="int i = 0;" ];
-  5 [ label="while (i < 10)" ];
-  6 [ label="i = i + 1;" ];
-  7 [ label="if (prod > 100 / i)" ];
-  8 [ label="i = i - 1;" ];
-  9 [ label="break;" ];
-  10 [ label="sum = sum + i;" ];
-  11 [ label="prod = prod * i;" ];
-  12 [ label="System.out.println(i);" ];
-  13 [ label="System.out.println(sum);" ];
-  14 [ label="System.out.println(prod);" ];
+  0 [ label="ENTER testFunction
+ def = [] use = []" ];
+  1 [ label="EXIT testFunction
+ def = [] use = []" ];
+  2 [ label="int sum = 0;
+ def = [sum] use = []" ];
+  3 [ label="int prod = 1;
+ def = [prod] use = []" ];
+  4 [ label="int i = 0;
+ def = [i] use = []" ];
+  5 [ label="i < 10
+ def = [] use = [i]" ];
+  6 [ label="i = i + 1;
+ def = [i] use = [i]" ];
+  7 [ label="prod > 100 / i
+ def = [] use = [prod, i]" ];
+  8 [ label="i = i - 1;
+ def = [i] use = [i]" ];
+  9 [ label="break;
+ def = [] use = []" ];
+  10 [ label="sum = sum + i;
+ def = [sum] use = [i, sum]" ];
+  11 [ label="prod = prod * i;
+ def = [prod] use = [prod, i]" ];
+  12 [ label="System.out.println(i);
+ def = [] use = [i]" ];
+  13 [ label="System.out.println(sum);
+ def = [] use = [sum]" ];
+  14 [ label="System.out.println(prod);
+ def = [] use = [prod]" ];
   0 -> 2;
   2 -> 3;
   3 -> 4;

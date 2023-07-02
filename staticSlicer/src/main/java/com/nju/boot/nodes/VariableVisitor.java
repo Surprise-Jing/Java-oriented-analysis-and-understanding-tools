@@ -102,10 +102,12 @@ public class VariableVisitor<N extends Node> extends VoidVisitorAdapter<Var> {
     @Override
     public void visit(NameExpr nameExpr, Var var){
         String variable = nameExpr.getNameAsString();
-        switch (var){
-            case USED: node.addUsedVariable(variable); break;
-            case DEFINED: node.addDefinedVariable(variable); break;
-            default: break;
+        if(!variable.equals("System")){
+            switch (var){
+                case USED: node.addUsedVariable(variable); break;
+                case DEFINED: node.addDefinedVariable(variable); break;
+                default: break;
+            }
         }
     }
 
@@ -119,6 +121,9 @@ public class VariableVisitor<N extends Node> extends VoidVisitorAdapter<Var> {
     public void visit(VariableDeclarationExpr variableDeclarationExpr, Var var){
         for(VariableDeclarator variableDeclarator: variableDeclarationExpr.getVariables()){
             variableDeclarator.getNameAsExpression().accept(this, var.type(Var.DEFINED));
+            variableDeclarator.getInitializer().ifPresent(
+                    expression -> expression.accept(this, var.type(Var.USED))
+            );
         }
     }
 

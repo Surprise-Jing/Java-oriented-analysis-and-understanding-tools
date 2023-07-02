@@ -1,8 +1,8 @@
 strict digraph G {
   0 [ label="ENTER main
- def = [] use = [i]" ];
+ def = [] use = []" ];
   1 [ label="EXIT main
- def = [] use = [i]" ];
+ def = [] use = []" ];
   2 [ label="int i = 0
  def = [i] use = []" ];
   3 [ label="i < 10
@@ -18,7 +18,7 @@ strict digraph G {
   8 [ label="j % 2 == 0
  def = [] use = [j]" ];
   9 [ label="System.out.println(\"%d\", j);
- def = [] use = [j, System]" ];
+ def = [] use = [j]" ];
   10 [ label="continue;
  def = [] use = []" ];
   11 [ label="j += 1

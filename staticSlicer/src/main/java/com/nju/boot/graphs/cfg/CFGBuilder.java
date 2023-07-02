@@ -94,7 +94,7 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
     public void visit(SwitchStmt switchStmt, Void arg){
         switchEntriesStack.push(new LinkedList<>());
         breakStack.push(new LinkedList<>());
-        GraphNode<?> condNode = connectTo(switchStmt, switchStmt.getSelector().toString());
+        GraphNode<?> condNode = connectTo(switchStmt, String.format("switch (%s)", switchStmt.getSelector()));
         for(SwitchEntry switchEntry : switchStmt.getEntries()){
             switchEntry.accept(this, arg);
             processingNodes.add(condNode);
