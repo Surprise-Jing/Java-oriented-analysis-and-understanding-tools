@@ -2,19 +2,20 @@ package com.nju.boot.exec;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.DummyEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
-import com.nju.boot.graphs.pdg.DominatorTree;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.PathUtils;
 import org.jgrapht.nio.Attribute;
 import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.dot.DOTExporter;
+import org.w3c.dom.Attr;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -24,26 +25,18 @@ import java.util.Optional;
 
 public class Run {
 
-    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test6.java").toString();
+    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test7.java").toString();
 
-    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test6.dot").toString();
-
+    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test7.dot").toString();
 
     public static void main(String[] args) {
 
         File file = new File(PROGRAM);
         try{
             CFG cfg = buildCFG(file);
-            ACFG acfg = buildACFG(file);
+            //ACFG acfg = buildACFG(file);
             printCFG(cfg);
-            printGraph(acfg,"acfg_test6.dot");
-            DominatorTree dt = new DominatorTree(acfg.reverse());
-            dt.build();
-            printGraph(dt,"dominatorTree.dot");
-            PDG pdg =new PDG();
-            pdg.buildFromACFG(acfg);
-            printGraph(pdg,"PDG.dot");
-
+            //printGraph(acfg,"acfg_test6.dot");
 
         }
         catch (FileNotFoundException e){
@@ -105,7 +98,8 @@ public class Run {
         dotExporter.setVertexAttributeProvider(
                 v->{
                     Map<String, Attribute> map = new HashMap<>();
-                    map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
+                    map.put("label", DefaultAttribute.createAttribute(v.getInstruction()
+                            + "\n def = " + v.getDefinedVariables() + " use = " + v.getUsedVariables()));
                     return map;
                 }
         );
