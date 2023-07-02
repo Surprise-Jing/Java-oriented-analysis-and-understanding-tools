@@ -2,7 +2,6 @@ package com.nju.boot.exec;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.DummyEdge;
 import com.nju.boot.edges.Edge;
@@ -16,7 +15,6 @@ import com.nju.boot.util.PathUtils;
 import org.jgrapht.nio.Attribute;
 import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.dot.DOTExporter;
-import org.w3c.dom.Attr;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -43,7 +41,7 @@ public class Run {
             dt.build();
             printGraph(dt,"dominatorTree.dot");
             PDG pdg =new PDG();
-            pdg.buildFromCFG(acfg);
+            pdg.buildFromACFG(acfg);
             printGraph(pdg,"PDG.dot");
 
 

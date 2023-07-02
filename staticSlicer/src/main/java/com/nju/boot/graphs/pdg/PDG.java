@@ -2,22 +2,21 @@ package com.nju.boot.graphs.pdg;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.ControlDependencyEdge;
-import com.nju.boot.edges.ControlFlowEdge;
 import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
+import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
-import org.jgrapht.graph.EdgeReversedGraph;
 
 public class PDG extends Graph<MethodDeclaration> {
-    CFG cfg = null;
-    CFG reversedCfg = null;
+    ACFG cfg = null;
+    ACFG reversedCfg = null;
 
     public void buildReversedCfg(){
         if(cfg ==null)return;
         if(reversedCfg ==null){
-            reversedCfg = new CFG();
+            reversedCfg = new ACFG();
             cfg.vertexSet().stream().forEach(graphNode -> reversedCfg.addVertex(graphNode));
             for(Edge edge : cfg.edgeSet()){
                GraphNode<?>srcVertex = cfg.getEdgeSource(edge);
@@ -36,15 +35,15 @@ public class PDG extends Graph<MethodDeclaration> {
     public void build(MethodDeclaration methodDeclaration){
         if(built)return;
         built = true;
-        cfg = new CFG();
+        cfg = new ACFG();
         cfg.build(methodDeclaration);
         cfg.vertexSet().stream().forEach(this::addNode);
         buildControlDependency();
         buildDataDependency();
 
     }
-    public void buildFromCFG(CFG cfg){
-        this.cfg = cfg;
+    public void buildFromACFG(ACFG acfg){
+        this.cfg = acfg;
         cfg.vertexSet().stream().forEach(this::addNode);
         buildControlDependency();
         buildDataDependency();
