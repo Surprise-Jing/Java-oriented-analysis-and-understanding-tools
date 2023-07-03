@@ -2,22 +2,21 @@ package com.nju.boot.graphs.pdg;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.ControlDependencyEdge;
-import com.nju.boot.edges.ControlFlowEdge;
 import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
+import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
-import org.jgrapht.graph.EdgeReversedGraph;
 
 public class PDG extends Graph<MethodDeclaration> {
-    CFG cfg = null;
-    CFG reversedCfg = null;
+    ACFG cfg = null;
+    ACFG reversedCfg = null;
 
     public void buildReversedCfg(){
         if(cfg ==null)return;
         if(reversedCfg ==null){
-            reversedCfg = new CFG();
+            reversedCfg = new ACFG();
             cfg.vertexSet().stream().forEach(graphNode -> reversedCfg.addVertex(graphNode));
             for(Edge edge : cfg.edgeSet()){
                GraphNode<?>srcVertex = cfg.getEdgeSource(edge);
@@ -35,27 +34,28 @@ public class PDG extends Graph<MethodDeclaration> {
     private boolean built = false;
     public void build(MethodDeclaration methodDeclaration){
         if(built)return;
-        built = true;
-        cfg = new CFG();
+        cfg = new ACFG();
         cfg.build(methodDeclaration);
-        cfg.vertexSet().stream().forEach(this::addNode);
+        buildFromACFG(cfg);
+
+    }
+    public void buildFromACFG(ACFG acfg){
+        if(built) return;
+        built = true;
+        this.cfg = acfg;
+        cfg.vertexSet().stream().forEach(vertex->{
+            if(vertex!=cfg.getExitNode().get())
+                this.addVertex(vertex);
+        });
         buildControlDependency();
         buildDataDependency();
 
-    }
-    public void buildFromCFG(CFG cfg){
-        this.cfg = cfg;
-        cfg.vertexSet().stream().forEach(this::addNode);
-        buildControlDependency();
-        buildDataDependency();
-        built = true;
     }
     public void buildControlDependency(){
-
-
+        new ControlDependencyBuilder(this).build();
     }
     public void buildDataDependency(){
-
+        new DataDependencyBuilder(this).build();
     }
     public void addControlDependencyEdge(GraphNode<?> from, GraphNode<?> to, ControlDependencyEdge controlDependencyEdge){
         this.addEdge(from,to,controlDependencyEdge);
@@ -66,8 +66,10 @@ public class PDG extends Graph<MethodDeclaration> {
     public void addDataDependencyEdge(GraphNode<?> from, GraphNode<?> to, DataDependencyEdge dataDependencyEdge){
         this.addEdge(from,to,dataDependencyEdge);
     }
-    public void addDataDependencyEdge(GraphNode<?> from, GraphNode<?> to){
-        addDataDependencyEdge(from, to, new DataDependencyEdge());
+    public DataDependencyEdge addDataDependencyEdge(GraphNode<?> from, GraphNode<?> to){
+        DataDependencyEdge newEdge = new DataDependencyEdge();
+        addDataDependencyEdge(from, to, newEdge);
+        return newEdge;
     }
 
 }

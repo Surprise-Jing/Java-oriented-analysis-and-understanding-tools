@@ -1,9 +1,8 @@
-package com.nju.boot.exec;
-
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.DummyEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
@@ -15,6 +14,7 @@ import com.nju.boot.util.PathUtils;
 import org.jgrapht.nio.Attribute;
 import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.dot.DOTExporter;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 
 import java.io.*;
@@ -25,18 +25,22 @@ import java.util.Optional;
 
 public class Run {
 
-    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test1.java").toString();
+    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test6.java").toString();
 
-    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test1.dot").toString();
-
-    public static void main(String[] args) {
+    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test6.dot").toString();
+    @Test
+    public void testMain() {
 
         File file = new File(PROGRAM);
         try{
             CFG cfg = buildCFG(file);
-            //ACFG acfg = buildACFG(file);
+            ACFG acfg = buildACFG(file);
+            PDG pdg = new PDG();
+            pdg.buildFromACFG(acfg);
             printCFG(cfg);
-            //printGraph(acfg,"acfg_test6.dot");
+            printGraph(acfg,"acfg_test6.dot");
+            printGraph(pdg,"pdg_test6.dot");
+
 
         }
         catch (FileNotFoundException e){
@@ -85,6 +89,9 @@ public class Run {
         dotExporter.setEdgeAttributeProvider(edge -> {
             Map<String, Attribute> map = new HashMap<>();
             if(edge instanceof DummyEdge){
+                map.put("style",DefaultAttribute.createAttribute("dashed"));
+            }
+            if(edge instanceof DataDependencyEdge){
                 map.put("style",DefaultAttribute.createAttribute("dashed"));
             }
             return map;

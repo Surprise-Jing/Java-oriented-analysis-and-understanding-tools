@@ -2,6 +2,7 @@ package com.nju.boot.nodes;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.stmt.Statement;
+import com.nju.boot.graphs.Graph;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.Collection;
@@ -61,6 +62,7 @@ public class GraphNode<N extends Node> {
     public N getAstNode() {
         return astNode;
     }
+
 
 
     public void addDefinedVariable(String variable) {
