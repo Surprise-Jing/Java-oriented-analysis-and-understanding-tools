@@ -8,10 +8,23 @@ import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.PDGMarker;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class PDG extends Graph<MethodDeclaration> {
     ACFG cfg = null;
     ACFG reversedCfg = null;
+    Set<GraphNode<?>> markedNodes = new HashSet<>();
+    public void slice(int lineNumber,String variable){
+        PDGMarker pdgMarker = new PDGMarker(this);
+        pdgMarker.mark(lineNumber,variable);
+        markedNodes = pdgMarker.getMarkedVertices();
+    }
+    public boolean isMarked(GraphNode<?>node){
+        return markedNodes.contains(node);
+    }
 
     public void buildReversedCfg(){
         if(cfg ==null)return;
@@ -32,6 +45,11 @@ public class PDG extends Graph<MethodDeclaration> {
 
     }
     private boolean built = false;
+
+    public boolean isBuilt() {
+        return built;
+    }
+
     public void build(MethodDeclaration methodDeclaration){
         if(built)return;
         cfg = new ACFG();

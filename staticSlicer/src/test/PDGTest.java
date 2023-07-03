@@ -4,6 +4,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.graphs.printer.PDGPrinter;
+import com.nju.boot.slicer.PDGMarker;
 import com.nju.boot.util.PathUtils;
 import org.junit.jupiter.api.Test;
 
@@ -15,10 +16,13 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 public class PDGTest {
+
     public MethodDeclaration getFirstMethodDeclaration(String fileName) throws FileNotFoundException {
+        System.out.println(1);
         JavaParser javaParser = new JavaParser();
         File file = new File(fileName);
         Optional<CompilationUnit> cu = javaParser.parse(file).getResult();
+
         Optional<MethodDeclaration> optionalMethodDeclaration = cu.get().findFirst(MethodDeclaration.class);
         if(!optionalMethodDeclaration.isPresent()){
             throw new RuntimeException("No method could be found");
@@ -28,11 +32,12 @@ public class PDGTest {
     @Test
     public void testSix(){
         String fileName = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test6.java").toString(),
-                outFileName = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"PDG_Output6.dot").toString();
+                outFileName = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"graph","PDG_Output6.dot").toString();
         try {
             MethodDeclaration md = getFirstMethodDeclaration(fileName);
             PDG pdg = new PDG();
             pdg.build(md);
+            pdg.slice(17,"prod");
             new PDGPrinter(pdg,new FileWriter(outFileName)).print();
 
         } catch (FileNotFoundException e) {

@@ -1,4 +1,6 @@
-class CFG_Test6{
+
+public class CFG_Test6{
+
     public void testFunctionFor(){
         int sum = 0;
         int prod = 1;
@@ -12,9 +14,10 @@ class CFG_Test6{
             sum = sum+i;
             prod = prod*i;
         }
-       // System.out.println(i);
+        //System.out.println(i);
         System.out.println(sum);
         System.out.println(prod);
+
     }
     public void testFunction(){
         int sum = 0;

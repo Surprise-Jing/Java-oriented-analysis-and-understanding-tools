@@ -20,13 +20,15 @@ public class PDGPrinter extends GraphPrinter{
     public PDGPrinter(PDG pdg,Writer writer) {
         this.pdg = pdg;
         this.writer = writer;
-        setUpDotExporter();
+
     }
     public void setUpDotExporter(){
         dotExporter.setVertexAttributeProvider(
                 v->{
                     Map<String, Attribute> map = new HashMap<>();
                     map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
+                    if(pdg.isMarked(v))
+                        map.put("color",DefaultAttribute.createAttribute("red"));
                     return map;
                 }
         );
@@ -43,8 +45,10 @@ public class PDGPrinter extends GraphPrinter{
     }
 
 
+
     @Override
     public void print() {
+        setUpDotExporter();
         dotExporter.exportGraph(pdg,writer);
     }
 }

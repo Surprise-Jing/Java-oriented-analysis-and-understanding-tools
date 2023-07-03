@@ -21,6 +21,7 @@ public class DominatorTree extends Graph<MethodDeclaration> {
     }
     CFG cfg;
     boolean built = false;
+
     Map<GraphNode<?>,GraphNode<?>>doms = new HashMap<>();
     Stack<GraphNode<?>>postOrder = new Stack<>();
     List<GraphNode<?>>reversedPostOrder = new ArrayList<>();

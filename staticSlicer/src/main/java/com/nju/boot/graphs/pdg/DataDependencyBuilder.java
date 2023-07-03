@@ -47,7 +47,7 @@ public class DataDependencyBuilder {
         for (String variable:definedVariables){
             if(usedVariables.contains(variable)){
                 //the src node is data-dependent on target
-                //未考虑两个节点直接同时存在同方向的数据依赖和控制依赖的情况
+                //未考虑两个节点之间同时存在同方向的数据依赖和控制依赖的情况
                 Edge e = pdg.getEdge(target,src);
                 if(e!=null){
                     assert e instanceof DataDependencyEdge;
