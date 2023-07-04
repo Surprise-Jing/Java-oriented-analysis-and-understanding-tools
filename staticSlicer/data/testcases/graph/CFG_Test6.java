@@ -5,8 +5,8 @@ public class CFG_Test6{
         int sum = 0;
         int prod = 1;
         //int i = 0;
-        for(int i = 0;i<10;){
-            i = i + 1;
+        for(int i = 0;i<10;i++){
+
             if(prod > 100/i){
                 i = i - 1;
                 break;

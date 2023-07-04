@@ -20,7 +20,7 @@ public class PDGPrinter extends GraphPrinter{
     public PDGPrinter(PDG pdg,Writer writer) {
         this.pdg = pdg;
         this.writer = writer;
-
+        setUpDotExporter();
     }
     public void setUpDotExporter(){
         dotExporter.setVertexAttributeProvider(
@@ -48,7 +48,7 @@ public class PDGPrinter extends GraphPrinter{
 
     @Override
     public void print() {
-        setUpDotExporter();
+
         dotExporter.exportGraph(pdg,writer);
     }
 }
