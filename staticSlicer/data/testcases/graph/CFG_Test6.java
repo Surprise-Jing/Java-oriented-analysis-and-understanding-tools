@@ -12,6 +12,7 @@ public class CFG_Test6{
                 break;
             }
             sum = sum+i;
+            sum = prod;
             prod = prod*i;
         }
         //System.out.println(i);

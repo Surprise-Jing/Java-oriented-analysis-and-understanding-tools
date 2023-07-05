@@ -16,6 +16,11 @@ import java.util.Set;
 public class PDG extends Graph<MethodDeclaration> {
     ACFG cfg = null;
     ACFG reversedCfg = null;
+
+    public Set<GraphNode<?>> getMarkedNodes() {
+        return markedNodes;
+    }
+
     Set<GraphNode<?>> markedNodes = new HashSet<>();
     public void slice(int lineNumber,String variable){
         PDGMarker pdgMarker = new PDGMarker(this);

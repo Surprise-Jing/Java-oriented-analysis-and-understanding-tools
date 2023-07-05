@@ -41,7 +41,7 @@ class Ejercicio1 extends Practicas {
     }
 }
 
-public class Practicas {
+public class   {
     Scanner in = new Scanner(System.in);
 
     public void showDescription(String name, String description) {

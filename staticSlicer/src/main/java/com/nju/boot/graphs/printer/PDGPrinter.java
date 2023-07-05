@@ -39,6 +39,7 @@ public class PDGPrinter extends GraphPrinter{
                 map.put("label",DefaultAttribute
                         .createAttribute(((DataDependencyEdge) e).getDependentVariables()
                                 .toString()));
+                map.put("style",DefaultAttribute.createAttribute("dashed"));
             }
             return map;
         });
