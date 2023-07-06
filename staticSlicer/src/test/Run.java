@@ -8,6 +8,7 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.graphs.pdg.DominatorTree;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.PathUtils;
@@ -25,20 +26,21 @@ import java.util.Optional;
 
 public class Run {
 
-    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test6.java").toString();
+    public static String PROGRAM = Paths.get(PathUtils.PROGRAMS_FOLDER,"CFG_Test2.java").toString();
 
-    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test6.dot").toString();
+    public static String OUTFILE = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"CFG_Test2.dot").toString();
     @Test
     public void testMain() {
 
         File file = new File(PROGRAM);
         try{
             CFG cfg = buildCFG(file);
+            DominatorTree tree = new DominatorTree(cfg).build();
             ACFG acfg = buildACFG(file);
             PDG pdg = new PDG();
             pdg.buildFromACFG(acfg);
-            printCFG(cfg);
-            printGraph(acfg,"acfg_test6.dot");
+            printCFG(tree);
+            //printGraph(acfg,"acfg_test6.dot");
             printGraph(pdg,"pdg_test6.dot");
 
 
@@ -63,6 +65,7 @@ public class Run {
         cfg.build(optionalMethodDeclaration.get());
         return cfg;
     }
+
     public static ACFG buildACFG(File file) throws FileNotFoundException {
         JavaParser javaParser = new JavaParser();
         Optional<CompilationUnit> cu = javaParser.parse(file).getResult();

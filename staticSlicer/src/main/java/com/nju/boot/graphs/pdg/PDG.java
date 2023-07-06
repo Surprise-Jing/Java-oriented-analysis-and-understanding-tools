@@ -14,8 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PDG extends Graph<MethodDeclaration> {
-    ACFG cfg = null;
-    ACFG reversedCfg = null;
+    CFG cfg = null;
+    CFG reversedCfg = null;
     Set<GraphNode<?>> markedNodes = new HashSet<>();
     public void slice(int lineNumber,String variable){
         PDGMarker pdgMarker = new PDGMarker(this);
@@ -57,10 +57,21 @@ public class PDG extends Graph<MethodDeclaration> {
         buildFromACFG(cfg);
 
     }
-    public void buildFromACFG(ACFG acfg){
+
+    public void buildCDG(CFG cfg){
+        built = true;
+        this.cfg = cfg;
+        cfg.vertexSet().stream().forEach(vertex->{
+            if(vertex!=cfg.getExitNode().get())
+                this.addVertex(vertex);
+        });
+        buildControlDependency();
+    }
+
+    public void buildFromACFG(CFG cfg){
         if(built) return;
         built = true;
-        this.cfg = acfg;
+        this.cfg = cfg;
         cfg.vertexSet().stream().forEach(vertex->{
             if(vertex!=cfg.getExitNode().get())
                 this.addVertex(vertex);

@@ -1,0 +1,11 @@
+strict digraph G {
+  0 [ label="ENTER main" ];
+  1 [ label="EXIT main" ];
+  2 [ color="red" label="int a = 0;" ];
+  3 [ label="int b = 0;" ];
+  4 [ color="red" label="System.out.println(a);" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+  3 -> 4 [ ];
+  4 -> 1 [ ];
+}

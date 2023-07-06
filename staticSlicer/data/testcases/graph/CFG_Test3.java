@@ -1,13 +1,15 @@
 public class CFG_Test3 {
     public static void main(String[] args) {
-        int a = 1;
-        a=3;
-        int b[] = {1,2};
-        while (a < 10){
-            a++;
-            break;
+        int n = 0;
+        int i = 1;
+        int sum = 0;
+        int product = 1;
+        while (i < n){
+            sum = sum + i;
+            product = product * i;
+            i = i + 1;
         }
-
-        System.out.println(a);
+        System.out.println(sum);
+        System.out.println(product);
     }
 }

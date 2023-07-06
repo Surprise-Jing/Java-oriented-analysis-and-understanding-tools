@@ -26,6 +26,10 @@ public class CFG extends Graph<MethodDeclaration> {
         built = true;
     }
 
+    public boolean isBuilt() {
+        return built;
+    }
+
     public CFG reverse(){
         CFG reversedCFG = new CFG();
         reversedCFG.built =true;

@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class DataDependencyBuilder {
     PDG pdg;
-    ACFG acfg;
+    CFG acfg;
     public DataDependencyBuilder(PDG pdg) {
         this.pdg = pdg;
         this.acfg = pdg.cfg;
