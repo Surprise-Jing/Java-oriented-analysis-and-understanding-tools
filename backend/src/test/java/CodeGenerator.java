@@ -11,7 +11,7 @@ public class CodeGenerator {
         String url = "jdbc:mysql://localhost:3306/joaut?characterEncoding=utf8&serverTimezone=UTC";
         String username = "root";
         String password = "123456";
-        String tables = "j_user";
+        String tables = "j_files";
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> {
                     builder.author("JingYa") // 设置作者

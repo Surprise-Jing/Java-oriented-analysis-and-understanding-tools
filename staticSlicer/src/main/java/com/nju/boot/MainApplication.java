@@ -1,6 +1,5 @@
 package com.nju.boot;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @SpringBootApplication: 这是一个SpringBoot应用
  */
 @SpringBootApplication
-@MapperScan("com.nju.boot.dao")
 public class MainApplication {
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class,args);

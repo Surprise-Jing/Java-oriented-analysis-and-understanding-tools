@@ -6,7 +6,6 @@ import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.pdg.DominatorTree;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.nodes.GraphNode;
-import org.apache.ibatis.ognl.IntHashMap;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 import java.util.*;
