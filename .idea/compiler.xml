@@ -20,6 +20,7 @@
       <module name="Java-oriented-analysis-and-understanding-tools" options="-parameters" />
       <module name="backend" options="-parameters" />
       <module name="backend (1)" options="-parameters" />
+      <module name="joaut" options="-parameters" />
       <module name="project" options="-parameters" />
       <module name="staticSlicer" options="-parameters" />
     </option>

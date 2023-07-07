@@ -9,11 +9,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * 这是一个主启动类
  * @SpringBootApplication: 这是一个SpringBoot应用
  */
-<<<<<<< HEAD:project/src/main/java/com/nju/boot/MainApplication.java
 
-=======
 @MapperScan("com.nju.boot.mapper")
->>>>>>> data-flow:backend/src/main/java/com/nju/boot/MainApplication.java
 @SpringBootApplication
 public class MainApplication {
     public static void main(String[] args) {
