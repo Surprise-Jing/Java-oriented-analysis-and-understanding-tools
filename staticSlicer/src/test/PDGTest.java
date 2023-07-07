@@ -1,17 +1,10 @@
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.visitor.VoidVisitor;
-import com.github.javaparser.printer.DefaultPrettyPrinter;
 import com.github.javaparser.printer.Printer;
-import com.github.javaparser.printer.configuration.DefaultPrinterConfiguration;
-import com.github.javaparser.printer.configuration.PrinterConfiguration;
-import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.graphs.printer.PDGPrinter;
 import com.nju.boot.graphs.printer.SelectivePrettyPrinter;
-import com.nju.boot.graphs.printer.SelectivePrettyPrinterVisitor;
-import com.nju.boot.slicer.PDGMarker;
 import com.nju.boot.util.PathUtils;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +12,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PDGTest {

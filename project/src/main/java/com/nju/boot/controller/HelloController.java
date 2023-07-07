@@ -13,6 +13,7 @@ public class HelloController {
     @Resource
     private HelloService helloService;
 
+
     @GetMapping("/hello")
     public String hello(){
         return "Hello, Spring Boot!";

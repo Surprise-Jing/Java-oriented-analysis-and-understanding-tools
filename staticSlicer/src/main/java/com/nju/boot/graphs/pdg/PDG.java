@@ -6,9 +6,8 @@ import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
-import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.slicer.PDGMarker;
+import com.nju.boot.util.PDGMarker;
 
 import java.util.HashSet;
 import java.util.Set;
