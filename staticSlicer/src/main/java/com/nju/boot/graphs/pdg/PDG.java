@@ -6,6 +6,7 @@ import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
+import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.PDGMarker;
 
@@ -13,12 +14,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PDG extends Graph<MethodDeclaration> {
-    ACFG cfg = null;
-    ACFG reversedCfg = null;
 
     public Set<GraphNode<?>> getMarkedNodes() {
         return markedNodes;
     }
+
+
+    CFG cfg = null;
+    CFG reversedCfg = null;
 
     Set<GraphNode<?>> markedNodes = new HashSet<>();
     public void slice(int lineNumber,String variable){
@@ -61,10 +64,21 @@ public class PDG extends Graph<MethodDeclaration> {
         buildFromACFG(cfg);
 
     }
-    public void buildFromACFG(ACFG acfg){
+
+    public void buildCDG(CFG cfg){
+        built = true;
+        this.cfg = cfg;
+        cfg.vertexSet().stream().forEach(vertex->{
+            if(vertex!=cfg.getExitNode().get())
+                this.addVertex(vertex);
+        });
+        buildControlDependency();
+    }
+
+    public void buildFromACFG(CFG cfg){
         if(built) return;
         built = true;
-        this.cfg = acfg;
+        this.cfg = cfg;
         cfg.vertexSet().stream().forEach(vertex->{
             if(vertex!=cfg.getExitNode().get())
                 this.addVertex(vertex);

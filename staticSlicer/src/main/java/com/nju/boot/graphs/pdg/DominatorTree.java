@@ -110,7 +110,7 @@ public class DominatorTree extends Graph<MethodDeclaration> {
 
         for(GraphNode<?>vertex :doms.keySet()){
             if(doms.get(vertex)!=null&&doms.get(vertex)!=vertex)
-            addEdge(doms.get(vertex),vertex,new DummyEdge());
+                addEdge(doms.get(vertex),vertex,new DummyEdge());
         }
         return this;
     }
