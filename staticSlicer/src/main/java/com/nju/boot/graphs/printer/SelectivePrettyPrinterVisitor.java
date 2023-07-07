@@ -1,6 +1,7 @@
 package com.nju.boot.graphs.printer;
 
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.*;
 import com.github.javaparser.printer.DefaultPrettyPrinterVisitor;
 import com.github.javaparser.printer.SourcePrinter;
@@ -75,6 +76,12 @@ public class SelectivePrettyPrinterVisitor extends DefaultPrettyPrinterVisitor {
 
     @Override
     public void visit(SwitchStmt n, Void arg) {
+        if(!astNodes.contains(n))return;
+        super.visit(n, arg);
+    }
+
+    @Override
+    public void visit(MethodDeclaration n, Void arg) {
         if(!astNodes.contains(n))return;
         super.visit(n, arg);
     }

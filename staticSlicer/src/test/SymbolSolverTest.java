@@ -13,13 +13,11 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeS
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.nju.boot.graphs.callgraph.CallGraph;
 import com.nju.boot.graphs.printer.CallGraphPrinter;
+
 import com.nju.boot.graphs.printer.SelectivePrettyPrinterVisitor;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.function.Function;
 
@@ -49,7 +47,8 @@ public class SymbolSolverTest {
 
             try {
                 FileWriter fileWriter = new FileWriter(Paths.get(absolutePath,"data","output","callGraphResult.dot").toString());
-                new CallGraphPrinter(callGraph,fileWriter).print();
+
+
             } catch (IOException e) {
                 System.out.println("output directory doesn't exist");
                 throw new RuntimeException(e);

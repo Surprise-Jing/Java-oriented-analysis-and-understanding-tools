@@ -8,6 +8,7 @@ import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.SlicerCriterion;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,8 +20,10 @@ public class PDGMarker {
         assert pdg.isBuilt();
     }
     public void mark(int lineNumber,String variable){
-        //todo:replace this with nodeFindingUtil
-        Set<GraphNode<?>> nodes = findNodes(lineNumber,variable);
+        Set<String>_variables = new HashSet<>();
+        _variables.add(variable);
+        SlicerCriterion criterion = new SlicerCriterion(_variables,lineNumber,pdg);
+        Set<GraphNode<?>> nodes = criterion.getNodes();
         Set<String> variables = new HashSet<>();
         variables.add(variable);
         nodes.stream().forEach(node->backTraverse(node,variables));
@@ -48,19 +51,7 @@ public class PDGMarker {
 
     }
 
-    public Set<GraphNode<?>> findNodes(int lineNumber,String variable){
-        Set<GraphNode<?>> nodes = new HashSet<>();
-        for (GraphNode<?>vertex:pdg.vertexSet()){
-            Node astNode = vertex.getAstNode();
-            Range rangeOfNode = astNode.getRange().get();
-            if(rangeOfNode.getLineCount() == lineNumber &&
-                    (vertex.getUsedVariables().contains(variable))||
-            vertex.getDefinedVariables().contains(variable)){
-                nodes.add(vertex);
-            }
-        }
-        return nodes;
-    }
+
 
     Set<GraphNode<?>> markedVertices = new HashSet<>();
     public Set<GraphNode<?>> getMarkedVertices(){

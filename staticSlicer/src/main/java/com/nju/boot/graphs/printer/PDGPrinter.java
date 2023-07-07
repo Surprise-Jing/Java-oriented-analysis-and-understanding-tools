@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class PDGPrinter extends GraphPrinter{
     PDG pdg;
-    Writer writer;
+
     DOTExporter<GraphNode<?>, Edge> dotExporter = new DOTExporter<>(v->String.valueOf(v.getId()));
     public PDGPrinter(PDG pdg,Writer writer) {
         this.pdg = pdg;

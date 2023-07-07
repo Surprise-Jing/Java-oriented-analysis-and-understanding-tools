@@ -1,5 +1,6 @@
 package com.nju.boot.graphs.augmented;
 
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.DummyEdge;
 import com.nju.boot.graphs.cfg.CFG;
@@ -17,7 +18,7 @@ public class ACFG extends CFG {
     }
 
     @Override
-    public void build(MethodDeclaration methodDeclaration) {
+    public void build(CallableDeclaration<?> methodDeclaration) {
         built = true;
         methodDeclaration.accept(new ACFGBuilder(this),null);
         addDummyEdge(this.root,this.exit,new DummyEdge());

@@ -1,6 +1,7 @@
 package com.nju.boot.graphs.cfg;
 
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.BooleanLiteralExpr;
 import com.github.javaparser.ast.expr.Expression;
@@ -195,5 +196,14 @@ public class CFGBuilder extends VoidVisitorAdapter<Void> {
         connectTo(exitNode);
     }
 
+    @Override
+    public void visit(ConstructorDeclaration n, Void arg) {
+        cfg.buildRootNode("ENTER " + n.getNameAsString(), n);
+        GraphNode<?> exitNode = cfg.buildExitNode("EXIT " + n.getNameAsString(), n);
+        processingNodes.add(cfg.getRootNode().orElse(null));
+        n.getBody().accept(this, arg);
+        returnList.stream().filter(x-> !processingNodes.contains(x)).forEach(processingNodes::add);
+        connectTo(exitNode);
 
+    }
 }
