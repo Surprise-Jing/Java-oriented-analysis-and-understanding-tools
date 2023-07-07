@@ -1,7 +1,13 @@
 package com.nju.boot.util;
 
-public class PathUtils {
-    public static String PROGRAMS_FOLDER = "D:\\Java-oriented-analysis-and-understanding-tools\\staticSlicer\\src\\test\\graph";
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-    public static String PROGRAMS_OUT_FOLDER = "D:\\Java-oriented-analysis-and-understanding-tools\\staticSlicer\\src\\test\\graph";
+public class PathUtils {
+    static String absolutePath = new File("").getAbsolutePath();
+
+    public static String PROGRAMS_FOLDER =  Paths.get(absolutePath,"data","testcases","graph").toString();
+
+    public static String PROGRAMS_OUT_FOLDER = Paths.get(absolutePath,"data","output").toString();
 }

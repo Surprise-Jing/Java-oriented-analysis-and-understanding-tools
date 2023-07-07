@@ -11,6 +11,7 @@ import java.util.Optional;
 public abstract class Graph<RootN extends Node> extends DefaultDirectedGraph<GraphNode<?>, Edge> {
 
     protected GraphNode<RootN> root;
+    protected GraphNode<RootN> exit;
     protected int nextId;
 
     protected Graph(int StartId){
@@ -21,7 +22,7 @@ public abstract class Graph<RootN extends Node> extends DefaultDirectedGraph<Gra
         this(1);
     }
 
-    private <N extends Node> GraphNode<N> addNode(GraphNode<N> node){
+    protected  <N extends Node> GraphNode<N> addNode(GraphNode<N> node){
         this.addVertex(node);
         return node;
     }
@@ -48,9 +49,21 @@ public abstract class Graph<RootN extends Node> extends DefaultDirectedGraph<Gra
         this.addNode(rootNode);
         return true;
     }
+    public GraphNode<RootN> buildExitNode(String instruction, RootN AstRootNode){
+        if(exit != null){
+            return null;
+        }
+        GraphNode<RootN> exitNode = new GraphNode<>(getNextId(), instruction, AstRootNode);
+        this.exit = exitNode;
+        this.addNode(exitNode);
+        return exitNode;
+    }
 
     public Optional<GraphNode<?>> getRootNode(){
         return Optional.ofNullable(root);
+    }
+    public Optional<GraphNode<?>> getExitNode(){
+        return Optional.ofNullable(exit);
     }
 
 

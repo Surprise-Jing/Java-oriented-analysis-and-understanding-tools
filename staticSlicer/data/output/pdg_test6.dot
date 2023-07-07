@@ -1,0 +1,31 @@
+strict digraph G {
+  0 [ label="ENTER main" ];
+  2 [ label="int a = 1;" ];
+  3 [ label="int b = 2;" ];
+  4 [ label="int c = 3;" ];
+  5 [ label="int d = 4;" ];
+  6 [ label="a == b" ];
+  7 [ label="a = b + 1;" ];
+  8 [ label="d = d + 1;" ];
+  9 [ label="a = b;" ];
+  10 [ label="c = c + 2;" ];
+  11 [ label="System.out.println(a);" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+  0 -> 4 [ ];
+  0 -> 5 [ ];
+  0 -> 6 [ ];
+  0 -> 11 [ ];
+  6 -> 7 [ ];
+  6 -> 8 [ ];
+  6 -> 9 [ ];
+  6 -> 10 [ ];
+  3 -> 6 [ style="dashed" ];
+  2 -> 6 [ style="dashed" ];
+  3 -> 7 [ style="dashed" ];
+  5 -> 8 [ style="dashed" ];
+  3 -> 9 [ style="dashed" ];
+  4 -> 10 [ style="dashed" ];
+  9 -> 11 [ style="dashed" ];
+  7 -> 11 [ style="dashed" ];
+}

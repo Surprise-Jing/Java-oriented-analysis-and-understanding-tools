@@ -1,0 +1,37 @@
+strict digraph G {
+  0 [ label="ENTER main
+ def = [] use = []" ];
+  1 [ label="EXIT main
+ def = [] use = []" ];
+  2 [ label="int a = 1;
+ def = [a] use = []" ];
+  3 [ label="int b = 2;
+ def = [b] use = []" ];
+  4 [ label="int c = 3;
+ def = [c] use = []" ];
+  5 [ label="int d = 4;
+ def = [d] use = []" ];
+  6 [ label="a == b
+ def = [] use = [a, b]" ];
+  7 [ label="a = b + 1;
+ def = [a] use = [b]" ];
+  8 [ label="d = d + 1;
+ def = [d] use = [d]" ];
+  9 [ label="a = b;
+ def = [a] use = [b]" ];
+  10 [ label="c = c + 2;
+ def = [c] use = [c]" ];
+  11 [ label="System.out.println(a);
+ def = [] use = [a]" ];
+  4 -> 5;
+  6 -> 11;
+  3 -> 4;
+  6 -> 7;
+  11 -> 1;
+  7 -> 8;
+  5 -> 6;
+  9 -> 10;
+  2 -> 3;
+  0 -> 2;
+  6 -> 9;
+}
