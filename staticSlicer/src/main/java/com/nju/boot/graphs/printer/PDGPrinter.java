@@ -15,12 +15,12 @@ import java.util.Map;
 
 public class PDGPrinter extends GraphPrinter{
     PDG pdg;
-    Writer writer;
+
     DOTExporter<GraphNode<?>, Edge> dotExporter = new DOTExporter<>(v->String.valueOf(v.getId()));
     public PDGPrinter(PDG pdg,Writer writer) {
         this.pdg = pdg;
         this.writer = writer;
-
+        setUpDotExporter();
     }
     public void setUpDotExporter(){
         dotExporter.setVertexAttributeProvider(
@@ -39,6 +39,7 @@ public class PDGPrinter extends GraphPrinter{
                 map.put("label",DefaultAttribute
                         .createAttribute(((DataDependencyEdge) e).getDependentVariables()
                                 .toString()));
+                map.put("style",DefaultAttribute.createAttribute("dashed"));
             }
             return map;
         });
@@ -48,7 +49,7 @@ public class PDGPrinter extends GraphPrinter{
 
     @Override
     public void print() {
-        setUpDotExporter();
+
         dotExporter.exportGraph(pdg,writer);
     }
 }

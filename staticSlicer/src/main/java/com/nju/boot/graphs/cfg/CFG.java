@@ -1,12 +1,17 @@
 package com.nju.boot.graphs.cfg;
 
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.ControlFlowEdge;
 import com.nju.boot.graphs.Graph;
+import com.nju.boot.graphs.printer.CFGPrinter;
 import com.nju.boot.nodes.GraphNode;
+
 import org.checkerframework.checker.units.qual.C;
 
-public class CFG extends Graph<MethodDeclaration> {
+import java.io.StringWriter;
+
+public class CFG extends Graph<CallableDeclaration<?>> {
     protected boolean built = false;
 
     public CFG(){
@@ -21,7 +26,7 @@ public class CFG extends Graph<MethodDeclaration> {
         addControlFlowEdge(from, to, new ControlFlowEdge());
     }
 
-    public void build(MethodDeclaration methodDeclaration){
+    public void build(CallableDeclaration<?> methodDeclaration){
         methodDeclaration.accept(new CFGBuilder(this), null);
         built = true;
     }
@@ -44,4 +49,10 @@ public class CFG extends Graph<MethodDeclaration> {
         return reversedCFG;
     }
 
+    @Override
+    public String toString() {
+        StringWriter stringWriter = new StringWriter();
+        new CFGPrinter(this,stringWriter).print();
+        return super.toString();
+    }
 }

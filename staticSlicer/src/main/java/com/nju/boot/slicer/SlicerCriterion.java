@@ -1,6 +1,11 @@
 package com.nju.boot.slicer;
 
+import com.github.javaparser.Range;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.nodes.GraphNode;
 

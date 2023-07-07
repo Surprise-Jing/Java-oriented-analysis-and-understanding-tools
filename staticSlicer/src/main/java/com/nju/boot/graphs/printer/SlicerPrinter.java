@@ -18,7 +18,7 @@ import java.util.Map;
 public class SlicerPrinter extends GraphPrinter{
 
     CFG cfg;
-    Writer writer;
+
     DataFlowEquationSlicer dataFlowEquationSlicer;
     DOTExporter<GraphNode<?>, Edge> dotExporter = new DOTExporter<>(v->String.valueOf(v.getId()));
     public SlicerPrinter(CFG cfg, Writer writer, SlicerCriterion slicerCriterion) {
