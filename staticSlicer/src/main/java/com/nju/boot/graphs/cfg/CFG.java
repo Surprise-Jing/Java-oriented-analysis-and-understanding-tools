@@ -53,6 +53,6 @@ public class CFG extends Graph<CallableDeclaration<?>> {
     public String toString() {
         StringWriter stringWriter = new StringWriter();
         new CFGPrinter(this,stringWriter).print();
-        return super.toString();
+        return stringWriter.toString();
     }
 }

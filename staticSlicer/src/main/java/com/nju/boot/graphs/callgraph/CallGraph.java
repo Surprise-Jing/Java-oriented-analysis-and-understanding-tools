@@ -41,6 +41,6 @@ public class CallGraph extends Graph<CallableDeclaration<?>> {
         StringWriter stringWriter =  new StringWriter();
         CallGraphPrinter callGraphPrinter = new CallGraphPrinter(this,stringWriter);
         callGraphPrinter.print();
-        return callGraphPrinter.toString();
+        return stringWriter.toString();
     }
 }
