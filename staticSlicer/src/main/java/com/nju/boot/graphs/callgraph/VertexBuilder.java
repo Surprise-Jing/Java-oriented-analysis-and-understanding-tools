@@ -1,6 +1,7 @@
 package com.nju.boot.graphs.callgraph;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class VertexBuilder extends VoidVisitorAdapter<Void> {
 
-    Map<String, GraphNode<?>> signatureToNodeMap = new HashMap<>();
+    Map<String, GraphNode<CallableDeclaration<?>>> signatureToNodeMap = new HashMap<>();
     CallGraph callGraph;
 
     public VertexBuilder(CallGraph callGraph) {
@@ -27,14 +28,14 @@ public class VertexBuilder extends VoidVisitorAdapter<Void> {
 
     @Override
     public void visit(MethodDeclaration n, Void arg) {
-        GraphNode<?>newNode = callGraph.addNode(n.resolve().getQualifiedSignature(),n);
+        GraphNode<CallableDeclaration<?>>newNode = callGraph.addNode(n.resolve().getQualifiedSignature(),n);
         signatureToNodeMap.put(n.resolve().getQualifiedSignature(),newNode);
         super.visit(n, arg);
     }
 
     @Override
     public void visit(ConstructorDeclaration n, Void arg) {
-        GraphNode<?>newNode = callGraph.addNode(n.resolve().getQualifiedSignature(),n);
+        GraphNode<CallableDeclaration<?>>newNode = callGraph.addNode(n.resolve().getQualifiedSignature(),n);
         signatureToNodeMap.put(n.resolve().getQualifiedSignature(),newNode);
 
         super.visit(n, arg);
