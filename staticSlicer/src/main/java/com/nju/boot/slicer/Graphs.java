@@ -12,12 +12,15 @@ import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.callgraph.CallGraph;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.pdg.PDG;
+import com.nju.boot.nodes.GraphNode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Graphs {
     File file = null;
@@ -87,6 +90,11 @@ public class Graphs {
     public CallGraph getCallGraph(){
         return this.callGraph;
     }
-
+    public Set<String> getQualifiedSignatures(){
+        Map<String, GraphNode<CallableDeclaration<?>>> sigToNodeMap = this.callGraph.getSignatureToNodeMap();
+        return sigToNodeMap.keySet().stream().filter(sig->
+            sigToNodeMap.get(sig).getAstNode()!=null
+        ).collect(Collectors.toSet());
+    }
 
 }

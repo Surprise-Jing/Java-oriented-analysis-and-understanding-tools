@@ -12,7 +12,7 @@ import java.io.StringWriter;
 import java.util.Map;
 
 public class CallGraph extends Graph<CallableDeclaration<?>> {
-    Map<String, GraphNode<?>> signatureToNodeMap;
+    Map<String, GraphNode<CallableDeclaration<?>>> signatureToNodeMap;
     boolean built = false;
 
     public void setIncludeImportedFunctions(boolean includeImportedFunctions) {
@@ -21,11 +21,11 @@ public class CallGraph extends Graph<CallableDeclaration<?>> {
 
     boolean includeImportedFunctions = true;
 
-    public Map<String, GraphNode<?>> getSignatureToNodeMap() {
+    public Map<String, GraphNode<CallableDeclaration<?>>> getSignatureToNodeMap() {
         return signatureToNodeMap;
     }
 
-    public void setSignatureToNodeMap(Map<String, GraphNode<?>> signatureToNodeMap) {
+    public void setSignatureToNodeMap(Map<String, GraphNode<CallableDeclaration<?>>> signatureToNodeMap) {
         this.signatureToNodeMap = signatureToNodeMap;
     }
 
