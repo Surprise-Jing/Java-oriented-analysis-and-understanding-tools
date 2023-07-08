@@ -23,8 +23,7 @@ public class Files implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("编号")
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private String id;
 
     @ApiModelProperty("文件名")
     private String name;
@@ -47,11 +46,11 @@ public class Files implements Serializable {
     @ApiModelProperty("是否禁用链接")
     private Boolean enable;
 
-    public Integer getId() {
+    public String  getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

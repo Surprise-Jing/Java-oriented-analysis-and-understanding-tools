@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -22,8 +24,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("用户编号")
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     @ApiModelProperty("用户名称(唯一)")
     private String username;
@@ -38,16 +39,16 @@ public class User implements Serializable {
     private String email;
 
     @ApiModelProperty("最近登录日期")
-    private String updateAt;
+    private LocalDateTime updateAt;
 
     @ApiModelProperty("用户状态，0表示正常，1表示被禁")
     private Integer status;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String  id) {
         this.id = id;
     }
 
@@ -83,11 +84,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getUpdateAt() {
+    public LocalDateTime getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(String updateAt) {
+    public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
 

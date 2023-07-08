@@ -55,12 +55,6 @@
             <artifactId>junit</artifactId>
         </dependency>
 
-        <!--Freemarker引擎模板-->
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-        </dependency>
-
         <!-- mysql -->
         <dependency>
             <groupId>com.mysql</groupId>

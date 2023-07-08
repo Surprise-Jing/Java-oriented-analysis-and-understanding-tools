@@ -5,10 +5,12 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.nju.boot.entity.Files;
 import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.service.IFilesService;
 import com.nju.boot.service.impl.FilesServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -45,9 +47,16 @@ public class FilesController {
     @Resource
     private IFilesService iFilesService;
 
+    @Resource
+    private FilesMapper filesMapper;
+
     @PostMapping("")
     @ApiOperation(value = "上传文件")
-    public String upload(@RequestParam MultipartFile file) throws IOException {
+    public String uploadFile(MultipartFile file) throws Exception {
+        if(file == null) throw new Exception("请求参数缺失");
+        if(file.isEmpty()){
+            throw new Exception("上传失败，请选择文件");
+        }
         String originalFilename = file.getOriginalFilename();
         String type = FileUtil.extName(originalFilename);
         //获取文件
@@ -58,7 +67,7 @@ public class FilesController {
         //定义文件唯一标识码UUID
         String uuid = UUID.randomUUID().toString();
         String fileUUID = uuid + StrUtil.DOT + type;
-        File uploadFile = new File(fileUploadPath + fileUUID);
+        File uploadFile = new File(fileUploadPath + "/" + fileUUID);
 
         String url;
         String md5 = SecureUtil.md5(file.getInputStream());
@@ -75,6 +84,7 @@ public class FilesController {
 
         //存储至数据库
         Files saveFile = new Files();
+        saveFile.setId(fileUUID);
         saveFile.setName(originalFilename);
         saveFile.setType(type);
         saveFile.setMd5(md5);
@@ -85,9 +95,17 @@ public class FilesController {
     }
 
     @GetMapping("")
-    public String get(){
-        CFG cfg = new CFG();
-        return "yes";
+    @ApiOperation(value = "获取文件内容")
+    public String getFileContent(@RequestParam("id") String id) throws Exception{ //流请求还是字符串请求？
+        if("".equals(id)){
+            return "";
+        }
+        Files files = filesMapper.selectById(id);
+        if(files == null){
+            throw new Exception("文件不存在");
+        }
+        File file = new File(fileUploadPath + "/" + files.getId());
+        return FileUtils.readFileToString(file, "utf-8");
     }
 
 }

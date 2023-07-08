@@ -7,6 +7,7 @@ import com.nju.boot.service.IFilesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,6 +20,9 @@ import java.util.List;
  */
 @Service
 public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files> implements IFilesService {
+
+    @Resource
+    private FilesMapper filesMapper;
 
     @Override
     public Files getFileByMd5(String md5) {
