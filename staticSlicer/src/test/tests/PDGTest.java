@@ -2,33 +2,22 @@ package tests;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.printer.Printer;
-import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
-import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
-import com.nju.boot.graphs.augmented.ACFG;
-import com.nju.boot.graphs.callgraph.CallGraph;
-import com.nju.boot.graphs.cfg.CFG;
-import com.nju.boot.graphs.pdg.PDG;
-import com.nju.boot.graphs.printer.CFGPrinter;
-import com.nju.boot.graphs.printer.CallGraphPrinter;
-import com.nju.boot.graphs.printer.PDGPrinter;
-import com.nju.boot.graphs.printer.SelectivePrettyPrinter;
+import com.nju.boot.metrics.CodeMetrics;
 import com.nju.boot.slicer.Graphs;
 import com.nju.boot.slicer.Slicer;
-import com.nju.boot.util.PDGMarker;
 import com.nju.boot.util.PathUtils;
+import com.nju.boot.util.SlicerUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PDGTest {
     public CompilationUnit getCompilationUnit(String fileName) throws FileNotFoundException {
@@ -58,31 +47,28 @@ public class PDGTest {
                 outFileName = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"graph","PDG_Output2.dot").toString(),
                 cfgOut = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"graph","ACFG_Output2.dot").toString();
         CompilationUnit cu = getCompilationUnit(fileName);
+       Graphs graphs = new Graphs(fileName);
+       Set<String>methods = graphs.getQualifiedSignatures();
+        CallableDeclaration<?>callableDeclaration = SlicerUtil.findMethodByLineNumber(graphs.getCu(),29);
+        String signature  = null;
+        if(callableDeclaration instanceof MethodDeclaration){
+            signature = ((MethodDeclaration) callableDeclaration).resolve().getQualifiedSignature();
+        }
+        else if(callableDeclaration instanceof ConstructorDeclaration){
+            signature = ((ConstructorDeclaration) callableDeclaration).resolve().getQualifiedSignature();
+        }
 
-       // Graphs graphs = new Graphs(fileName);
-       // Set<String>methods = graphs.getQualifiedSignatures();
-        //for(String method:methods){
-        //    System.out.println("the 圈复杂度 of "+method+" is "+ String.valueOf(graphs.getCyclomaticComplexity(method)));
-       // }
+        CodeMetrics codeMetrics = new CodeMetrics(graphs);
+        for(String method:methods){
+           System.out.println("the 圈复杂度 of "+method+" is "+ String.valueOf(codeMetrics.getCyclomaticComplexity(method)));
+           System.out.println("the LOC of "+method+" is "+ String.valueOf(codeMetrics.getLineOfMethod(method)));
+           System.out.println("调用函数数量 "+method+" is "+ String.valueOf(codeMetrics.getTimesCalling(method)));
+           System.out.println("被调用的次数 "+method+" is "+ String.valueOf(codeMetrics.getTimesCalled(method)));
+           System.out.println("入参个数 "+method+" is "+ String.valueOf(codeMetrics.getNumOfParameters(method)));
+           if(signature!=null&&signature.equals(method))
+        System.out.println("slice on 23:a is:\n"+new Slicer(graphs).getSlicedCode(29,"a"));}
+}
 
-//        try {
-//            CompilationUnit cu = getCompilationUnit(fileName);
-//            MethodDeclaration md = getFirstMethodDeclaration(cu);
-//            PDG pdg = new PDG();
-//            ACFG cfg = new ACFG();
-//            pdg.build(md);
-//            cfg.build(md);
-//            PDGMarker pdgMarker = new PDGMarker(pdg);
-//            pdgMarker.mark(18,"a");
-           // new PDGPrinter(pdg,new FileWriter(outFileName)).print();
-           // new CFGPrinter(cfg,new FileWriter(cfgOut)).print();
+//            MethodDeclaration md = getFirstMethodDeclaration(c
 
-//
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException("file not found");
-//        } catch (IOException e) {
-//            throw new RuntimeException("out file not found");
-//        }
-
-    }
 }

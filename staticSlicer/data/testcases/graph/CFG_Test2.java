@@ -6,6 +6,15 @@ class Parent1 implements Runnable{
 
 }
 public class CFG_Test2 extends  Parent1 {
+    public int aFunc(){
+        return 1;
+    }
+    public void bFunc(int n1,String n2,double n3,CFG_Test2 n4){
+       int result = System.out.println(aFunc());
+       result += System.out.println(aFunc());
+       return result;
+
+    }
     public static void main(String[] args) {
         int a = 1;
         int b = 2;

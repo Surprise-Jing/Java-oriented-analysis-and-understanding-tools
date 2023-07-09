@@ -3,10 +3,14 @@ package com.nju.boot.metrics;
 import com.github.javaparser.ast.stmt.*;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
-
+//todo:完善
 /**count lines of code, ignoring comments and blank lines*/
 public class LineCounterVisitor extends VoidVisitorAdapter<Void> {
-    int count = 0;
+    public int getCount() {
+        return count;
+    }
+
+    private int count = 0;
 
     @Override
     public void visit(BreakStmt n, Void arg) {
