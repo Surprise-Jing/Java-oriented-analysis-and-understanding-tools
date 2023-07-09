@@ -1,11 +1,15 @@
 package com.nju.boot.controller;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.nju.boot.slicer.Graphs;
+import com.nju.boot.util.SlicerUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/graph")
@@ -20,7 +24,7 @@ public class GraphController {
     public String getAST(@RequestParam("id") String id){
         String path = fileUploadPath + "/" + id;
         Graphs graphs = new Graphs(path);
-        return graphs.getCu().toString();
+        return SlicerUtil.astNodeToXml(graphs.getCu());
     }
 
     @GetMapping("/cg")
@@ -33,7 +37,33 @@ public class GraphController {
 
     @GetMapping("/method")
     @ApiOperation(value = "获得文件的所有方法")
-    public String getMethod(@RequestParam("id") String id){
-        return "";
+    public Set<String> getMethod(@RequestParam("id") String id){
+        String path = fileUploadPath + "/" + id;
+        Graphs graphs = new Graphs(path);
+        return graphs.getQualifiedSignatures();
+    }
+
+    @GetMapping("/cfg")
+    @ApiOperation(value = "获得控制流程图CFG")
+    public String getCFG(String id, String method){
+        String path = fileUploadPath + "/" + id;
+        Graphs graphs = new Graphs(path);
+        if(method == null){
+            Set<String> methods = graphs.getQualifiedSignatures();
+            method = methods.stream().toList().get(0);
+        }
+        return graphs.getCFG(SlicerUtil.findMethodBySignature(graphs, method)).toString();
+    }
+
+    @GetMapping("/pdg")
+    @ApiOperation(value = "获得程序依赖图PDG")
+    public String getPDG(String id, String method){
+        String path = fileUploadPath + "/" + id;
+        Graphs graphs = new Graphs(path);
+        if(method == null){
+            Set<String> methods = graphs.getQualifiedSignatures();
+            method = methods.stream().toList().get(0);
+        }
+        return graphs.getPDG(SlicerUtil.findMethodBySignature(graphs, method)).toString();
     }
 }

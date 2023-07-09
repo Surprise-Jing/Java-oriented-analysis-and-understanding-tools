@@ -8,6 +8,7 @@ import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.service.IFilesService;
 import com.nju.boot.service.impl.FilesServiceImpl;
+import com.nju.boot.utils.DateTimeUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
@@ -52,44 +53,33 @@ public class FilesController {
 
     @PostMapping("")
     @ApiOperation(value = "上传文件")
-    public String uploadFile(MultipartFile file) throws Exception {
+    public String uploadFile(@RequestParam("uid") String uid, MultipartFile file) throws Exception {
         if(file == null) throw new Exception("请求参数缺失");
         if(file.isEmpty()){
             throw new Exception("上传失败，请选择文件");
         }
-        String originalFilename = file.getOriginalFilename();
-        String type = FileUtil.extName(originalFilename);
-        //获取文件
         File uploadParentFile = new File(fileUploadPath);
         if(!uploadParentFile.exists()){
             uploadParentFile.mkdirs();
         }
-        //定义文件唯一标识码UUID
-        String uuid = UUID.randomUUID().toString();
-        String fileUUID = uuid + StrUtil.DOT + type;
+
+        String uuId = UUID.randomUUID().toString();
+        String originalFilename = file.getOriginalFilename();
+        String type = FileUtil.extName(originalFilename);
+        String fileUUID = uuId + StrUtil.DOT + type;
         File uploadFile = new File(fileUploadPath + "/" + fileUUID);
 
-        String url;
         String md5 = SecureUtil.md5(file.getInputStream());
-        //判断文件在数据库中是否已经存在
-        Files dbFiles = iFilesService.getFileByMd5(md5);
-        if(dbFiles != null){
-            url = dbFiles.getUrl();
+        String url;
+        Files files = iFilesService.getFileByMd5(md5);
+        if(files != null){
+            url = files.getUrl();
         }
-        else{
-            //将临时文件转存到指定磁盘位置
+        else {
             file.transferTo(uploadFile);
             url = "http://" + serverAddress + ":" + serverPort + "/file?id=" + fileUUID;
         }
-
-        //存储至数据库
-        Files saveFile = new Files();
-        saveFile.setId(fileUUID);
-        saveFile.setName(originalFilename);
-        saveFile.setType(type);
-        saveFile.setMd5(md5);
-        saveFile.setUrl(url);
-        saveFile.setUploadTime(LocalDateTime.now());
+        Files saveFile = new Files(uuId, originalFilename, type, md5, url, uid, DateTimeUtils.getNowTimeString(), false, true);
         iFilesService.save(saveFile);
         return url;
     }
@@ -100,11 +90,8 @@ public class FilesController {
         if("".equals(id)){
             return "";
         }
-        Files files = filesMapper.selectById(id);
-        if(files == null){
-            throw new Exception("文件不存在");
-        }
-        File file = new File(fileUploadPath + "/" + files.getId());
+        String path = fileUploadPath + "/" + id;
+        File file = new File(path);
         return FileUtils.readFileToString(file, "utf-8");
     }
 

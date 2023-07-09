@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
- * 
+ * User对象
  * </p>
  *
  * @author JingYa
@@ -39,7 +39,7 @@ public class User implements Serializable {
     private String email;
 
     @ApiModelProperty("最近登录日期")
-    private LocalDateTime updateAt;
+    private String updateAt;
 
     @ApiModelProperty("用户状态，0表示正常，1表示被禁")
     private Integer status;
@@ -84,11 +84,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public LocalDateTime getUpdateAt() {
+    public String  getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(LocalDateTime updateAt) {
+    public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
     }
 

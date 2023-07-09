@@ -8,6 +8,7 @@ import com.nju.boot.entity.dto.LoginDto;
 import com.nju.boot.mapper.UserMapper;
 import com.nju.boot.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.nju.boot.utils.DateTimeUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new Exception("用户名已注册");
         }
         user.setId(UUID.randomUUID().toString());
-        user.setUpdateAt(LocalDateTime.now());
+        user.setUpdateAt(DateTimeUtils.getNowTimeString());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userMapper.insert(user);
         return user;
@@ -60,7 +61,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User update(User user) {
-        user.setUpdateAt(LocalDateTime.now());
+        user.setUpdateAt(DateTimeUtils.getNowTimeString());
         userMapper.updateById(user);
         return user;
     }

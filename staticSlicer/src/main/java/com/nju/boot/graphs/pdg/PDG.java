@@ -70,7 +70,7 @@ public class PDG extends Graph<MethodDeclaration> {
     public String toString() {
         StringWriter stringWriter = new StringWriter();
         new PDGPrinter(this,stringWriter).print();
-        return super.toString();
+        return stringWriter.toString();
     }
 
     public void buildCDG(CFG cfg){
