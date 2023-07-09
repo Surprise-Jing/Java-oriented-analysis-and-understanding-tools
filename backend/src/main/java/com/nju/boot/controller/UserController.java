@@ -43,7 +43,7 @@ public class UserController {
         User user = iUserService.login(loginDto);
         Map<String, Object> map = new HashMap<>();
         //是否选择记住用户
-        long exp = loginDto.isRemember() ? JwtTokenUtils.REMEMBER_EXPIRATION_TIME : JwtTokenUtils.EXPIRATION_TIME;
+        long exp = JwtTokenUtils.EXPIRATION_TIME;
         map.put("token", JwtTokenUtils.createToken(loginDto.getUsername(), exp));
         map.put("user", user);
         return map;
