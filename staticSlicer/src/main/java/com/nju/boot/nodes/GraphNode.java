@@ -38,7 +38,7 @@ public class GraphNode<N extends Node> {
                 new HashSet<>(0),
                 new HashSet<>(0)
         );
-        if(id != 0 && id != 1)
+        if(id != 0 && id != 1&&astNode!=null)
             extractVariables(astNode);
     }
 

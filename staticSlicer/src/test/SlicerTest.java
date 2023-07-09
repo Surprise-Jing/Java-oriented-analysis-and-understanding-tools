@@ -8,6 +8,7 @@ import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.graphs.printer.PDGPrinter;
 import com.nju.boot.graphs.printer.SlicerPrinter;
 import com.nju.boot.slicer.DataFlowEquationSlicer;
+import com.nju.boot.slicer.Slicer;
 import com.nju.boot.slicer.SlicerCriterion;
 import com.nju.boot.util.PathUtils;
 import org.jgrapht.nio.Attribute;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SlicerTest {
+
 
     public MethodDeclaration getFirstMethodDeclaration(String fileName) throws FileNotFoundException {
         System.out.println(1);

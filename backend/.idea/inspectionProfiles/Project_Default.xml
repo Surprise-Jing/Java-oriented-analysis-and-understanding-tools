@@ -1,6 +1,9 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+<<<<<<< HEAD:project/.idea/inspectionProfiles/Project_Default.xml
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+=======
     <inspection_tool class="MavenPackageUpdate" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="excludeList">
         <list>
@@ -8,5 +11,6 @@
         </list>
       </option>
     </inspection_tool>
+>>>>>>> data-flow:backend/.idea/inspectionProfiles/Project_Default.xml
   </profile>
 </component>

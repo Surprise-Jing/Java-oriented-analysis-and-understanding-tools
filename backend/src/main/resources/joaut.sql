@@ -29,15 +29,18 @@ CREATE TABLE `j_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
+INSERT INTO `j_user` VALUES (1, 'admin', '123456', '123456778', '123@nju.edu.cn', '2023-07-07','0');
 
 DROP TABLE IF EXISTS `j_file`;
-CREATE TABLE `j_file` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `uid` bigint(20) NOT NULL COMMENT '用户编号',
-  `name` varchar(50) NOT NULL COMMENT '文件名',
-  `md5` varchar(32) DEFAULT NULL COMMENT 'MD5值',
-  `path` varchar(100) NOT NULL COMMENT '文件路径',
+DROP TABLE IF EXISTS `j_files`;
+CREATE TABLE `j_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `name` varchar(255) NOT NULL COMMENT '文件名',
+  `type` varchar(255) DEFAULT NULL COMMENT '文件类型',
+  `md5` varchar(255) DEFAULT NULL COMMENT 'MD5值',
+  `url` varchar(255) NOT NULL COMMENT '下载链接',
   `upload_time` datetime(3) NOT NULL COMMENT '上传时间',
-  `ext` varchar(255) DEFAULT NULL COMMENT '文件后缀名',
+  `deleted` tinyint(1) DEFAULT '0' COMMENT '是否删除',
+  `enable` tinyint(1) DEFAULT '1' COMMENT '是否禁用链接',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;

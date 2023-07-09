@@ -7,15 +7,29 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.graphs.printer.PDGPrinter;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.slicer.PDGMarker;
+import com.nju.boot.util.PDGMarker;
 
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.Set;
 
 public class PDG extends Graph<MethodDeclaration> {
+
+    public Set<GraphNode<?>> getMarkedNodes() {
+        return markedNodes;
+    }
+
+
     CFG cfg = null;
-    CFG reversedCfg = null;
+
+    public CFG getCfg() {
+        return cfg;
+    }
+
+    ACFG reversedCfg = null;
+
     Set<GraphNode<?>> markedNodes = new HashSet<>();
     public void slice(int lineNumber,String variable){
         PDGMarker pdgMarker = new PDGMarker(this);
@@ -38,12 +52,6 @@ public class PDG extends Graph<MethodDeclaration> {
             }
         }
     }
-    public void buildPostDominatorTree(){
-
-    }
-    public void buildDominatorTree(){
-
-    }
     private boolean built = false;
 
     public boolean isBuilt() {
@@ -56,6 +64,13 @@ public class PDG extends Graph<MethodDeclaration> {
         cfg.build(methodDeclaration);
         buildFromACFG(cfg);
 
+    }
+
+    @Override
+    public String toString() {
+        StringWriter stringWriter = new StringWriter();
+        new PDGPrinter(this,stringWriter).print();
+        return super.toString();
     }
 
     public void buildCDG(CFG cfg){
@@ -72,6 +87,7 @@ public class PDG extends Graph<MethodDeclaration> {
         if(built) return;
         built = true;
         this.cfg = cfg;
+        assert  cfg instanceof ACFG;
         cfg.vertexSet().stream().forEach(vertex->{
             if(vertex!=cfg.getExitNode().get())
                 this.addVertex(vertex);
