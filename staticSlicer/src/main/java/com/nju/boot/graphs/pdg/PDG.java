@@ -21,6 +21,9 @@ public class PDG extends Graph<MethodDeclaration> {
         return markedNodes;
     }
 
+    public void setMarkedNodes(Set<GraphNode<?>> markedNodes) {
+        this.markedNodes = markedNodes;
+    }
 
     CFG cfg = null;
 

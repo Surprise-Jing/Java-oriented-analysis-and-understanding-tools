@@ -10,6 +10,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.graphs.printer.SelectivePrettyPrinter;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.util.PDGMarker;
 import com.nju.boot.util.SlicerUtil;
 
 import java.util.Set;
@@ -44,5 +45,14 @@ public class Slicer {
     }
     public String getResult(){
         return result;
+    }
+    public String getSlicedCode(int lineNumber,String variableName){
+        CallableDeclaration<?> callableDeclaration =  SlicerUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
+        PDG targetPDG = graphs.getPDG(callableDeclaration);
+        PDGMarker pdgMarker = new PDGMarker(targetPDG);
+        pdgMarker.mark(lineNumber,variableName);
+        SelectivePrettyPrinter selectivePrettyPrinter =  new SelectivePrettyPrinter(targetPDG.getMarkedNodes().stream()
+                .map(node -> node.getAstNode()).collect(Collectors.toSet()));
+        return selectivePrettyPrinter.print(callableDeclaration);
     }
 }

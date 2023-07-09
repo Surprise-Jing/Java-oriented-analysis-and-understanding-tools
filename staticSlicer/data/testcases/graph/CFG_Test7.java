@@ -4,31 +4,22 @@ public class SwitchDemo {
     public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
         System.out.println("输入一个数据:");
+        int a = 0;
         int week=sc.nextInt();
         switch (week){
             case 1:
                 System.out.println("星期一");
-                break;
+                System.out.println("in case 1" + String.valueOf(a++));
             case 2:
-                System.out.println("星期二");
-                break;
+                System.out.println("in case 2" + String.valueOf(a++));
             case 3:
-                System.out.println("星期三");
-                break;
-            case 4:
-                System.out.println("星期四");
-                break;
-            case 5:
-                System.out.println("星期五");
-                break;
-            case 6:
-                System.out.println("星期六");
-                break;
+                System.out.println("in case 3" + String.valueOf(a++));
             case 7:
-                System.out.println("星期日");
+                System.out.println("in case 7" + String.valueOf(a++));
             default:
                 System.out.println("非法数据");
-                break;
+                System.out.println("in case default" + String.valueOf(a++));
         }
+        System.out.println(a);
     }
 }

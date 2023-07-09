@@ -1,3 +1,5 @@
+package tests;
+
 class CFG_subTest{
     public void A(){}
 }

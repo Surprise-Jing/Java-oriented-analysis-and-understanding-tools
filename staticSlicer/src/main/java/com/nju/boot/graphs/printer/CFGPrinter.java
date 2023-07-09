@@ -17,6 +17,7 @@ public class CFGPrinter extends  GraphPrinter{
     public CFGPrinter(CFG cfg, Writer writer) {
         this.cfg = cfg;
         setWriter(writer);
+        setUpDotExporter();
     }
     private void setUpDotExporter(){
         dotExporter.setVertexAttributeProvider(v->{

@@ -27,6 +27,7 @@ public class PDGMarker {
         Set<String> variables = new HashSet<>();
         variables.add(variable);
         nodes.stream().forEach(node->backTraverse(node,variables));
+        pdg.setMarkedNodes(markedVertices);
 
     }
     public void backTraverse(GraphNode<?>start,Set<String> variables){

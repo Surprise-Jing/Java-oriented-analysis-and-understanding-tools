@@ -1,5 +1,6 @@
 package com.nju.boot.graphs;
 
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.nodes.GraphNode;
 import com.github.javaparser.ast.Node;
