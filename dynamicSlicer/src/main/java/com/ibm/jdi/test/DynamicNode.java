@@ -1,9 +1,9 @@
 package com.ibm.jdi.test;
 
-import com.nju.boot.nodes.GraphNode;
 import lombok.Data;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class DynamicNode {

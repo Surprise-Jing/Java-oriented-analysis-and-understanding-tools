@@ -1,8 +1,6 @@
 package com.ibm.jdi.test;
 
 import com.nju.boot.edges.Edge;
-import com.nju.boot.graphs.Graph;
-import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.pdg.PDG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.slicer.SlicerCriterion;
