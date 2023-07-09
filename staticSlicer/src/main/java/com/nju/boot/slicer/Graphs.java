@@ -4,6 +4,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
@@ -45,6 +46,22 @@ public class Graphs {
         generateCFGandPDG();
         generateCG();
 
+    }
+    public String getFirstClassName(){
+        ClassOrInterfaceDeclaration classOrInterfaceDeclaration = null;
+        for(TypeDeclaration<?> t:cu.getTypes()){
+            if (t.isClassOrInterfaceDeclaration()){
+                if(!((ClassOrInterfaceDeclaration)t).isInterface())
+                {
+                    classOrInterfaceDeclaration = (ClassOrInterfaceDeclaration) t;
+                    break;
+                }
+            }
+        }
+        if(classOrInterfaceDeclaration==null)
+            return "";
+        else
+            return classOrInterfaceDeclaration.getNameAsString();
     }
     private void getCompilationUnit(){
         JavaParser javaParser = new JavaParser();

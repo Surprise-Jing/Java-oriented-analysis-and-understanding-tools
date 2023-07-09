@@ -48,6 +48,7 @@ public class PDGTest {
                 cfgOut = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"graph","ACFG_Output2.dot").toString();
         CompilationUnit cu = getCompilationUnit(fileName);
        Graphs graphs = new Graphs(fileName);
+       System.out.println(graphs.getFirstClassName());
        Set<String>methods = graphs.getQualifiedSignatures();
         CallableDeclaration<?>callableDeclaration = SlicerUtil.findMethodByLineNumber(graphs.getCu(),29);
         String signature  = null;
