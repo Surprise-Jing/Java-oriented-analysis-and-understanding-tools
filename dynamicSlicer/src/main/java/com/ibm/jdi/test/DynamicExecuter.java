@@ -24,7 +24,7 @@ import java.util.*;
 
 @Data
 public class DynamicExecuter {
-    private Class debugClass;
+    private String debugClass;
 
 //    private int[] breakPointLines;
 
@@ -52,13 +52,13 @@ public class DynamicExecuter {
         LaunchingConnector launchingConnector = Bootstrap.virtualMachineManager()
                 .defaultConnector();
         Map<String, Connector.Argument> arguments = launchingConnector.defaultArguments();
-        arguments.get("main").setValue(debugClass.getName());
+        arguments.get("main").setValue(debugClass);
         arguments.get("options").setValue("-cp " + path);
         return launchingConnector.launch(arguments);
     }
 
-    public void executeFile(String path, String fileName, String input, Class fileClass) throws Exception {
-        this.setDebugClass(fileClass);
+    public void executeFile(String path, String fileName, String className, String input) throws Exception {
+        this.setDebugClass(className);
         this.setLogOfLines();
         VirtualMachine vm = null;
         try {
@@ -110,7 +110,7 @@ public class DynamicExecuter {
 
     public void enableClassPrepareRequest(@NotNull VirtualMachine vm) {
         ClassPrepareRequest classPrepareRequest = vm.eventRequestManager().createClassPrepareRequest();
-        classPrepareRequest.addClassFilter(debugClass.getName());
+        classPrepareRequest.addClassFilter(debugClass);
         classPrepareRequest.enable();
     }
 
@@ -126,7 +126,7 @@ public class DynamicExecuter {
     public void updatingLog(@NotNull LocatableEvent event) throws IncompatibleThreadStateException,
             AbsentInformationException {
         StackFrame stackFrame = event.thread().frame(0);
-        if(stackFrame.location().toString().contains(debugClass.getName())) {
+        if(stackFrame.location().toString().contains(debugClass)) {
             Map<LocalVariable, Value> visibleVariables = stackFrame
                     .getValues(stackFrame.visibleVariables());
             System.out.println("Variables at " + stackFrame.location().toString() +  " > ");
