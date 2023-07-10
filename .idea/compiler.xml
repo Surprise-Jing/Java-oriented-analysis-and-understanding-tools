@@ -7,11 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="dynamicSlicer" />
         <module name="staticSlicer" />
         <module name="backend" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="cmdJava" target="1.8" />
       <module name="Java-oriented-analysis-and-understanding-tools" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -20,6 +22,7 @@
       <module name="Java-oriented-analysis-and-understanding-tools" options="-parameters" />
       <module name="backend" options="-parameters" />
       <module name="backend (1)" options="-parameters" />
+      <module name="dynamicSlicer" options="-parameters" />
       <module name="joaut" options="-parameters" />
       <module name="project" options="-parameters" />
       <module name="staticSlicer" options="-parameters" />

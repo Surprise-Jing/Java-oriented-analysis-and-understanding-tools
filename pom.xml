@@ -20,6 +20,7 @@
     <modules>
         <module>backend</module>
         <module>staticSlicer</module>
+        <module>dynamicSlicer</module>
     </modules>
 
     <!--父工程管理依赖的版本号 -->
