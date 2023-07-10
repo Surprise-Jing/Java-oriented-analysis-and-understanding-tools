@@ -2,6 +2,9 @@ package com.nju.boot.service;
 
 import com.nju.boot.entity.Files;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IFilesService extends IService<Files> {
 
     public Files getFileByMd5(String md5);
+
+    List<Files> getFilesByUid(String uid);
 
 }

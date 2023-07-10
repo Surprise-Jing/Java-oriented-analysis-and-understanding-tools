@@ -1,13 +1,25 @@
 package com.nju.boot.service.impl;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nju.boot.entity.Files;
 import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.service.IFilesService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -20,11 +32,22 @@ import java.util.List;
 @Service
 public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files> implements IFilesService {
 
+    @Value("${server.port}")
+    private String serverPort;
+
+    @Value("${server.address}")
+    private String serverAddress;
+    @Resource
+    private FilesMapper filesMapper;
+
     @Override
     public Files getFileByMd5(String md5) {
-        LambdaQueryWrapper<Files> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Files::getMd5, md5);
-        List<Files> list = this.list(queryWrapper);
-        return list.size() == 0 ? null : list.get(0);
+        Files files = filesMapper.selectOne(new QueryWrapper<Files>().eq("md5", md5));
+        return files;
+    }
+
+    @Override
+    public List<Files> getFilesByUid(String uid) {
+        return filesMapper.selectList(new QueryWrapper<Files>().in("uid", uid));
     }
 }

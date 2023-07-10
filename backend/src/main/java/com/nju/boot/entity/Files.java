@@ -7,10 +7,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 
 /**
  * <p>
- * 
+ * File保存文件
  * </p>
  *
  * @author JingYa
@@ -18,13 +19,13 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @TableName("j_files")
 @ApiModel(value = "Files对象", description = "")
+@AllArgsConstructor
 public class Files implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("编号")
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private String id;
 
     @ApiModelProperty("文件名")
     private String name;
@@ -38,8 +39,11 @@ public class Files implements Serializable {
     @ApiModelProperty("下载链接")
     private String url;
 
+    @ApiModelProperty("用户编号")
+    private String uid;
+
     @ApiModelProperty("上传时间")
-    private LocalDateTime uploadTime;
+    private String uploadTime;
 
     @ApiModelProperty("是否删除")
     private Boolean deleted;
@@ -47,11 +51,11 @@ public class Files implements Serializable {
     @ApiModelProperty("是否禁用链接")
     private Boolean enable;
 
-    public Integer getId() {
+    public String  getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -87,11 +91,19 @@ public class Files implements Serializable {
         this.url = url;
     }
 
-    public LocalDateTime getUploadTime() {
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(LocalDateTime uploadTime) {
+    public void setUploadTime(String uploadTime) {
         this.uploadTime = uploadTime;
     }
 

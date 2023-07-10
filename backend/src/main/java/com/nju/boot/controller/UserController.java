@@ -1,8 +1,22 @@
 package com.nju.boot.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.nju.boot.entity.Files;
+import com.nju.boot.entity.User;
+import com.nju.boot.entity.dto.LoginDto;
+import com.nju.boot.service.IFilesService;
+import com.nju.boot.service.IUserService;
+import com.nju.boot.utils.JwtTokenUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.apache.catalina.LifecycleState;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -14,8 +28,43 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/user")
+@Api(tags = "用户管理接口")
 public class UserController {
 
+    @Resource
+    private IUserService iUserService;
 
+    @Resource
+    private IFilesService iFilesService;
+
+    @PostMapping("/login")
+    @ApiOperation(value = "用户登录")
+    public Map<String, Object> login(@RequestBody LoginDto loginDto) throws Exception{
+        User user = iUserService.login(loginDto);
+        Map<String, Object> map = new HashMap<>();
+        //是否选择记住用户
+        long exp = JwtTokenUtils.EXPIRATION_TIME;
+        map.put("token", JwtTokenUtils.createToken(loginDto.getUsername(), exp));
+        map.put("user", user);
+        return map;
+    }
+
+    @PostMapping("/register")
+    @ApiOperation(value = "用户注册")
+    public User create(@RequestBody User user) throws Exception{
+        return iUserService.create(user);
+    }
+
+    @PutMapping("")
+    @ApiOperation(value = "更新用户")
+    public User updateUser(@RequestBody User user){
+        return iUserService.update(user);
+    }
+
+    @GetMapping("/file")
+    @ApiOperation(value = "获得用户上传的所有文件")
+    public List<Files> getUserFiles(@RequestParam("uid") String uid){
+        return iFilesService.getFilesByUid(uid);
+    }
 
 }

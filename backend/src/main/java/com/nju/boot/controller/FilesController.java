@@ -5,10 +5,14 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.nju.boot.entity.Files;
 import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.handler.DisableBaseResponse;
+import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.service.IFilesService;
 import com.nju.boot.service.impl.FilesServiceImpl;
+import com.nju.boot.utils.DateTimeUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -45,49 +49,51 @@ public class FilesController {
     @Resource
     private IFilesService iFilesService;
 
+    @Resource
+    private FilesMapper filesMapper;
+
     @PostMapping("")
     @ApiOperation(value = "上传文件")
-    public String upload(@RequestParam MultipartFile file) throws IOException {
-        String originalFilename = file.getOriginalFilename();
-        String type = FileUtil.extName(originalFilename);
-        //获取文件
+    public Files uploadFile(@RequestBody String uid, @RequestBody MultipartFile file) throws Exception {
+        if(file == null) throw new Exception("请求参数缺失");
+        if(file.isEmpty()){
+            throw new Exception("上传失败，请选择文件");
+        }
         File uploadParentFile = new File(fileUploadPath);
         if(!uploadParentFile.exists()){
             uploadParentFile.mkdirs();
         }
-        //定义文件唯一标识码UUID
-        String uuid = UUID.randomUUID().toString();
-        String fileUUID = uuid + StrUtil.DOT + type;
-        File uploadFile = new File(fileUploadPath + fileUUID);
 
-        String url;
+        String uuId = UUID.randomUUID().toString();
+        String originalFilename = file.getOriginalFilename();
+        String type = FileUtil.extName(originalFilename);
+        String fileUUID = uuId + StrUtil.DOT + type;
+        File uploadFile = new File(fileUploadPath + "/" + fileUUID);
+
         String md5 = SecureUtil.md5(file.getInputStream());
-        //判断文件在数据库中是否已经存在
-        Files dbFiles = iFilesService.getFileByMd5(md5);
-        if(dbFiles != null){
-            url = dbFiles.getUrl();
+        String url;
+        Files files = iFilesService.getFileByMd5(md5);
+        if(files != null){
+            url = files.getUrl();
         }
-        else{
-            //将临时文件转存到指定磁盘位置
+        else {
             file.transferTo(uploadFile);
             url = "http://" + serverAddress + ":" + serverPort + "/file?id=" + fileUUID;
         }
-
-        //存储至数据库
-        Files saveFile = new Files();
-        saveFile.setName(originalFilename);
-        saveFile.setType(type);
-        saveFile.setMd5(md5);
-        saveFile.setUrl(url);
-        saveFile.setUploadTime(LocalDateTime.now());
+        Files saveFile = new Files(uuId, originalFilename, type, md5, url, uid, DateTimeUtils.getNowTimeString(), false, true);
         iFilesService.save(saveFile);
-        return url;
+        return saveFile;
     }
 
     @GetMapping("")
-    public String get(){
-        CFG cfg = new CFG();
-        return "yes";
+    @ApiOperation(value = "获取文件内容")
+    public String getFileContent(@RequestParam("id") String id) throws Exception{ //流请求还是字符串请求？
+        if("".equals(id)){
+            return "";
+        }
+        String path = fileUploadPath + "/" + id;
+        File file = new File(path);
+        return FileUtils.readFileToString(file, "utf-8");
     }
 
 }
