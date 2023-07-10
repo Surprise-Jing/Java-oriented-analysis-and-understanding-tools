@@ -28,12 +28,19 @@ import Layout from '@/layout'
 /**
  * constantRoutes
  * a base page that does not have permission requirements
- * all roles can be accessed
+ * all roles can be accessedlogin
  */
 export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
+    hidden: true
+  },
+
+  {
+    path: '/registerpage',
+  
+    component: () => import('@/views/register/index'),
     hidden: true
   },
 
@@ -51,9 +58,10 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '用户主页', icon: 'dashboard' }
+      meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
+
 
   {
     path: '/upload',
@@ -104,12 +112,6 @@ export const constantRoutes = [
         name: 'Pdg',
         component: () => import('@/views/analyse/pdg'),
         meta: { title: 'PDG', icon: 'tree' }
-      },
-      {
-        path: 'Cfg',
-        name: 'Cfg',
-        component: () => import('@/views/analyse/cfg'),
-        meta: { title: 'CFG', icon: 'tree' }
       },
       {
         path: '/program_slice',

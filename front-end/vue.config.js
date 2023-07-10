@@ -13,9 +13,9 @@ const name = defaultSettings.title
 // For example, Mac: sudo npm run
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
-const port =  2333 // dev port todo
+const port = 8080  // dev port todo
 
-// All configuration item explanations can be find in https://cli.vuejs.org/config/
+// All ration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
    * You will need to set publicPath if you plan to deploy your site under a sub path,
@@ -36,8 +36,21 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    // proxy: {
+    //   '/api':{
+    //     target:'http://172.27.130.2:8080', 
+    //     changeOrigin:true,
+    //     pathRewrite:{
+    //       '^/api': ''
+    //     }
+    //   }
+    // },
+   
+
     before: require('./mock/mock-server.js')// todo 
   },
+
+  
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.

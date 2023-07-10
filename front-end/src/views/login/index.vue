@@ -42,11 +42,15 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-
+      <p class="tips">
+        <!-- <a onclick="/register">还没有帐号？立即注册</a> -->
+        <a href= "/#/registerpage" type="primary">还没有帐号？立即注册</a>
+      </p>
     </el-form>
   </div>
 </template>
 
+<script type="text/javascript" src="../../main.js"></script>
 <script>
 import { validUsername } from '@/utils/validate'
 
@@ -103,19 +107,29 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
+          let _this=this
+          this.axios.post('http://172.27.130.2:8080/user/login',{data:_this.loginForm}).then(function(response){
+            console.log(response.data)
+            if(response.data!=null){
+              localStorage.setItem('access-admin',JSON.stringify(response.data))
+              _this.$router.replace({path:'/'})
+            }
           })
+
+          // this.loading = true
+          // this.$store.dispatch('user/login', this.loginForm).then(() => {
+          //   this.$router.push({ path: this.redirect || '/' })
+          //   this.loading = false
+          // }).catch(() => {
+          //   this.loading = false
+          // })
         } else {
           console.log('error submit!!')
           return false
         }
       })
     }
+    
   }
 }
 </script>

@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <div class="content">
@@ -20,7 +21,10 @@
   </div>
 </template>
 
-<script>
+
+<script type="text/javascript" src="../../main.js"></script>
+<script >
+
 export default {
   data () {
     return {
@@ -29,13 +33,15 @@ export default {
       MAX_FILE_SIZE: 10 * 1000 * 1000
     }
   },
+  
   methods: {
     // 点击上传
     chooseUploadFile (e) {
       const file = e.target.files.item(0)
 
        if (!file) return
-      if(file.type!="java"){
+       console.log(file.type)
+      if(file.type!=""){
         return alert('文件格式不符合要求')
       }
       this.batchFile = file
@@ -55,7 +61,7 @@ export default {
       console.log('拖拽释放鼠标时')
 
       if (!file) return
-      if(file.type!="java"){
+      if(file.type!=""){
         return alert('文件格式不符合要求')
       }
       this.batchFile = file
@@ -68,9 +74,14 @@ export default {
       }
 
       let data = new FormData()
-      data.append('upfile', this.batchFile)
+      data.append('uid','111111')
+      data.append('file', this.batchFile)
 
-      // ajax
+      this.$axios.post("http://172.27.130.2:8080/file",data).then(resp => {
+                    if (resp.status == 200) {
+                        alert("success");
+                    }
+                });
     }
   }
 
