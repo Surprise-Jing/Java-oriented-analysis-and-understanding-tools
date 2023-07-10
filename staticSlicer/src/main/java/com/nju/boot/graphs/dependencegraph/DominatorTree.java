@@ -1,4 +1,4 @@
-package com.nju.boot.graphs.pdg;
+package com.nju.boot.graphs.dependencegraph;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.DummyEdge;
@@ -9,9 +9,6 @@ import com.nju.boot.nodes.GraphNode;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
 
-import javax.swing.tree.TreeModel;
-import java.lang.reflect.Method;
-import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 

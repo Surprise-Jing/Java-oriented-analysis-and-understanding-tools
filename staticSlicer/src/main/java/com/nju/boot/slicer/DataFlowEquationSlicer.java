@@ -1,12 +1,12 @@
 package com.nju.boot.slicer;
 
 import com.nju.boot.edges.Edge;
-import com.nju.boot.graphs.Graph;
+import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
-import com.nju.boot.graphs.pdg.DominatorTree;
-import com.nju.boot.graphs.pdg.PDG;
+import com.nju.boot.graphs.dependencegraph.CDG;
+import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ public class DataFlowEquationSlicer {
 
     CFG cfg;
 
-    PDG cdg;
+    CDG cdg;
 
     /**R[C](i) represents related variables in node i for slicing criterion C, using for tracking data dependencies */
     Map<GraphNode<?>, Set<String>> relevantVariables;
@@ -25,11 +25,11 @@ public class DataFlowEquationSlicer {
     /**B[C] represents branch statements, using for tracking control dependencies, the sign to stop the iteration */
     Set<GraphNode<?>> branchStatements;
 
-    public DataFlowEquationSlicer(CFG cfg){
+    public DataFlowEquationSlicer(ACFG cfg){
         this.cfg = cfg;
         assert cfg.isBuilt();
-        this.cdg = new PDG();
-        this.cdg.buildCDG(cfg);
+        this.cdg = new CDG();
+        this.cdg.buildFromACFG(cfg);
     }
 
     public boolean isMarked(GraphNode<?> node){

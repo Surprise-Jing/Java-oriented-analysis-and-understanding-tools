@@ -3,18 +3,11 @@ package tests;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.nju.boot.edges.ControlDependencyEdge;
-import com.nju.boot.edges.DataDependencyEdge;
+import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
-import com.nju.boot.graphs.pdg.PDG;
-import com.nju.boot.graphs.printer.PDGPrinter;
 import com.nju.boot.graphs.printer.SlicerPrinter;
-import com.nju.boot.slicer.DataFlowEquationSlicer;
-import com.nju.boot.slicer.Slicer;
 import com.nju.boot.slicer.SlicerCriterion;
 import com.nju.boot.util.PathUtils;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.DefaultAttribute;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -22,9 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 
 public class SlicerTest {
@@ -49,7 +40,7 @@ public class SlicerTest {
                 outFileName = Paths.get(PathUtils.PROGRAMS_OUT_FOLDER,"slicedCode","Slicer_Output3.dot").toString();
         try {
             MethodDeclaration md = getFirstMethodDeclaration(fileName);
-            CFG cfg = new CFG();
+            ACFG cfg = new ACFG();
             cfg.build(md);
             SlicerPrinter slicerPrinter = new SlicerPrinter(cfg, new FileWriter(outFileName),
                     new SlicerCriterion(new HashSet(){{add("product");}}, 13, cfg));

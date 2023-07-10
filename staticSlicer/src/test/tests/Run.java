@@ -2,7 +2,6 @@ package tests;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.DummyEdge;
@@ -10,15 +9,14 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
-import com.nju.boot.graphs.pdg.DominatorTree;
-import com.nju.boot.graphs.pdg.PDG;
+import com.nju.boot.graphs.dependencegraph.DominatorTree;
+import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.PathUtils;
 import org.jgrapht.nio.Attribute;
 import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.dot.DOTExporter;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Attr;
 
 import java.io.*;
 import java.nio.file.Paths;

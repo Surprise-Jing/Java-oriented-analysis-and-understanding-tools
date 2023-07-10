@@ -1,6 +1,5 @@
-package com.nju.boot.graphs.pdg;
+package com.nju.boot.graphs.dependencegraph;
 
-import com.nju.boot.edges.ControlFlowEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
@@ -8,12 +7,12 @@ import com.nju.boot.nodes.GraphNode;
 import java.util.Set;
 
 public class ControlDependencyBuilder {
-    PDG pdg;
+    DependenceGraph pdg;
     CFG cfg;
 
-    public ControlDependencyBuilder(PDG pdg) {
+    public ControlDependencyBuilder(DependenceGraph pdg) {
         this.pdg = pdg;
-        this.cfg = pdg.cfg;
+        this.cfg = pdg.acfg;
     }
 
     public void build(){

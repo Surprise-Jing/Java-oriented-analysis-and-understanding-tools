@@ -3,6 +3,7 @@ package com.nju.boot.graphs.printer;
 import com.nju.boot.edges.ControlDependencyEdge;
 import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.Edge;
+import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.slicer.DataFlowEquationSlicer;
@@ -21,7 +22,7 @@ public class SlicerPrinter extends GraphPrinter{
 
     DataFlowEquationSlicer dataFlowEquationSlicer;
     DOTExporter<GraphNode<?>, Edge> dotExporter = new DOTExporter<>(v->String.valueOf(v.getId()));
-    public SlicerPrinter(CFG cfg, Writer writer, SlicerCriterion slicerCriterion) {
+    public SlicerPrinter(ACFG cfg, Writer writer, SlicerCriterion slicerCriterion) {
         this.cfg = cfg;
         this.writer = writer;
         this.dataFlowEquationSlicer = new DataFlowEquationSlicer(cfg);

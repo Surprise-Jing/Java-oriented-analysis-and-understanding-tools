@@ -12,9 +12,9 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeS
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.callgraph.CallGraph;
 import com.nju.boot.graphs.cfg.CFG;
-import com.nju.boot.graphs.pdg.PDG;
+import com.nju.boot.graphs.dependencegraph.CDG;
+import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.util.SlicerUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +30,7 @@ public class Graphs {
     Map<CallableDeclaration<?>,CFG> cfgMap= new HashMap<>();
     CallGraph callGraph;
     Map<CallableDeclaration<?>, PDG> pdgMap = new HashMap<>();
+    Map<CallableDeclaration<?>, CDG> cdgMap = new HashMap<>();
 
 
     public Graphs(String filePath) {
@@ -86,9 +87,14 @@ public class Graphs {
                     cfgMap.put((CallableDeclaration<?>) bodyDeclaration,newCFG);
                     ACFG newACFG  = new ACFG();
                     newACFG.build((CallableDeclaration<?>) bodyDeclaration);
+
                     PDG pdg = new PDG();
                     pdg.buildFromACFG(newACFG);
                     pdgMap.put((CallableDeclaration<?>) bodyDeclaration,pdg);
+
+                    CDG cdg = new CDG();
+                    cdg.buildFromACFG(newACFG);
+                    cdgMap.put((CallableDeclaration<?>) bodyDeclaration,cdg);
                 }
             }
 
@@ -105,6 +111,7 @@ public class Graphs {
     public PDG getPDG(CallableDeclaration<?> callableDeclaration){
         return pdgMap.get(callableDeclaration);
     }
+    public CDG getCDG(CallableDeclaration<?> callableDeclaration){return cdgMap.get(callableDeclaration);}
     public CallGraph getCallGraph(){
         return this.callGraph;
     }

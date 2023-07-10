@@ -1,7 +1,8 @@
 package com.ibm.jdi.test;
 
 import com.nju.boot.edges.Edge;
-import com.nju.boot.graphs.pdg.PDG;
+import com.nju.boot.graphs.dependencegraph.CDG;
+import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.slicer.SlicerCriterion;
 import com.sun.jdi.*;
@@ -165,7 +166,7 @@ public class DynamicExecuter {
             ReachableStmt.add(nl);
         }
     }*/
-    public void buildingDDG(PDG _cdg) throws NoSuchElementException {
+    public void buildingDDG(CDG _cdg) throws NoSuchElementException {
         for(int i : logOfLines){
 //                        DDG
 //            ReachableStmt /staic /const

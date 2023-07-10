@@ -18,9 +18,9 @@ public class ACFG extends CFG {
     }
 
     @Override
-    public void build(CallableDeclaration<?> methodDeclaration) {
+    public void build(CallableDeclaration<?> callableDeclaration) {
         built = true;
-        methodDeclaration.accept(new ACFGBuilder(this),null);
+        callableDeclaration.accept(new ACFGBuilder(this),null);
         addDummyEdge(this.root,this.exit,new DummyEdge());
     }
 }

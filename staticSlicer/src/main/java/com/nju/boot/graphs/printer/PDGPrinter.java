@@ -3,7 +3,7 @@ package com.nju.boot.graphs.printer;
 import com.nju.boot.edges.ControlDependencyEdge;
 import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.Edge;
-import com.nju.boot.graphs.pdg.PDG;
+import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
 import org.jgrapht.nio.Attribute;
 import org.jgrapht.nio.DefaultAttribute;

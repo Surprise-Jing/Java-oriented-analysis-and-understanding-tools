@@ -1,15 +1,9 @@
 package com.nju.boot.slicer;
 
-import com.github.javaparser.Position;
-import com.github.javaparser.Range;
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
-import com.nju.boot.graphs.pdg.PDG;
+import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.graphs.printer.SelectivePrettyPrinter;
-import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.PDGMarker;
 import com.nju.boot.util.SlicerUtil;
 

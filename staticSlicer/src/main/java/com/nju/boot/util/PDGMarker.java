@@ -1,12 +1,9 @@
 package com.nju.boot.util;
 
-import com.github.javaparser.Position;
-import com.github.javaparser.Range;
-import com.github.javaparser.ast.Node;
 import com.nju.boot.edges.ControlDependencyEdge;
 import com.nju.boot.edges.DataDependencyEdge;
 import com.nju.boot.edges.Edge;
-import com.nju.boot.graphs.pdg.PDG;
+import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.slicer.SlicerCriterion;
 
