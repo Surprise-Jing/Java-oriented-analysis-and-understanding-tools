@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class DataDependencyBuilder {
     DependenceGraph dependenceGraph;
+
     CFG acfg;
     public DataDependencyBuilder(DependenceGraph dependenceGraph) {
         this.dependenceGraph = dependenceGraph;
@@ -31,11 +32,13 @@ public class DataDependencyBuilder {
             acfg.incomingEdgesOf(node).stream()
                     .filter(edge -> !(edge instanceof DummyEdge))
                     .map(edge -> acfg.getEdgeSource(edge))
-                    .forEach(srcNode->backwardTraverse(node,srcNode,new HashSet<>(usedVariables)));
+                    .forEach(srcNode->backwardTraverse(node,srcNode,new HashSet<>(usedVariables),new HashSet<>()));
 
         }
     }
-    public void backwardTraverse(GraphNode<?>src,GraphNode<?>target,Set<String>usedVariables){
+    public void backwardTraverse(GraphNode<?>src,GraphNode<?>target,Set<String>usedVariables,Set<GraphNode<?>>visited){
+        if(visited.contains(src))return;
+        visited.add(src);
         //stop when entry is met
         if(target == acfg.getRootNode().get())return;
         //stop when usedVariables becomes empty
@@ -63,7 +66,7 @@ public class DataDependencyBuilder {
         acfg.incomingEdgesOf(target).stream()
                 .filter(edge -> !(edge instanceof DummyEdge))
                 .map(acfg::getEdgeSource)
-                .forEach(srcNode->backwardTraverse(src,srcNode,new HashSet<>(usedVariables)));
+                .forEach(srcNode->backwardTraverse(src,srcNode,new HashSet<>(usedVariables),visited));
 
     }
 

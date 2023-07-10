@@ -28,6 +28,7 @@ public class ControlDependencyBuilder {
                 GraphNode<?>n = target;
                 while(!postDominatorTree.dominates(n,src)){
                     //n is control dependent on src
+                    if(!src.equals(n))
                     pdg.addControlDependencyEdge(src,n);
                     n = postDominatorTree.getParent(n);
                 }

@@ -1,0 +1,16 @@
+digraph G {
+  0 [ label="ENTER whileIfContinue" ];
+  2 [ label="boolean a = true;" ];
+  3 [ label="int i = 0;" ];
+  4 [ label="a" ];
+  5 [ label="i++;" ];
+  6 [ label="i != 3" ];
+  7 [ label="continue;" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+  0 -> 4 [ ];
+  4 -> 5 [ ];
+  4 -> 6 [ ];
+  6 -> 7 [ ];
+  5 -> 6 [ style="dashed" label="[i]" ];
+}

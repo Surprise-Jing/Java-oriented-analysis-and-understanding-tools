@@ -1,0 +1,8 @@
+digraph G {
+  1 [ label="WhileIf.whileIfBreak()" ];
+  2 [ label="WhileIf.whileIfFunction()" ];
+  3 [ label="WhileIf.whileIfContinue()" ];
+  4 [ label="WhileIf.whileIfContinue2()" ];
+  5 [ label="java.io.PrintStream.println(java.lang.String)" ];
+  4 -> 5;
+}

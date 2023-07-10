@@ -73,7 +73,7 @@ class GraphsTest {
 
 
                 Path cfgDotPath = Paths.get(cfgDotDirPath.toString(), plainSig + ".dot");
-                Path cfgPngPath = Paths.get(cfgDotDirPath.toString(), plainSig + ".png");
+                Path cfgPngPath = Paths.get(cfgPngDirPath.toString(), plainSig + ".png");
                 FileWriter cfgWriter = new FileWriter(cfgDotPath.toFile());
                 //导出cfg
                 new CFGPrinter(cfg, cfgWriter).print();
@@ -141,5 +141,8 @@ class GraphsTest {
     public void sequenceTests() throws IOException {
         testFiles("sequence");
     }
-
+    @Test
+    public void whileTests() throws IOException {
+        testFiles("while");
+    }
 }

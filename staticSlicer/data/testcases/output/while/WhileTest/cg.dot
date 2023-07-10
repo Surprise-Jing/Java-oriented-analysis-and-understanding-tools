@@ -1,0 +1,4 @@
+digraph G {
+  1 [ label="WhileTest.whileBreak()" ];
+  2 [ label="WhileTest.whileContinue()" ];
+}

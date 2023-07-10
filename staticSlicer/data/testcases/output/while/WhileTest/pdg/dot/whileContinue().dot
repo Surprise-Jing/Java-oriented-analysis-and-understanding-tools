@@ -1,0 +1,12 @@
+digraph G {
+  0 [ label="ENTER whileContinue" ];
+  2 [ label="boolean a = true;" ];
+  3 [ label="a" ];
+  4 [ label="a = false;" ];
+  5 [ label="continue;" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+  3 -> 4 [ ];
+  3 -> 5 [ ];
+  2 -> 3 [ style="dashed" label="[a]" ];
+}
