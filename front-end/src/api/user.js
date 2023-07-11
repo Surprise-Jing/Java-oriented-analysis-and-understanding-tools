@@ -24,6 +24,15 @@ export function updateUser(data) {
     })
 }
 
+export function uploadFile(data) {
+    return service({
+        url: '/file',
+        method: 'post',
+        data: data
+    })
+}
+
+
 export function getInfo(token) {
     return request({
       url: '/vue-admin-template/user/info',

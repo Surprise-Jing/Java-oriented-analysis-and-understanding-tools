@@ -24,9 +24,9 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      //const hasUserId = localStorage.getItem("uid");
-      const hasGetUserInfo = store.getters.name
-      if (hasGetUserInfo) {
+      const hasUserId = localStorage.getItem("uid");
+      //const hasGetUserInfo = store.getters.name
+      if (hasUserId) {
         next()
       } else {
         try {

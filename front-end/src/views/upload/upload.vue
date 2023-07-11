@@ -24,6 +24,7 @@
 
 <script type="text/javascript" src="../../main.js"></script>
 <script >
+import { uploadFile } from '@/api/user'
 
 export default {
   data () {
@@ -72,16 +73,22 @@ export default {
       if (this.batchFile === '') {
         return alert('请选择要上传的文件')
       }
-
       let data = new FormData()
-      data.append('uid','111111')
+      data.append('uid',localStorage.getItem("uid"))
       data.append('file', this.batchFile)
-
-      this.$axios.post("http://172.27.130.2:8080/file",data).then(resp => {
-                    if (resp.status == 200) {
-                        alert("success");
-                    }
-                });
+      uploadFile(data).then(res =>{
+            console.log(res)
+            if(res.success){
+              localStorage.setItem("id", res.data.files.id)
+              alert("success");
+            }
+            else{
+              this.$message({
+                type:'warning',
+                message:res.msg
+              });
+            }
+          })
     }
   }
 
