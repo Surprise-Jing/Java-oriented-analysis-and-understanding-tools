@@ -42,7 +42,7 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-      <p class="tips">
+      <p class="tips" >
         <!-- <a onclick="/register">还没有帐号？立即注册</a> -->
         <a href= "/#/registerpage" type="primary">还没有帐号？立即注册</a>
       </p>
@@ -107,22 +107,24 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          let _this=this
-          this.axios.post('http://172.27.130.2:8080/user/login',{data:_this.loginForm}).then(function(response){
-            console.log(response.data)
-            if(response.data!=null){
-              localStorage.setItem('access-admin',JSON.stringify(response.data))
-              _this.$router.replace({path:'/'})
-            }
+          // let _this=this
+          // this.axios.post('http://172.27.130.2:8080/user/login',{data:_this.loginForm}).then(function(response){
+          //   console.log(response.data)
+          //   if(response.data!=null){
+          //     localStorage.setItem('access-admin',JSON.stringify(response.data))
+          //     _this.$router.replace({path:'/'})
+          //   }
+          // })
+
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || '/' })
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
           })
 
-          // this.loading = true
-          // this.$store.dispatch('user/login', this.loginForm).then(() => {
-          //   this.$router.push({ path: this.redirect || '/' })
-          //   this.loading = false
-          // }).catch(() => {
-          //   this.loading = false
-          // })
+          
         } else {
           console.log('error submit!!')
           return false
@@ -161,7 +163,8 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      //color: $light_gray;
+      color: black;
       height: 47px;
       caret-color: $cursor;
 
@@ -191,23 +194,25 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-
 background-image:url('../../assets/bg-image.png');//todo 
 background-size:100%;
 
+display: flex;
+align-items: center;
   .login-form {
     position: relative;
-    width: 520px;
+    width: 720px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 160px 35px 60px;
     margin: 0 auto;
     overflow: hidden;
-    background-color:#283443;//todo
+    background-color: #fff;//todo
+    border-radius: 10%;
   }
 
   .tips {
     font-size: 14px;
-    color: #fff;
+    color:black;
     margin-bottom: 10px;
 
     span {
@@ -230,9 +235,11 @@ background-size:100%;
 
     .title {
       font-size: 26px;
-      color: $light_gray;
+      //color: $light_gray;
+      color:$dark_gray;
       margin: 0px auto 40px auto;
       text-align: center;
+
       font-weight: bold;
     }
   }
@@ -242,7 +249,8 @@ background-size:100%;
     right: 10px;
     top: 7px;
     font-size: 16px;
-    color: $dark_gray;
+    //color: $dark_gray;
+    color:black;
     cursor: pointer;
     user-select: none;
   }

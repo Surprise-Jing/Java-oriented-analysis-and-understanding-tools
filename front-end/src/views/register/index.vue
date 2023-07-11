@@ -178,6 +178,8 @@
   
   /* reset element-ui css */
   .register-container {
+    background-image:url('../../assets/bg-image.png');//todo 
+    background-size:100%;
     .el-input {
       display: inline-block;
       height: 47px;
@@ -189,7 +191,8 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         -webkit-appearance: none;
         padding: 12px 5px 12px 15px;
-        color: $light_gray;
+        color:black;
+        //color: $light_gray;
         height: 47px;
         caret-color: $cursor;
   
@@ -204,7 +207,8 @@
       label {
         font-style: normal;
         font-size: 12px;
-        color: $light_gray;
+        //color: $light_gray;
+        color:#2d3a4b;
       }
     }
   }
@@ -237,7 +241,8 @@
   
         .bold {
           font-style: normal;
-          color: $light_gray;
+          //color: $light_gray;
+          color:black;
         }
       }
     }
@@ -264,7 +269,8 @@
     .tips {
       float: right;
       font-size: 14px;
-      color: #fff;
+      //color: #fff;
+      color:black;
       margin-bottom: 10px;
   
       span {
