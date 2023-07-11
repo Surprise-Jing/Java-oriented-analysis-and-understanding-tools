@@ -1,4 +1,0 @@
-digraph G {
-  1 [ label="If2.multipleReturns()" ];
-  2 [ label="If2.multipleReturns2()" ];
-}

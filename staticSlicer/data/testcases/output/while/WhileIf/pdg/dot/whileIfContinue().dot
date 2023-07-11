@@ -6,11 +6,15 @@ digraph G {
   5 [ label="i++;" ];
   6 [ label="i != 3" ];
   7 [ label="continue;" ];
+  2 -> 4 [ style="dashed" label="[a]" ];
+  3 -> 5 [ style="dashed" label="[i]" ];
+  5 -> 5 [ style="dashed" label="[i]" ];
+  5 -> 6 [ style="dashed" label="[i]" ];
   0 -> 2 [ ];
   0 -> 3 [ ];
   0 -> 4 [ ];
   4 -> 5 [ ];
   4 -> 6 [ ];
+  4 -> 4 [ ];
   6 -> 7 [ ];
-  5 -> 6 [ style="dashed" label="[i]" ];
 }

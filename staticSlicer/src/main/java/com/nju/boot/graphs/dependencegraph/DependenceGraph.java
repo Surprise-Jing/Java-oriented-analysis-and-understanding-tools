@@ -10,11 +10,13 @@ import com.nju.boot.nodes.GraphNode;
 public abstract class DependenceGraph extends Graph<MethodDeclaration> {
     protected boolean built = false;
 
+
     public boolean isBuilt() {
         return built;
     }
 
     protected ACFG acfg = null;
+    public ACFG getAcfg(){return acfg;}
     public void addControlDependencyEdge(GraphNode<?> from, GraphNode<?> to, ControlDependencyEdge controlDependencyEdge){
         this.addEdge(from,to,controlDependencyEdge);
     }

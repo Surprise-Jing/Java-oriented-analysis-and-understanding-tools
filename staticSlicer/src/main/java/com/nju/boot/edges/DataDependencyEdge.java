@@ -9,6 +9,9 @@ public class DataDependencyEdge extends Edge{
     public void addDependentVariable(String variable){
         variables.add(variable);
     }
+    public void addDependentVaraibles(Set<String>variables){
+        this.variables.addAll(variables);
+    }
     public Set<String> getDependentVariables(){
         return variables;
     }

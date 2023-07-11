@@ -1,11 +1,11 @@
 package com.nju.boot.slicer;
 
+import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.callgraph.CallGraph;
 import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.graphs.dependencegraph.DominatorTree;
 import com.nju.boot.graphs.dependencegraph.PDG;
-import com.nju.boot.graphs.printer.CFGPrinter;
-import com.nju.boot.graphs.printer.CallGraphPrinter;
-import com.nju.boot.graphs.printer.PDGPrinter;
+import com.nju.boot.graphs.printer.*;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import org.junit.jupiter.api.Test;
@@ -63,6 +63,7 @@ class GraphsTest {
                 String plainSig = mSig.substring(mSig.lastIndexOf('.') + 1);
                 CFG cfg = graphs.getCFG(mSig);
                 PDG pdg = graphs.getPDG(mSig);
+                ACFG acfg = pdg.getAcfg();
 
                 String cfgDirPath = Paths.get(outputDirPath.toString(), "cfg").toString();
                 Path cfgDotDirPath = Paths.get(cfgDirPath, "dot");
@@ -73,11 +74,17 @@ class GraphsTest {
 
 
                 Path cfgDotPath = Paths.get(cfgDotDirPath.toString(), plainSig + ".dot");
+                Path acfgDotPath = Paths.get(cfgDotDirPath.toString(), plainSig + "acfg.dot");
                 Path cfgPngPath = Paths.get(cfgPngDirPath.toString(), plainSig + ".png");
+                Path acfgPngPath = Paths.get(cfgPngDirPath.toString(), plainSig + "acfg.png");
                 FileWriter cfgWriter = new FileWriter(cfgDotPath.toFile());
+                FileWriter acfgWriter = new FileWriter(acfgDotPath.toFile());
                 //导出cfg
+
                 new CFGPrinter(cfg, cfgWriter).print();
+                new ACFGPrinter(acfg, acfgWriter).print();
                 Graphviz.fromFile(cfgDotPath.toFile()).render(Format.PNG).toFile(cfgPngPath.toFile());
+                Graphviz.fromFile(acfgDotPath.toFile()).render(Format.PNG).toFile(acfgPngPath.toFile());
 
 
                 String pdgDirPath = Paths.get(outputDirPath.toString(), "pdg").toString();
@@ -87,14 +94,21 @@ class GraphsTest {
                 if (!pdgDotDirPath.toFile().exists()) pdgDotDirPath.toFile().mkdirs();
                 if (!pdgPngDirPath.toFile().exists()) pdgPngDirPath.toFile().mkdirs();
 
-                //导出cfg
+                //导出pdg
                 Path pdgDotPath = Paths.get(pdgDotDirPath.toString(), plainSig + ".dot");
+                Path pdtDotPath = Paths.get(pdgDotDirPath.toString(), plainSig + "pdt.dot");
                 Path pdgPngPath = Paths.get(pdgPngDirPath.toString(), plainSig + ".png");
+                Path pdtPngPath = Paths.get(pdgPngDirPath.toString(), plainSig + "pdt.png");
                 FileWriter pdgWriter = new FileWriter(pdgDotPath.toFile());
+                FileWriter pdtWriter = new FileWriter(pdtDotPath.toFile());
+
 
                 new PDGPrinter(pdg, pdgWriter).print();
                 Graphviz.fromFile(pdgDotPath.toFile()).render(Format.PNG).toFile(pdgPngPath.toFile());
 
+                DominatorTree pdt = pdg.getPostDominatorTree();
+                new DominatorTreePrinter(pdt,pdtWriter).print();
+                Graphviz.fromFile(pdtDotPath.toFile()).render(Format.PNG).toFile(pdtPngPath.toFile());
 
             }
 //        for (int i = 1;i<=number;i++){
@@ -144,5 +158,9 @@ class GraphsTest {
     @Test
     public void whileTests() throws IOException {
         testFiles("while");
+    }
+    @Test
+    public void testSpecific() throws IOException{
+        testFiles("specific");
     }
 }
