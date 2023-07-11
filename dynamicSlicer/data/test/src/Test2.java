@@ -15,7 +15,7 @@ public class Test2{
                 y = x + 2; // S8
             int z = y + 1; // S9
             if (z > 0) // S10
-                a = a + z; // S11
+                a = z; // S11
             i = i + 1; // S12
         }
         System.out.println(a); // S13
