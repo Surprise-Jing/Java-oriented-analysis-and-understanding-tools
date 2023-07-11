@@ -72,6 +72,7 @@ export default {
 
   .no-redirect {
     color: #97a8be;
+    //color:black;
     cursor: text;
   }
 }

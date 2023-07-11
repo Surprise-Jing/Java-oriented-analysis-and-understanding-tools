@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="report_container">
       生成report
       <p></p>
       <button @click="getPDF">获取pdf</button>
@@ -30,7 +30,7 @@ export default {
 
   },
   methods: {
-    getPdfFromHtml(ele, pdfFileName) {
+    getPdfFromHtml(ele) {
             html2Canvas(ele,{
               dpi: window.devicePixelRatio * 4,
               scale: 4,
@@ -112,7 +112,7 @@ export default {
                     // }
                     setTimeout(createImpl, 500, canvas);
                   } else {
-                    pdf.name=pdfFileName + '.pdf'
+                    pdf.name='report.pdf'
                     this.pdfSave= pdf
                     //this.pdfSave = pdf.save(pdfFileName + '.pdf');
                     //pdf.name=pdfFileName + '.pdf'
@@ -124,10 +124,10 @@ export default {
               if (leftHeight < a4HeightRef) {
                 pdf.addImage(pageData, 'JPEG', 0, 0, a4Width, a4Width / canvas.width * leftHeight);
                 this.dialogVisible = true;
-                pdf.name=pdfFileName + '.pdf'
+                pdf.name='report.pdf'
+                //pdf.name=pdfFileName + '.pdf'
                 //FileSaver.saveAs('./report',pdf)
                this.pdfSave= pdf
-
                 //this.pdfSave = pdf.save(pdfFileName + '.pdf')
                
               } else {
@@ -139,13 +139,25 @@ export default {
                   console.log(err);
                 }
               }
+
+              const zip = new JSZip();
+             
+             // this.saveAs=pdf.output('dataurlstring')
+              zip.file("report.pdf",pdf.output('arraybuffer'));
+              zip.generateAsync({ type: "blob" }).then(content => {
+                // 生成二进制流
+                  FileSaver.saveAs(content, "测试.zip"); // 利用file-saver保存文件  自定义文件名
+                });
+             
+
+
             })
-            console.log('')
+           
     },
 
     getPDF(){
       let dom = document.getElementById('dom')  
-       this.getPdfFromHtml(dom,'test')
+       this.getPdfFromHtml(dom)
     },
 
     getFile (url) {
@@ -206,6 +218,14 @@ export default {
 </script>
 
 
-<style>
+<style lang="scss" scoped>
+.report_container{
+  min-height: 100%;
+  width: 100%;
+  background-image:url('../../assets/bg-image2.png');
+  background-size:100%;
+  position: fixed;
+}
+
 
 </style>

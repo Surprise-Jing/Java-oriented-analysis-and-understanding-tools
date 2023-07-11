@@ -9,7 +9,7 @@ import { local } from 'd3'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/registerpage','/login'] // no redirect whitelist
+const whiteList = ['/registerpage','/login',] // no redirect whitelist
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()

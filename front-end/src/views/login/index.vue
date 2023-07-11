@@ -109,6 +109,7 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+
           Login(this.loginForm).then(res =>{
             console.log(res)
             if(res.success){
@@ -123,6 +124,9 @@ export default {
               });
             }
           })
+
+
+
           // this.loading = true
           // this.$store.dispatch('user/login', this.loginForm).then(() => {
           //   this.$router.push({ path: this.redirect || '/' })
@@ -130,6 +134,9 @@ export default {
           // }).catch(() => {
           //   this.loading = false
           // })
+
+
+
         } else {
           console.log('error submit!!')
           return false
@@ -168,8 +175,7 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      //color: $light_gray;
-      color: black;
+      color: $light_gray;
       height: 47px;
       caret-color: $cursor;
 
