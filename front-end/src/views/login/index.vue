@@ -53,12 +53,14 @@
 <script type="text/javascript" src="../../main.js"></script>
 <script>
 import { validUsername } from '@/utils/validate'
+import { Login } from '@/api/user'
+import { setToken } from '../../utils/auth'
 
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (value.length < 1) {
         callback(new Error('请输入用户名'))
       } else {
         callback()
@@ -73,8 +75,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -107,15 +109,20 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          let _this=this
-          this.axios.post('http://172.27.130.2:8080/user/login',{data:_this.loginForm}).then(function(response){
-            console.log(response.data)
-            if(response.data!=null){
-              localStorage.setItem('access-admin',JSON.stringify(response.data))
-              _this.$router.replace({path:'/'})
+          Login(this.loginForm).then(res =>{
+            console.log(res)
+            if(res.success){
+              localStorage.setItem("uid", res.data.user.id)
+              setToken(res.data.token)
+              this.$router.push("/")
+            }
+            else{
+              this.$message({
+                type:'warning',
+                message:res.msg
+              });
             }
           })
-
           // this.loading = true
           // this.$store.dispatch('user/login', this.loginForm).then(() => {
           //   this.$router.push({ path: this.redirect || '/' })

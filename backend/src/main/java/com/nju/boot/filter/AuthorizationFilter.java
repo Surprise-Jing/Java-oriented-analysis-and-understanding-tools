@@ -28,10 +28,11 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
         //从Request Header 取出Token
         String token = request.getHeader(JwtTokenUtils.TOKEN_HEADER);
+        //System.out.println(token);
 
         //Token为空放行
         //如果接下来进入的URL不是公共的地址SpringSecurity会返回403的错误
-        if (token == null || "null".equals(token)) {
+        if (token == null || "null".equals(token) || "undefined".equals(token)) {
             chain.doFilter(request, response);
             return;
         }
