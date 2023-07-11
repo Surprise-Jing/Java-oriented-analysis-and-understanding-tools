@@ -1,7 +1,7 @@
-import request from '@/utils/request'
+import service from '@/utils/request'
 
 export function getList(params) {
-  return request({
+  return service({
     url: '/vue-admin-template/table/list',
     method: 'get',
     params

@@ -72,7 +72,7 @@
   </template>
   
   <script>
-  import { getEmailCode, register } from '@/api/register'
+  import {Register} from '@/api/user'
   //import { encrypt } from '@/utils/rsaEncrypt'
   export default {
     name: 'Register',
@@ -133,32 +133,22 @@
               password:this.ruleForm.pwd,
               phoneNumber:this.ruleForm.phone,
               email:this.ruleForm.email
-            }
-            let _this=this
-          this.axios.post('http://172.27.130.2:8080/user/register',{data:this.user}).then(function(response){
-            console.log(response.data)
-            if(response.data!=null){
-              localStorage.setItem('access-admin',JSON.stringify(response.data))
-              _this.$router.replace({path:'/'})
+            };
+            Register(user).then(res => {
+              console.log(res)
+              if(res.success){
+                this.$router.push("/login")
+              }
+              else{
+                this.$message({
+                  type:'warning',
+                  message: res.msg
+                });
             }
           })
-
-            register( user).then(res => {
-              this.$message({
-                showClose: true,
-                message: '注册成功，正在跳转到登录界面...',
-                type: 'success'
-              })
-              setTimeout(() => {
-                this.$router.push('/')
-              }, 200000)
-            }).catch(err => {
-              console.log(err.response.data.message)
-            })
-          }
-        })
-      }
-    }
+        }
+      })
+    }}
   }
   </script>
   

@@ -5,6 +5,7 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import { local } from 'd3'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -12,7 +13,8 @@ const whiteList = ['/registerpage','/login'] // no redirect whitelist
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
-  // set page title 
+  console.log(to.path);
+  // set page title
   document.title = getPageTitle(to.meta.title)
   // determine whether the user has logged in
   const hasToken = getToken()
@@ -22,6 +24,7 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
+      //const hasUserId = localStorage.getItem("uid");
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
         next()

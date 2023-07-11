@@ -27,7 +27,7 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave:false,  // process.env.NODE_ENV === 'development',  todo
+  lintOnSave: false,  // process.env.NODE_ENV === 'development',  todo
   productionSourceMap: false,
   devServer: {
     port: port,
