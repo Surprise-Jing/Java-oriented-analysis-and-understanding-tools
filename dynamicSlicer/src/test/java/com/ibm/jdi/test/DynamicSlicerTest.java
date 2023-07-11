@@ -21,9 +21,10 @@ class DynamicSlicerTest {
     @Test
     void programExecute() throws Exception {
         Graphs graphs = new Graphs(wholePath);
+
         CDG cdg  = graphs.getCDG(SlicerUtil.findMethodByLineNumber(graphs.getCu(),20));
+        System.out.println(cdg.toString());
         Set<Integer> result = new DynamicSlicer().ProgramExecute(filePath,fileName,"Test1","",20,cdg);
-        System.out.println("\n");
         System.out.println(result);
     }
 }

@@ -5,11 +5,12 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.nodes.GraphNode;
 import com.github.javaparser.ast.Node;
 import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DirectedPseudograph;
 import org.jgrapht.nio.dot.DOTExporter;
 
 import java.util.Optional;
 
-public abstract class Graph<RootN extends Node> extends DefaultDirectedGraph<GraphNode<?>, Edge> {
+public abstract class Graph<RootN extends Node> extends DirectedPseudograph<GraphNode<?>, Edge> {
 
     protected GraphNode<RootN> root;
     protected GraphNode<RootN> exit;

@@ -1,0 +1,12 @@
+digraph G {
+  0 [ label="ENTER whileBreak" ];
+  1 [ label="EXIT whileBreak" ];
+  2 [ label="boolean a = true;" ];
+  3 [ shape="diamond" label="a" ];
+  4 [ label="break;" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 4;
+  3 -> 1;
+  4 -> 1;
+}

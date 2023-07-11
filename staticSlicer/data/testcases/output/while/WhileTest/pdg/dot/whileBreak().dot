@@ -1,0 +1,11 @@
+digraph G {
+  0 [ label="ENTER whileBreak" ];
+  2 [ label="boolean a = true;" ];
+  3 [ label="a" ];
+  4 [ label="break;" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+  3 -> 4 [ ];
+  4 -> 3 [ ];
+  2 -> 3 [ style="dashed" label="[a]" ];
+}
