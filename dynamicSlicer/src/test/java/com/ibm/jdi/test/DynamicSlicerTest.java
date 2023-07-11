@@ -23,6 +23,7 @@ class DynamicSlicerTest {
         Graphs graphs = new Graphs(wholePath);
         CDG cdg  = graphs.getCDG(SlicerUtil.findMethodByLineNumber(graphs.getCu(),20));
         Set<Integer> result = new DynamicSlicer().ProgramExecute(filePath,fileName,"Test1","",20,cdg);
+        System.out.println("\n");
         System.out.println(result);
     }
 }

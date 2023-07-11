@@ -181,16 +181,39 @@ public class DynamicExecuter {
 
                 Set<String> Use = GN.getUsedVariables();
                 for(String v : Use){
+//                    System.out.println("Used Variable: " + v);
                     Def.add(DefnNode.get(v));
                     Reach.addAll(DefnNode.get(v).getReachableStmt());
                 }
 
-                for(Edge inEdge : _cdg.incomingEdgesOf(GN)/* Control Dependence */){
-                    GraphNode<?> p = _cdg.getEdgeTarget(inEdge);
-                    Integer NodeId = p.getId();
-                    Pred.add(PrednNode.get(NodeId));
-                    Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
+                Set<Edge> edges = new HashSet<>(_cdg.incomingEdgesOf(GN));
+                Set<GraphNode<?>> visited = new HashSet<>();
+                visited.add(GN);
+
+                while(!edges.isEmpty()){
+                    Set<Edge> visitEdge = new HashSet<>(edges);
+                    edges.clear();
+                    for(Edge inEdge:visitEdge){
+                        GraphNode<?> p = _cdg.getEdgeSource(inEdge);
+                        Integer NodeId = p.getAstNode().getBegin().get().line;
+//                        System.out.println("Node ID: " + NodeId);
+
+                        if(PrednNode.containsKey(NodeId)){
+                            Pred.add(PrednNode.get(NodeId));
+                            Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
+                        }
+
+                        for(Edge nextEdge: _cdg.incomingEdgesOf(p)){
+                            GraphNode<?> nextP = _cdg.getEdgeSource(nextEdge);
+                            if(!visited.contains(nextP)){
+                                edges.add(nextEdge);
+                                visited.add(nextP);
+                            }
+                        }
+                    }
                 }
+
+                System.out.println("Line " + i + ":" + Reach);
 
                 if( CurrentNode.containsKey(i)/*S[i] was Executed*/ && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).sameDef(Def) && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).samePred(Pred) ){
 //                still Node n
@@ -207,6 +230,7 @@ public class DynamicExecuter {
                     for(DynamicNode DN : childNodes){
                         if(DN.getReachableStmt().containsAll(Reach)){
 //                    Unite n' and v
+                            CurrentNode.putIfAbsent(i, new ArrayList<>());
                             CurrentNode.get(i).add(DN);
                             unite = true;
                             break;
@@ -214,6 +238,7 @@ public class DynamicExecuter {
                     }
 
                     if(!unite){
+                        CurrentNode.putIfAbsent(i, new ArrayList<>());
                         CurrentNode.get(i).add(newDn);
                     }
 
@@ -230,10 +255,12 @@ public class DynamicExecuter {
                         }
                     }
 
-                    if( _cdg.incomingEdgesOf(GN).isEmpty() /* GN is control Node */) {
+                    if( !_cdg.outgoingEdgesOf(GN).isEmpty() /* GN is control Node */) {
 //                update PrednNode
                         PrednNode.put(i, CurrentNode.get(i).get(CurrentNode.get(i).size() - 1));
                     }
+
+//                    System.out.println("PrednNode: " + PrednNode);
                 }
             }
 
