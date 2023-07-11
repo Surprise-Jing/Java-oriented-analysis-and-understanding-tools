@@ -32,41 +32,48 @@ public class DataDependencyBuilder {
             acfg.incomingEdgesOf(node).stream()
                     .filter(edge -> !(edge instanceof DummyEdge))
                     .map(edge -> acfg.getEdgeSource(edge))
-                    .forEach(srcNode->backwardTraverse(node,srcNode,new HashSet<>(usedVariables),new HashSet<>()));
-
+                    .forEach(srcNode->backwardTraverse(node,srcNode,new HashSet<>(usedVariables),new HashSet<>()));//计算node的数据依赖
         }
     }
+
     public void backwardTraverse(GraphNode<?>src,GraphNode<?>target,Set<String>usedVariables,Set<GraphNode<?>>visited){
-        if(visited.contains(src))return;
-        visited.add(src);
-        //stop when entry is met
+        //当遇到判断过的节点时停止遍历
+        if(visited.contains(target))return;
+        //当遇到根节点停止遍历
         if(target == acfg.getRootNode().get())return;
-        //stop when usedVariables becomes empty
-        else if (usedVariables.isEmpty())return;
+
+        //在对象节点定义的变量集合
         Set<String> definedVariables = target.getDefinedVariables();
-        for (String variable:definedVariables){
-            if(usedVariables.contains(variable)){
-                //the src node is data-dependent on target
-                //未考虑两个节点之间同时存在同方向的数据依赖和控制依赖的情况
-                Edge e = dependenceGraph.getEdge(target,src);
-                if(e!=null){
-                    assert e instanceof DataDependencyEdge;
-                    ((DataDependencyEdge) e).addDependentVariable(variable);
-                }
-                else{
-                    e = dependenceGraph.addDataDependencyEdge(target,src);
-                    ((DataDependencyEdge) e).addDependentVariable(variable);
-                }
-
-
-                //delete the killed variable from the usedVariable set
-                usedVariables.remove(variable);
+        //求defined variable和usedVariable的交集
+        Set<String> intersectedVariables = new HashSet<>(usedVariables);
+        intersectedVariables.retainAll(definedVariables);
+        //如果交集不为空，两个节点间存在数据依赖关系，相关数据为交集中的所有变量
+        if(!intersectedVariables.isEmpty()){
+            //除去被杀死的变量
+            usedVariables.removeAll(intersectedVariables);
+            DataDependencyEdge edge = null;
+            //构建两个节点间的数据依赖边
+            if(dependenceGraph.containsEdge(target,src)){
+                edge = (DataDependencyEdge) dependenceGraph.getEdge(target,src);
             }
+            else {
+                edge = dependenceGraph.addDataDependencyEdge(target,src);//src数据依赖于target
+            }
+
+            edge.addDependentVaraibles(intersectedVariables);
+            //当在该节点使用过的变量全被杀死时停止遍历
+            if (usedVariables.isEmpty())return;
         }
-        acfg.incomingEdgesOf(target).stream()
-                .filter(edge -> !(edge instanceof DummyEdge))
+
+
+
+        visited.add(target);
+
+        acfg.incomingEdgesOf(target)
+                .stream().filter(e->!(e instanceof DummyEdge))
                 .map(acfg::getEdgeSource)
-                .forEach(srcNode->backwardTraverse(src,srcNode,new HashSet<>(usedVariables),visited));
+                .forEach(srcOfTarget->backwardTraverse(src,srcOfTarget,new HashSet<>(usedVariables),new HashSet<>(visited)));
+
 
     }
 
