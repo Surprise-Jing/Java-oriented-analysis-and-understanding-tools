@@ -1,4 +1,6 @@
 digraph G {
   1 [ label="WhileTest.whileBreak()" ];
   2 [ label="WhileTest.whileContinue()" ];
+  3 [ label="java.io.PrintStream.println(int)" ];
+  1 -> 3;
 }

@@ -18,6 +18,7 @@ import java.util.Set;
 
 public class PDG extends DependenceGraph {
 
+
     public Set<GraphNode<?>> getMarkedNodes() {
         return markedNodes;
     }
@@ -78,7 +79,7 @@ public class PDG extends DependenceGraph {
         cdg.edgeSet().forEach(e->{
             GraphNode<?>src = ddg.getEdgeSource(e),
                     tar = ddg.getEdgeTarget(e);
-            assert  e instanceof ControlDependencyEdge;
+            assert e instanceof ControlDependencyEdge;
             this.addControlDependencyEdge(src,tar,(ControlDependencyEdge) e);
 
         });

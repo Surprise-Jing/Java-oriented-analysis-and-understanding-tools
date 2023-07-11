@@ -1,0 +1,21 @@
+digraph G {
+  0 [ label="ENTER multipleReturns" ];
+  1 [ label="EXIT multipleReturns" ];
+  2 [ label="boolean a = true;" ];
+  3 [ label="boolean b = true;" ];
+  4 [ shape="diamond" label="a" ];
+  5 [ label="return 1;" ];
+  6 [ shape="diamond" label="b" ];
+  7 [ label="return 2;" ];
+  8 [ label="return 3;" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 4;
+  4 -> 5;
+  4 -> 6;
+  6 -> 7;
+  6 -> 8;
+  5 -> 1;
+  7 -> 1;
+  8 -> 1;
+}

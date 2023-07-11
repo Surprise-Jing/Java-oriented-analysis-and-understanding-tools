@@ -1,0 +1,11 @@
+digraph G {
+  0 [ shape="diamond" label="ENTER ifFunc" ];
+  1 [ label="EXIT ifFunc" ];
+  2 [ label="boolean a = true;" ];
+  3 [ shape="diamond" label="a" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+  3 -> 1 [ ];
+  3 -> 1 [ ];
+  0 -> 1 [ style="dashed" ];
+}

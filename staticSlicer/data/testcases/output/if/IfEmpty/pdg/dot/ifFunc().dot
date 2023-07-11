@@ -1,0 +1,8 @@
+digraph G {
+  0 [ label="ENTER ifFunc" ];
+  2 [ label="boolean a = true;" ];
+  3 [ label="a" ];
+  2 -> 3 [ style="dashed" label="[a]" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+}
