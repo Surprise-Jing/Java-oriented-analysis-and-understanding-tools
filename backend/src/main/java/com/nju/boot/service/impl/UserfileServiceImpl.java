@@ -31,7 +31,7 @@ public class UserfileServiceImpl extends ServiceImpl<UserfileMapper, Userfile> i
         queryWrapper.in("fid", fid);
         List<Userfile> userfileList = userfileMapper.selectList(queryWrapper);
         for(Userfile userfile: userfileList){
-            if(userfile.getUserId() == uid){
+            if(userfile.getUid().equals(uid)){
                 userfileMapper.deleteById(userfile);
                 return true;
             }

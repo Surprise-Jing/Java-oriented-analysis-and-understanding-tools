@@ -10,7 +10,7 @@ export function uploadFile(data) {
 
 export function getFile(uid) {
     return service({
-        url: '/user/file?uid=' + uid,
+        url: '/file/user?uid=' + uid,
         method: 'get',
     })
 }
@@ -22,9 +22,9 @@ export function getFileContext(id) {
     })
 }
 
-export function deleteFile(id) {
+export function deleteFile(id, uid) {
     return service({
-        url: '/file/delete?id=' + id,
+        url: '/file/delete?id=' + id + '&uid=' + uid,
         method: 'get',
     })
 }

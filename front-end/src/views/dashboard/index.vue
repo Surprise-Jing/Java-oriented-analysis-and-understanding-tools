@@ -2,15 +2,17 @@
   <div class="dashboard_container">
 
     <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"  class="data_table">
-    <el-table-column prop="file_name" label="文件名称" width="180">
+      <el-table-column prop="id" label="文件id" width="280" v-if="false">
+    </el-table-column>
+    <el-table-column prop="fileName" label="文件名称" width="180">
       
     </el-table-column>
-    <el-table-column prop="upload_time" label="上传时间" width="280">
+    <el-table-column prop="uploadTime" label="上传时间" width="280">
     </el-table-column>
     <el-table-column prop="operation" label="操作">
       <template slot-scope="scope">
-        <el-button  type="info"  @click="download_file(scope.row)">下载</el-button>
-        <el-button type="info" @click="delete_file(scope.row)">删除</el-button>
+        <el-button  type="info"  @click="download_file(scope.row.id)">下载</el-button>
+        <el-button type="info" @click="delete_file(scope.row.id)">删除</el-button>
         <!-- <el-button :type="scope.row.status?'danger':'primary'" @click="changeStatus(scope.$index)" </el-button> -->
 
       </template>
@@ -34,38 +36,15 @@
 </template>
 
 <script>
+import {getFile, getFileContext, deleteFile} from '@/api/file'
+import FileSaver from "file-saver"
 import axios from "axios";
 import store from "@/store/index"
 
 export default {
   data(){
     return {
-       tableData:[
-        {
-          file_name:'test1',
-          upload_time:'2022-1-1'
-        },
-        {
-          file_name:'test2',
-          upload_time:'2022-1-1'
-        },
-        {
-          file_name:'test3',
-          upload_time:'2022-1-1'
-        },
-        {
-          file_name:'test4',
-          upload_time:'2022-1-1'
-        },
-        {
-          file_name:'test5',
-          upload_time:'2022-1-1'
-        },
-        {
-          file_name:'test6',
-          upload_time:'2022-1-1'
-        },
-       ],
+      tableData : [],
         currentPage: 1, // 当前页码
         total: 20, // 总条数
         pageSize: 5 // 每页的数据条数
@@ -85,13 +64,54 @@ export default {
 
 
       download_file(val){
-
+        getFileContext(val).then(res => {
+          if(res.success){
+            let blob = new Blob([res.data.content], {
+              type: "text/plain;charset=utf-8"
+            });
+            FileSaver.saveAs(blob, res.data.fileName)
+          }
+          else{
+              this.$message({
+              type:'warning',
+              message: res.msg
+            });
+          }
+        })
       },
       delete_file(val){
-        
+        deleteFile(val).then(res => {
+          if(res.success){
+            if(res.data){
+              this.$message.success('删除成功');
+            }
+            else{
+              this.$message.error('删除失败');
+            }
+          }
+          else{
+              this.$message({
+              type:'warning',
+              message: res.msg
+            });
+          }
+        })
       }
 
   },
+  mounted() {
+      getFile(localStorage.getItem("uid")).then(res => {
+        if(res.success){
+          this.tableData = res.data
+        }
+        else{
+          this.$message({
+            type:'warning',
+            message: res.msg
+          });
+        }
+      })
+  }
 }
 </script>
 

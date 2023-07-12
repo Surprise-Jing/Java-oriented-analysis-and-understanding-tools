@@ -25,10 +25,10 @@ public class Userfile implements Serializable {
     private String id;
 
     @ApiModelProperty("用户编号")
-    private String userId;
+    private String uid;
 
     @ApiModelProperty("文件编号")
-    private String fileId;
+    private String fid;
 
     public String getId() {
         return id;
@@ -38,28 +38,28 @@ public class Userfile implements Serializable {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getFileId() {
-        return fileId;
+    public String getFid() {
+        return fid;
     }
 
-    public void setFileId(String fileId) {
-        this.fileId = fileId;
+    public void setFid(String fid) {
+        this.fid = fid;
     }
 
     @Override
     public String toString() {
         return "Userfile{" +
             "id = " + id +
-            ", userId = " + userId +
-            ", fileId = " + fileId +
+            ", uid = " + uid +
+            ", fid = " + fid +
         "}";
     }
 }

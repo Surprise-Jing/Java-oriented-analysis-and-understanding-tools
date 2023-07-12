@@ -27,7 +27,7 @@
 
 <script type="text/javascript" src="../../main.js"></script>
 <script >
-import { uploadFile } from '@/api/user'
+import { uploadFile } from '@/api/file'
 
 export default {
   data () {
@@ -83,7 +83,8 @@ export default {
             console.log(res)
             if(res.success){
               localStorage.setItem("id", res.data.id)
-              alert("success");
+              this.$message.success("文件上传成功")
+              this.$router.push("/")
             }
             else{
               this.$message({

@@ -1,13 +1,19 @@
 package com.nju.boot.controller;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.IdcardUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.kitfox.svg.Use;
 import com.nju.boot.entity.Files;
+import com.nju.boot.entity.Userfile;
+import com.nju.boot.entity.dto.FileDto;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.handler.DisableBaseResponse;
 import com.nju.boot.mapper.FilesMapper;
+import com.nju.boot.mapper.UserfileMapper;
 import com.nju.boot.service.IFilesService;
+import com.nju.boot.service.IUserfileService;
 import com.nju.boot.service.impl.FilesServiceImpl;
 import com.nju.boot.utils.DateTimeUtils;
 import io.swagger.annotations.Api;
@@ -22,6 +28,8 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -52,6 +60,9 @@ public class FilesController {
     @Resource
     private FilesMapper filesMapper;
 
+    @Resource
+    private IUserfileService iUserfileService;
+
     @PostMapping("")
     @ApiOperation(value = "上传文件")
     public Files uploadFile(String uid,MultipartFile file) throws Exception {
@@ -75,14 +86,21 @@ public class FilesController {
         Files files = iFilesService.getFileByMd5(md5);
         if(files != null){
             url = files.getUrl();
+            if(files.getEnable()){
+               files.setDeleted(false);
+               files.setUploadTime(DateTimeUtils.getNowTimeString());
+               filesMapper.updateById(files);
+            }
         }
         else {
             file.transferTo(uploadFile);
             url = "http://" + serverAddress + ":" + serverPort + "/file?id=" + fileUUID;
+            files = new Files(uuId, originalFilename, type, md5, url, uid, DateTimeUtils.getNowTimeString(), false, true);
+            iFilesService.save(files);
         }
-        Files saveFile = new Files(uuId, originalFilename, type, md5, url, uid, DateTimeUtils.getNowTimeString(), false, true);
-        iFilesService.save(saveFile);
-        return saveFile;
+        Userfile userfile = new Userfile(UUID.randomUUID().toString(), uid, uuId);
+        iUserfileService.save(userfile);
+        return files;
     }
 
     @GetMapping("")
@@ -91,9 +109,27 @@ public class FilesController {
         if("".equals(id)){
             return "";
         }
-        String path = fileUploadPath + "/" + id;
+        String path = fileUploadPath + "/" + id + ".java";
         File file = new File(path);
         return FileUtils.readFileToString(file, "utf-8");
+    }
+
+    @GetMapping("/user")
+    @ApiOperation(value = "获得用户上传的所有文件")
+    public List<FileDto> getUserFiles(@RequestParam("uid") String uid){
+        List<FileDto> fileDtoList = new LinkedList<>();
+        List<Userfile> userfileList = iUserfileService.selectUserFileByUid(uid);
+        for(Userfile userfile: userfileList){
+            Files files = iFilesService.getById(userfile.getFid());
+            fileDtoList.add(new FileDto(UUID.randomUUID().toString(), files.getName(), files.getUploadTime()));
+        }
+        return fileDtoList;
+    }
+
+    @GetMapping("/delete")
+    @ApiOperation(value = "删除文件")
+    public boolean deleteFile(String id, String uid){
+        return iUserfileService.delete(id, uid);
     }
 
 }
