@@ -68,7 +68,7 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码不能少于6位'))//todo
+        callback(new Error('The password can not be less than 6 digits'))//todo
       } else {
         callback()
       }
@@ -109,26 +109,34 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(response => {
-            //console.log(response)
-            localStorage.setItem("uid", response.user.id)
-            //console.log(localStorage.getItem("uid"))
-            this.$router.push('/')
-            this.loading = false
-          }).catch(error => {
-            this.$message({
-                  type:'warning',
-                  message: error
-                });
-            this.loading = false
+          Login(this.loginForm).then(res =>{
+            console.log(res)
+            if(res.success){
+              localStorage.setItem("uid", res.data.user.id)
+              setToken(res.data.token)
+              this.$router.push("/")
+            }
+            else{
+              this.$message({
+                type:'warning',
+                message:res.msg
+              });
+            }
           })
+          // this.loading = true
+          // this.$store.dispatch('user/login', this.loginForm).then(() => {
+          //   this.$router.push({ path: this.redirect || '/' })
+          //   this.loading = false
+          // }).catch(() => {
+          //   this.loading = false
+          // })
         } else {
           console.log('error submit!!')
           return false
         }
       })
     }
+
   }
 }
 </script>
@@ -191,7 +199,7 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-background-image:url('../../assets/bg-image.png');//todo 
+background-image:url('../../assets/bg-image.png');//todo
 background-size:100%;
 
 display: flex;
