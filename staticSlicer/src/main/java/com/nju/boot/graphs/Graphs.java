@@ -15,7 +15,7 @@ import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.util.GraphUtil;
+import com.nju.boot.util.GraphsUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,6 +73,7 @@ public class Graphs {
 
         try {
             Optional<CompilationUnit> _cu =  javaParser.parse(file).getResult();
+
             cu = _cu.orElse(null);
             if (cu==null) throw new RuntimeException("ast树生成时发生错误");
         } catch (FileNotFoundException e) {
@@ -107,7 +108,7 @@ public class Graphs {
         this.callGraph = cg;
     }
     public CFG getCFG(String methodSignature){
-        return getCFG(GraphUtil.findMethodBySignature(this,methodSignature));
+        return getCFG(GraphsUtil.findMethodBySignature(this,methodSignature));
     }
     public CFG getCFG(CallableDeclaration<?> callableDeclaration){
         return cfgMap.get(callableDeclaration);
@@ -116,11 +117,11 @@ public class Graphs {
         return pdgMap.get(callableDeclaration);
     }
     public PDG getPDG(String methodSignature){
-        return pdgMap.get(GraphUtil.findMethodBySignature(this,methodSignature));
+        return pdgMap.get(GraphsUtil.findMethodBySignature(this,methodSignature));
     }
     public CDG getCDG(CallableDeclaration<?> callableDeclaration){return cdgMap.get(callableDeclaration);}
     public CDG getCDG(String methodSignature)
-    {return cdgMap.get(GraphUtil.findMethodBySignature(this,methodSignature));}
+    {return cdgMap.get(GraphsUtil.findMethodBySignature(this,methodSignature));}
     public CallGraph getCallGraph(){
         return this.callGraph;
     }
