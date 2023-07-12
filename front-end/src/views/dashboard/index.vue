@@ -5,7 +5,7 @@
       <el-table-column prop="id" label="文件id" width="280" v-if="false">
     </el-table-column>
     <el-table-column prop="fileName" label="文件名称" width="180">
-      
+
     </el-table-column>
     <el-table-column prop="uploadTime" label="上传时间" width="280">
     </el-table-column>
@@ -20,13 +20,13 @@
   </el-table>
 
   <div class="block" >
-            <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+            <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange"
             :current-page="currentPage"
 
-            :page-sizes="[1,5]" 
+            :page-sizes="[1,5]"
 
-            :page-size="pageSize" 
-            layout="total, sizes, prev, pager, next, jumper" 
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
             :total="tableData.length">
             </el-pagination>
   </div>
@@ -36,8 +36,6 @@
 </template>
 
 <script>
-import {getFile, getFileContext, deleteFile} from '@/api/file'
-import FileSaver from "file-saver"
 import axios from "axios";
 import store from "@/store/index"
 
@@ -136,7 +134,7 @@ export default {
   top:30%;
   transform: translate(-50%,-50%);
   background-color:gray;
-  
+
 }
 .block{
   position: absolute;

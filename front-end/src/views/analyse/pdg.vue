@@ -1,4 +1,20 @@
 <template>
+  <div>
+      PDG,待完善
+      <div>
+              <select
+              v-model="selectFile.id"
+              @change="getfileid(selectFile.id)" style="width: 150px;">
+        <option
+          class="choose_file"
+              v-for="item in fileData"
+              :key="item.fileId"
+              :label="item.fileName"
+              :value="item.fileId"
+              >
+          </option>
+              </select>
+      </div>
   <div class = "pdgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
     <svg class="graph" width="1200" height="1200">
       <g class="container"></g>
@@ -6,14 +22,27 @@
 
   </div>
 </template>
-   
+
 <script>
 
- 
+
 import dagreD3 from 'dagre-d3';
 import * as d3 from 'd3';
-   
+
 export default {
+  data(){
+    return{
+      fileData:[],//要选择的文件
+              selectFile:{
+                  id:''
+              },
+    }
+  },
+  methods:{
+    getfileid(val){
+      console.log(val)
+    }
+  }
   name: 'cfgGraph',
   data() {
     return {
@@ -81,8 +110,11 @@ export default {
   render(svgGroup, g);
 
   },
-  
+
 },
 }
 </script>
-   
+
+<style>
+
+</style>
