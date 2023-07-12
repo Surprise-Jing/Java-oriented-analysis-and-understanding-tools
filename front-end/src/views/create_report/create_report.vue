@@ -2,10 +2,12 @@
   <div class="report_container">
       生成report
       <p></p>
-      <button @click="getPDF">获取pdf</button>
-      <button @click="downLoadAll">获取zip</button>
-      <div id="dom" style="padding: 0 50px 50px 50px;overflow: visible;width: 1000px;">
+      <button @click="getReport">获取report</button>
+      <div id="dom" style="padding: 1600px 50px 50px 50px;overflow: visible;width: 1000px;" >
       需要生成的内容
+      <img src="../../assets/bg-image.png" width="500px">
+      <br>
+      <img src="../../assets/bg-image2.png" width="500px">
       </div>
   </div>
 
@@ -41,123 +43,41 @@ export default {
               windowWidth: document.body.scrollWidth,
               windowHeight: document.body.scrollHeight,
             }).then(canvas=>{
-              const _this = this;
-              //未生成pdf的html页面高度
-              var leftHeight = canvas.height;
-              var a4Width = 595.28
-              var a4Height = 841.89
-              //一页pdf显示html页面生成的canvas高度;
-              var a4HeightRef = Math.floor(canvas.width / a4Width * a4Height);
-              //pdf页面偏移
-              var position = 0;
-              var pageData = canvas.toDataURL('image/jpeg', 1.0);
-              var pdf = new JsPDF('x', 'pt', 'a4');
-              var index = 1,
-                canvas1 = document.createElement('canvas'),
-                height;
-              pdf.setDisplayMode('fullwidth', 'continuous', 'FullScreen');
-              function createImpl(canvas) {
-                if (leftHeight > 0) {
-                  index++;
-                  var checkCount = 0;
-                  if (leftHeight > a4HeightRef) {
-                    var i = position + a4HeightRef;
-                    for (i = position + a4HeightRef; i >= position; i--) {
-                      var isWrite = true
-                      for (var j = 0; j < canvas.width; j++) {
-                        var c = canvas.getContext('2d').getImageData(j, i, 1, 1).data
-                        if (c[0] != 0xff || c[1] != 0xff || c[2] != 0xff) {
-                          isWrite = false
-                          break
-                        }
-                      }
-                      if (isWrite) {
-                        checkCount++
-                        if (checkCount >= 10) {
-                          break
-                        }
-                      } else {
-                        checkCount = 0
-                      }
-                    }
-                    height = Math.round(i - position) || Math.min(leftHeight, a4HeightRef);
-                    if(height<=0){
-                      height = a4HeightRef;
-                    }
-                  } else {
-                    height = leftHeight;
-                  }
- 
-                  canvas1.width = canvas.width;
-                  canvas1.height = height;
- 
-                  var ctx = canvas1.getContext('2d');
-                  ctx.drawImage(canvas, 0, position, canvas.width, height, 0, 0, canvas.width, height);
-                  var pageHeight = Math.round(a4Width / canvas.width * height);
-                  if(position != 0){
-                    pdf.addPage();
-                  }
-                  pdf.addImage(canvas1.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 20, a4Width, a4Width / canvas1.width * height);
- 
-                  leftHeight -= height;
-                  position += height;
-                  if (leftHeight > 0) {
-                    //添加全屏水印
-                    // const base64 = ''
-                    // for(let i=0;i<6;i++){
-                    //   for(let j=0;j<5;j++){
-                    //     const  left = (j*120)+20;
-                    //     pdf.addImage(base64,'JPEG', left, i*150, 20, 30);
-                    //   }
-                    // }
-                    setTimeout(createImpl, 500, canvas);
-                  } else {
-                    pdf.name='report.pdf'
-                    this.pdfSave= pdf
-                    //this.pdfSave = pdf.save(pdfFileName + '.pdf');
-                    //pdf.name=pdfFileName + '.pdf'
-                    //return pdf
-                  }
-                }
-              }
-              //当内容未超过pdf一页显示的范围，无需分页
-              if (leftHeight < a4HeightRef) {
-                pdf.addImage(pageData, 'JPEG', 0, 0, a4Width, a4Width / canvas.width * leftHeight);
-                this.dialogVisible = true;
-                pdf.name='report.pdf'
-                //pdf.name=pdfFileName + '.pdf'
-                //FileSaver.saveAs('./report',pdf)
-               this.pdfSave= pdf
-                //this.pdfSave = pdf.save(pdfFileName + '.pdf')
-               
-              } else {
-                try {
-                  pdf.deletePage(0);
-                  setTimeout(createImpl, 500, canvas);
-                 
-                } catch (err) {
-                  console.log(err);
-                }
-              }
-
+              let contentWidth = canvas.width
+        let contentHeight = canvas.height
+        let pageHeight = contentWidth / 592.28 * 841.89
+        let leftHeight = contentHeight
+        let position = 0
+        let imgWidth = 595.28
+        let imgHeight = 592.28 / contentWidth * contentHeight
+        let pageData = canvas.toDataURL('image/jpeg', 1.0)
+        let PDF = new JsPDF('', 'pt', 'a4')
+        if (leftHeight < pageHeight) {
+          PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
+        } else {
+          while (leftHeight > 0) {
+            PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+            leftHeight -= pageHeight
+            position -= 841.89
+            if (leftHeight > 0) {
+              PDF.addPage()
+            }
+          }
+        }
+            PDF.deletePage(1);
               const zip = new JSZip();
-             
-             // this.saveAs=pdf.output('dataurlstring')
-              zip.file("report.pdf",pdf.output('arraybuffer'));
-              zip.generateAsync({ type: "blob" }).then(content => {
-                // 生成二进制流
-                  FileSaver.saveAs(content, "测试.zip"); // 利用file-saver保存文件  自定义文件名
-                });
-             
-
+              zip.file('report.pdf',PDF.output('arraybuffer'))
+              zip.generateAsync({type:"blob"}).then(function(content) {
+                FileSaver(content, "report.zip");
+              });
 
             })
            
     },
 
-    getPDF(){
+    getReport(){
       let dom = document.getElementById('dom')  
-       this.getPdfFromHtml(dom)
+       this.getPdfFromHtml(dom,'test')
     },
 
     getFile (url) {
