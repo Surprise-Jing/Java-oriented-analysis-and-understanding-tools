@@ -1,0 +1,25 @@
+digraph G {
+  0 [ label="ENTER func2" ];
+  2 [ label="int a, b, c, d = 0;" ];
+  3 [ label="d = 4;" ];
+  4 [ label="c = 3;" ];
+  5 [ label="boolean x = true;" ];
+  6 [ label="x" ];
+  7 [ label="d = 5;" ];
+  8 [ label="c = 4;" ];
+  9 [ label="a = b + c + d;" ];
+  5 -> 6 [ style="dashed" label="[x]" ];
+  8 -> 9 [ style="dashed" label="[c]" ];
+  3 -> 9 [ style="dashed" label="[d]" ];
+  2 -> 9 [ style="dashed" label="[b]" ];
+  7 -> 9 [ style="dashed" label="[d]" ];
+  4 -> 9 [ style="dashed" label="[c]" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+  0 -> 4 [ ];
+  0 -> 5 [ ];
+  0 -> 6 [ ];
+  0 -> 9 [ ];
+  6 -> 7 [ ];
+  6 -> 8 [ ];
+}

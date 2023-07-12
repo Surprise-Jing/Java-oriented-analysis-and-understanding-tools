@@ -19,10 +19,12 @@ public class CFGPrinter extends  GraphPrinter{
         setWriter(writer);
         setUpDotExporter();
     }
-    private void setUpDotExporter(){
+    protected void setUpDotExporter(){
         dotExporter.setVertexAttributeProvider(v->{
             Map<String, Attribute> map = new HashMap<>();
             map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
+            if(cfg.outgoingEdgesOf(v).size()>1)
+                map.put("shape",DefaultAttribute.createAttribute("diamond"));
             return map;
         });
     }

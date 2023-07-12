@@ -1,0 +1,21 @@
+digraph G {
+  0 [ shape="diamond" label="ENTER whileIfContinue" ];
+  1 [ label="EXIT whileIfContinue" ];
+  2 [ label="boolean a = true;" ];
+  3 [ label="int i = 0;" ];
+  4 [ shape="diamond" label="a" ];
+  5 [ label="i++;" ];
+  6 [ shape="diamond" label="i != 3" ];
+  7 [ shape="diamond" label="continue;" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+  3 -> 4 [ ];
+  4 -> 5 [ ];
+  5 -> 6 [ ];
+  6 -> 7 [ ];
+  7 -> 4 [ style="dashed" ];
+  6 -> 4 [ ];
+  7 -> 4 [ ];
+  4 -> 1 [ ];
+  0 -> 1 [ style="dashed" ];
+}

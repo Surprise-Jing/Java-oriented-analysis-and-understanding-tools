@@ -1,0 +1,22 @@
+digraph G {
+  0 [ label="ENTER whileIfFunction" ];
+  2 [ label="boolean a = true;" ];
+  3 [ label="int i = 0;" ];
+  4 [ label="a" ];
+  5 [ label="i == 3" ];
+  6 [ label="a = false;" ];
+  7 [ label="i++;" ];
+  2 -> 4 [ style="dashed" label="[a]" ];
+  6 -> 4 [ style="dashed" label="[a]" ];
+  3 -> 5 [ style="dashed" label="[i]" ];
+  7 -> 5 [ style="dashed" label="[i]" ];
+  3 -> 7 [ style="dashed" label="[i]" ];
+  7 -> 7 [ style="dashed" label="[i]" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+  0 -> 4 [ ];
+  4 -> 5 [ ];
+  4 -> 7 [ ];
+  4 -> 4 [ ];
+  5 -> 6 [ ];
+}

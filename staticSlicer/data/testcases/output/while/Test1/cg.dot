@@ -1,0 +1,5 @@
+digraph G {
+  1 [ label="Test1.testFunction()" ];
+  2 [ label="java.io.PrintStream.println(int)" ];
+  1 -> 2;
+}

@@ -18,6 +18,7 @@ import java.util.Set;
 
 public class PDG extends DependenceGraph {
 
+
     public Set<GraphNode<?>> getMarkedNodes() {
         return markedNodes;
     }
@@ -26,7 +27,12 @@ public class PDG extends DependenceGraph {
         this.markedNodes = markedNodes;
     }
 
+    //todo:deletethisfield
+    DominatorTree postDominatorTree;
 
+    public DominatorTree getPostDominatorTree() {
+        return postDominatorTree;
+    }
 
     Set<GraphNode<?>> markedNodes = new HashSet<>();
     public void slice(int lineNumber,String variable){
@@ -60,9 +66,29 @@ public class PDG extends DependenceGraph {
         built = true;
         this.acfg = acfg;
         acfg.vertexSet().stream().filter(vertex->vertex!=acfg.getExitNode().get()).forEach(this::addVertex);
-        buildControlDependency(this);
-        buildDataDependency(this);
+        DDG ddg = new DDG();
+        ddg.buildFromACFG(acfg);
+        ddg.edgeSet().forEach(e->{
+            GraphNode<?>src = ddg.getEdgeSource(e),
+                    tar = ddg.getEdgeTarget(e);
+            assert  e instanceof DataDependencyEdge;
+            this.addDataDependencyEdge(src,tar,(DataDependencyEdge) e);
+        });
+        CDG cdg = new CDG();
+        cdg.buildFromACFG(acfg);
+        cdg.edgeSet().forEach(e->{
+            GraphNode<?>src = ddg.getEdgeSource(e),
+                    tar = ddg.getEdgeTarget(e);
+            assert e instanceof ControlDependencyEdge;
+            this.addControlDependencyEdge(src,tar,(ControlDependencyEdge) e);
 
+        });
+
+
+        //
+        postDominatorTree = new DominatorTree(acfg.reverse());
+        postDominatorTree.build();
+//
     }
 
 

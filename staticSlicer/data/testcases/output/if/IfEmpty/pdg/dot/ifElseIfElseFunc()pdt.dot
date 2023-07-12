@@ -1,0 +1,11 @@
+digraph G {
+  0 [ label="ENTER ifElseIfElseFunc" ];
+  1 [ label="EXIT ifElseIfElseFunc" ];
+  2 [ label="boolean a = false, b = true;" ];
+  3 [ label="a" ];
+  4 [ label="b" ];
+  1 -> 4;
+  1 -> 3;
+  3 -> 2;
+  1 -> 0;
+}

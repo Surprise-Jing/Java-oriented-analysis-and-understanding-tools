@@ -1,0 +1,9 @@
+digraph G {
+  0 [ label="ENTER ifFunc" ];
+  1 [ label="EXIT ifFunc" ];
+  2 [ label="boolean a = true;" ];
+  3 [ label="a" ];
+  1 -> 0;
+  3 -> 2;
+  1 -> 3;
+}

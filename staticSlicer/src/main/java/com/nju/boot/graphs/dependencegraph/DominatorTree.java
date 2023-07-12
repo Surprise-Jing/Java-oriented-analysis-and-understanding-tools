@@ -9,6 +9,7 @@ import com.nju.boot.nodes.GraphNode;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
 
+import java.io.StringWriter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,30 +19,26 @@ public class DominatorTree extends Graph<MethodDeclaration> {
     }
     CFG cfg;
     boolean built = false;
+    private int nodeID = 0;
 
     Map<GraphNode<?>,GraphNode<?>>doms = new HashMap<>();
-    Stack<GraphNode<?>>postOrder = new Stack<>();
-    List<GraphNode<?>>reversedPostOrder = new ArrayList<>();
+
+    Map<GraphNode<?>,Integer> nodeIndexMap = new HashMap<>();
+    Map<Integer,GraphNode<?>> indexNodeMap = new HashMap<>();
+
     public GraphNode<?> intersect(GraphNode<?>b1,GraphNode<?>b2){
         GraphNode<?>f1 = b1;
         GraphNode<?>f2 = b2;
         while(f1!=f2){
-            while(getIndex(f1)>getIndex(f2))
+            while(nodeIndexMap.get(f1)<nodeIndexMap.get(f2))//f1比f2后处理
                 f1 = doms.get(f1);
-            while(getIndex(f2)>getIndex(f1)){
+            while(nodeIndexMap.get(f2)<nodeIndexMap.get(f1)){//f1比f2先处理
                 f2 = doms.get(f2);
             }
         }
         return f1;
     }
-    public int getIndex(GraphNode<?> b){
-        for (int i = 0;i<reversedPostOrder.size();i++){
-            if(b == reversedPostOrder.get(i)){
-                return i;
-            }
-        }
-        return -1;
-    }
+
     public void DFS(){
         Set<GraphNode<?>> visited=  new HashSet<>();
         GraphNode<?>root = cfg.getRootNode().get();
@@ -50,12 +47,16 @@ public class DominatorTree extends Graph<MethodDeclaration> {
     }
     public void DFS(GraphNode<?> n,Set<GraphNode<?>>visited){
         visited.add(n);
-        for(Edge e:cfg.outgoingEdgesOf(n)){
-            GraphNode<?>target = cfg.getEdgeTarget(e);
-            if(!visited.contains(target))
+            for(Edge e:cfg.outgoingEdgesOf(n)){
+                GraphNode<?>target = cfg.getEdgeTarget(e);
+                if(!visited.contains(target))
                 DFS(target,visited);
         }
-        postOrder.push(n);
+        //postOrder.push(n);
+        //给节点后序编号
+        int id = ++nodeID;
+        nodeIndexMap.put(n,id);
+        indexNodeMap.put(id,n);
     }
 
     public DominatorTree build(){
@@ -63,39 +64,46 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         built = true;
         cfg.vertexSet().stream().forEach(this::addVertex);
 
-        GraphIterator<GraphNode<?>, Edge> it = new DepthFirstIterator<>(cfg);
-
         DFS();
-        while(!postOrder.isEmpty()){
-            GraphNode<?> g = postOrder.pop();
-            reversedPostOrder.add(g);
-            doms.put(g,null);
-
-        }
-        doms.put(reversedPostOrder.get(0),reversedPostOrder.get(0));
+        //为节点进行postorder编号
+        GraphNode<?> startNode = indexNodeMap.get(nodeID);
+        doms.put(startNode,startNode);
 
         boolean changed = true;
         while(changed){
             changed = false;
-            for(GraphNode<?> b:reversedPostOrder){
-                if(b == reversedPostOrder.get(0))continue;
+            for(int nodeIndex = nodeID;nodeIndex>=1;nodeIndex--){
+                GraphNode<?> b = indexNodeMap.get(nodeIndex);
+                if(b == startNode) continue;
+                //该节点的所有直接前驱
+
+
                 List<GraphNode<?>> predecessors = cfg.incomingEdgesOf(b).stream()
                         .map(edge -> cfg.getEdgeSource(edge))
                         .collect(Collectors.toList());
 
                 GraphNode<?>new_idom = null;
+
+                //选取一个处理过的节点为支配节点的默认值
                 for(GraphNode<?> predecessor:predecessors){
                     if(doms.get(predecessor)!=null){
                         new_idom = predecessor;
                         break;
                     }
                 }
+                //剩下的直接前驱
                 predecessors.remove(new_idom);
+
                 for (GraphNode<?> predecessor:predecessors){
+                    //如果该节点有支配节点，即被处理过
                     if(doms.get(predecessor)!=null){
+                        //新的支配节点是当前得到的支配节点和
+                        //在处理的前驱节点的支配节点的
+                        //两者共同的支配节点
                         new_idom = intersect(new_idom,predecessor);
                     }
                 }
+
                 if(doms.get(b) != new_idom){
                     doms.put(b,new_idom);
                     changed = true;
@@ -106,13 +114,16 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         }
 
         for(GraphNode<?>vertex :doms.keySet()){
-            if(doms.get(vertex)!=null&&doms.get(vertex)!=vertex)
+            if(doms.get(vertex)!=null&&doms.get(vertex)!=vertex){
                 addEdge(doms.get(vertex),vertex,new DummyEdge());
+            }
+
         }
         return this;
     }
     /**returns if a dominates b*/
     public boolean dominates(GraphNode<?>a,GraphNode<?>b){
+
         if(containsEdge(a,b))return true;
         else{
             GraphNode<?> parentOfB = getParent(b);
@@ -128,5 +139,6 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         GraphNode<?> parent = getEdgeSource(incomingEdge);
         return parent;
     }
+
 
 }

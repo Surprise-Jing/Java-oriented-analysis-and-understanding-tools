@@ -63,12 +63,13 @@ public class ACFGBuilder extends CFGBuilder {
         for(GraphNode<?>vertex:jumpVertexes){
             acfg.addDummyEdge(vertex,node);
         }
+        jumpVertexes.clear();
         super.connectTo(node);
     }
 
     @Override
     protected void clearProcessing() {
-        jumpVertexes.clear();
+
         super.clearProcessing();
     }
 

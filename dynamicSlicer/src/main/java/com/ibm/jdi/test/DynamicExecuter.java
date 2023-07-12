@@ -76,7 +76,7 @@ public class DynamicExecuter {
             while ((eventSet = vm.eventQueue().remove()) != null) {
                 for (Event event : eventSet) {
                     if (event instanceof VMStartEvent) {
-                        System.out.println("VM started");
+                       System.out.println("VM started");
                     }
                     if (event instanceof ClassPrepareEvent) {
                         this.setBreakPoints(vm, (ClassPrepareEvent)event);
