@@ -18,7 +18,7 @@ public class GraphController {
     @Value("${files.upload.path}")
     private String fileUploadPath;
 
-    @DisableBaseResponse
+
     @GetMapping("/ast")
     @ApiOperation(value = "获得语法分析树AST")
     public String getAST(@RequestParam("id") String id){
@@ -27,7 +27,6 @@ public class GraphController {
         return GraphsUtil.astNodeToXml(graphs.getCu());
     }
 
-    @DisableBaseResponse
     @GetMapping("/cg")
     @ApiOperation(value = "获得函数调用图Call graph")
     public String getCallGraph(@RequestParam("id") String id){
@@ -36,7 +35,6 @@ public class GraphController {
         return graphs.getCallGraph().toString();
     }
 
-    @DisableBaseResponse
     @GetMapping("/method")
     @ApiOperation(value = "获得文件的所有方法")
     public Set<String> getMethod(@RequestParam("id") String id){
@@ -45,7 +43,6 @@ public class GraphController {
         return graphs.getQualifiedSignatures();
     }
 
-    @DisableBaseResponse
     @GetMapping("/cfg")
     @ApiOperation(value = "获得控制流程图CFG")
     public String getCFG(String id, String method){
@@ -58,7 +55,6 @@ public class GraphController {
         return graphs.getCFG(GraphsUtil.findMethodBySignature(graphs, method)).toString();
     }
 
-    @DisableBaseResponse
     @GetMapping("/pdg")
     @ApiOperation(value = "获得程序依赖图PDG")
     public String getPDG(String id, String method){

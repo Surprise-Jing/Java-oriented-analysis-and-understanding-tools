@@ -42,12 +42,27 @@ public class UserController {
     public Map<String, Object> login(@RequestBody LoginDto loginDto) throws Exception{
         User user = iUserService.login(loginDto);
         Map<String, Object> map = new HashMap<>();
-        //是否选择记住用户
+        //过期时间
         long exp = JwtTokenUtils.EXPIRATION_TIME;
         map.put("token", JwtTokenUtils.createToken(loginDto.getUsername(), exp));
         map.put("user", user);
         return map;
     }
+
+    @GetMapping("/info")
+    @ApiOperation(value = "获得用户信息")
+    public User getInfo(String token){
+        String username = JwtTokenUtils.getUsername(token);
+        User user = iUserService.findByUsername(username);
+        return user;
+    }
+
+    @PostMapping("/logout")
+    @ApiOperation(value = "用户登出")
+    public boolean Logout(){
+        return true;
+    }
+
 
     @PostMapping("/register")
     @ApiOperation(value = "用户注册")
