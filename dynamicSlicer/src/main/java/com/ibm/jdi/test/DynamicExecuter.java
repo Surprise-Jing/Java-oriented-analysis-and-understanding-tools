@@ -1,6 +1,7 @@
 package com.ibm.jdi.test;
 
 import com.github.javaparser.ast.stmt.BreakStmt;
+import com.github.javaparser.ast.stmt.ContinueStmt;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.graphs.dependencegraph.PDG;
@@ -200,6 +201,14 @@ public class DynamicExecuter {
                 }
 
                 if(GN.getAstNode() instanceof BreakStmt){
+                    for(Edge outEdge : _cdg.outgoingEdgesOf(GN)){
+                        GraphNode<?> w = _cdg.getEdgeTarget(outEdge);
+                        Integer LoopId = w.getAstNode().getBegin().get().line;
+                        CurrentNode.get(LoopId).get(CurrentNode.get(LoopId).size() - 1).getReachableStmt().add(i);
+                    }
+                }
+
+                if(GN.getAstNode() instanceof ContinueStmt){
                     for(Edge outEdge : _cdg.outgoingEdgesOf(GN)){
                         GraphNode<?> w = _cdg.getEdgeTarget(outEdge);
                         Integer LoopId = w.getAstNode().getBegin().get().line;
