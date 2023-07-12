@@ -1,0 +1,13 @@
+public class WhileIf {
+
+    public void function() {
+        int i = 1;
+
+        while (i < 11) {
+
+            i = i + 1;
+        }
+
+        System.out.println(i);
+    }
+}

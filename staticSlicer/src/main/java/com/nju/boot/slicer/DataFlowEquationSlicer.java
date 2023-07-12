@@ -106,7 +106,7 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
             }
         }
     }
-    public Set<GraphNode<?>>slice(int lineNumber,String variableName){
+    public AbstractSlicer slice(int lineNumber,String variableName){
         CallableDeclaration<?> tarMethod = GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
         this.cfg = graphs.getCFG(tarMethod);
         this.cdg = graphs.getCDG(tarMethod);
@@ -115,7 +115,12 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
         return slice(new SlicerCriterion(variables,lineNumber,cfg));
     }
 
-    public Set<GraphNode<?>> slice(SlicerCriterion slicerCriterion){
+    @Override
+    public Set<GraphNode<?>> getSlicedGraphNode() {
+        return  relevantStatements;
+    }
+
+    public AbstractSlicer slice(SlicerCriterion slicerCriterion){
         InitializeRC0(slicerCriterion);
         InitializeSC0(slicerCriterion);
         System.out.println(relevantVariables);
@@ -160,7 +165,7 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
             }
         }
         relevantStatements.add(cfg.getRootNode().get());
-        return relevantStatements;
+        return this;
     }
 
     Set<GraphNode<?>> INFL(GraphNode<?> node){

@@ -73,6 +73,7 @@ public class Graphs {
 
         try {
             Optional<CompilationUnit> _cu =  javaParser.parse(file).getResult();
+
             cu = _cu.orElse(null);
             if (cu==null) throw new RuntimeException("ast树生成时发生错误");
         } catch (FileNotFoundException e) {

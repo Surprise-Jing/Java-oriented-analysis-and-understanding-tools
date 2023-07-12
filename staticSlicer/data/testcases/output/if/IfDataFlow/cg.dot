@@ -1,5 +1,5 @@
 digraph G {
-  1 [ label="WhileIf.function()" ];
+  1 [ label="IfDataFlow.dataFlow()" ];
   2 [ label="java.io.PrintStream.println(int)" ];
   1 -> 2;
 }

@@ -9,7 +9,7 @@ import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.nju.boot.metrics.CodeMetrics;
 import com.nju.boot.graphs.Graphs;
-import com.nju.boot.slicer.Slicer;
+import com.nju.boot.slicer.PDGSlicer;
 import com.nju.boot.util.PathUtils;
 import com.nju.boot.util.GraphsUtil;
 import org.junit.jupiter.api.Test;
@@ -67,7 +67,7 @@ public class PDGTest {
            System.out.println("被调用的次数 "+method+" is "+ String.valueOf(codeMetrics.getTimesCalled(method)));
            System.out.println("入参个数 "+method+" is "+ String.valueOf(codeMetrics.getNumOfParameters(method)));
            if(signature!=null&&signature.equals(method))
-        System.out.println("slice on 23:a is:\n"+new Slicer(graphs).getSlicedCode(29,"a"));}
+        System.out.println("slice on 23:a is:\n"+new PDGSlicer(graphs).getSlicedCode(29,"a"));}
 }
 
 //            MethodDeclaration md = getFirstMethodDeclaration(c
