@@ -1,5 +1,6 @@
 package com.ibm.jdi.test;
 
+import com.github.javaparser.ast.stmt.BreakStmt;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.graphs.dependencegraph.PDG;
@@ -76,7 +77,7 @@ public class DynamicExecuter {
             while ((eventSet = vm.eventQueue().remove()) != null) {
                 for (Event event : eventSet) {
                     if (event instanceof VMStartEvent) {
-                       System.out.println("VM started");
+                        System.out.println("VM started");
                     }
                     if (event instanceof ClassPrepareEvent) {
                         this.setBreakPoints(vm, (ClassPrepareEvent)event);
@@ -181,16 +182,59 @@ public class DynamicExecuter {
 
                 Set<String> Use = GN.getUsedVariables();
                 for(String v : Use){
+//                    System.out.println("Used Variable: " + v);
                     Def.add(DefnNode.get(v));
+//                    System.out.println("add reachable: " + DefnNode.get(v).getReachableStmt());
                     Reach.addAll(DefnNode.get(v).getReachableStmt());
                 }
 
-                for(Edge inEdge : _cdg.incomingEdgesOf(GN)/* Control Dependence */){
-                    GraphNode<?> p = _cdg.getEdgeTarget(inEdge);
-                    Integer NodeId = p.getId();
-                    Pred.add(PrednNode.get(NodeId));
-                    Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
+                for(Edge inEdge : _cdg.incomingEdgesOf(GN)){
+                    GraphNode<?> p = _cdg.getEdgeSource(inEdge);
+                    Integer NodeId = p.getAstNode().getBegin().get().line;
+//                        System.out.println("Node ID: " + NodeId);
+                    if(PrednNode.containsKey(NodeId)){
+                        Pred.add(PrednNode.get(NodeId));
+//                        System.out.println("add reachable: " + PrednNode.get(NodeId).getReachableStmt());
+                        Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
+                    }
                 }
+
+                if(GN.getAstNode() instanceof BreakStmt){
+                    for(Edge outEdge : _cdg.outgoingEdgesOf(GN)){
+                        GraphNode<?> w = _cdg.getEdgeTarget(outEdge);
+                        Integer LoopId = w.getAstNode().getBegin().get().line;
+                        CurrentNode.get(LoopId).get(CurrentNode.get(LoopId).size() - 1).getReachableStmt().add(i);
+                    }
+                }
+
+                /*Set<Edge> edges = new HashSet<>(_cdg.incomingEdgesOf(GN));
+                Set<GraphNode<?>> visited = new HashSet<>();
+                visited.add(GN);
+
+                while(!edges.isEmpty()){
+                    Set<Edge> visitEdge = new HashSet<>(edges);
+                    edges.clear();
+                    for(Edge inEdge:visitEdge){
+                        GraphNode<?> p = _cdg.getEdgeSource(inEdge);
+                        Integer NodeId = p.getAstNode().getBegin().get().line;
+//                        System.out.println("Node ID: " + NodeId);
+
+                        if(PrednNode.containsKey(NodeId)){
+                            Pred.add(PrednNode.get(NodeId));
+                            Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
+                        }
+
+                        for(Edge nextEdge: _cdg.incomingEdgesOf(p)){
+                            GraphNode<?> nextP = _cdg.getEdgeSource(nextEdge);
+                            if(!visited.contains(nextP)){
+                                edges.add(nextEdge);
+                                visited.add(nextP);
+                            }
+                        }
+                    }
+                }*/
+
+//                System.out.println("Line " + i + ":" + Reach);
 
                 if( CurrentNode.containsKey(i)/*S[i] was Executed*/ && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).sameDef(Def) && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).samePred(Pred) ){
 //                still Node n
@@ -207,6 +251,8 @@ public class DynamicExecuter {
                     for(DynamicNode DN : childNodes){
                         if(DN.getReachableStmt().containsAll(Reach)){
 //                    Unite n' and v
+//                            System.out.println("unite " + i + " and " + DN.getLineNumber());
+                            CurrentNode.putIfAbsent(i, new ArrayList<>());
                             CurrentNode.get(i).add(DN);
                             unite = true;
                             break;
@@ -214,6 +260,7 @@ public class DynamicExecuter {
                     }
 
                     if(!unite){
+                        CurrentNode.putIfAbsent(i, new ArrayList<>());
                         CurrentNode.get(i).add(newDn);
                     }
 
@@ -230,10 +277,12 @@ public class DynamicExecuter {
                         }
                     }
 
-                    if( _cdg.incomingEdgesOf(GN).isEmpty() /* GN is control Node */) {
+                    if( !_cdg.outgoingEdgesOf(GN).isEmpty() /* GN is control Node */) {
 //                update PrednNode
                         PrednNode.put(i, CurrentNode.get(i).get(CurrentNode.get(i).size() - 1));
                     }
+
+//                    System.out.println("PrednNode: " + PrednNode);
                 }
             }
 
@@ -244,9 +293,32 @@ public class DynamicExecuter {
 
         Set<Integer> ret = new HashSet<>();
 
-        for(DynamicNode dn : CurrentNode.get(lineNumber)){
-            ret.addAll(dn.getReachableStmt());
+        Set<DynamicNode> queue = new HashSet<>(CurrentNode.get(lineNumber));
+        Set<DynamicNode> visited = new HashSet<>();
+        while(!queue.isEmpty()){
+            Set<DynamicNode> current = new HashSet<>(queue);
+            visited.addAll(current);
+            queue.clear();
+            for(DynamicNode dn : current){
+                ret.addAll(dn.getReachableStmt());
+                System.out.println("sentence " + dn.getLineNumber() + " add " + dn.getReachableStmt());
+                for(DynamicNode dnn : dn.getDef()){
+                    if(!visited.contains(dnn)){
+                        queue.add(dnn);
+                    }
+                }
+                for(DynamicNode dnn : dn.getPred()){
+                    if(!visited.contains(dnn)){
+                        queue.add(dnn);
+                    }
+                }
+
+            }
         }
+//
+//        for(DynamicNode dn : CurrentNode.get(lineNumber)){
+//            ret.addAll(dn.getReachableStmt());
+//        }
 
         return ret;
     }

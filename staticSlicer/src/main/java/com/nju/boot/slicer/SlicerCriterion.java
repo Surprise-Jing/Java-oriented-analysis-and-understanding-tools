@@ -23,7 +23,10 @@ public class SlicerCriterion {
 
 
     public SlicerCriterion(Set<String> variable, int lineNumber, Graph<?> graph){
-        this.variable = new HashSet<>(variable);
+        if(variable == null)
+            this.variable = new HashSet<>();
+        else
+            this.variable = new HashSet<>(variable);
         this.lineNumber = lineNumber;
         this.nodes = findNodeByLineNumber(graph);
     }

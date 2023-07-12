@@ -5,7 +5,7 @@ public class Test1{
         int sum = 0;
         int prod = 1;
 
-        int i =0;
+        int i = 0;
        while(i<10){
            i=i+1;
             if(prod > 100/i){
