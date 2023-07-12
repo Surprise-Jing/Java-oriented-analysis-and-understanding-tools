@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import { error } from 'jquery'
 
 const getDefaultState = () => {
   return {
@@ -33,10 +34,13 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
+        const { msg, data } = response
+        if(!data){
+          reject(msg)
+        }
         commit('SET_TOKEN', data.token)
         setToken(data.token)
-        resolve()
+        resolve(data)
       }).catch(error => {
         reject(error)
       })
@@ -48,12 +52,14 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
+        //console.log(data)
 
         if (!data) {
-          return reject('Verification failed, please Login again.')
+          reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
+        const {name} = data;
+        const avatar = 'https://bpic.51yuansu.com/pic2/cover/00/37/77/58121dd048cdb_610.jpg'
 
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)

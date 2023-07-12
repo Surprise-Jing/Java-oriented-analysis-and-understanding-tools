@@ -74,12 +74,12 @@ export default {
         return alert('请选择要上传的文件')
       }
       let data = new FormData()
-      data.append('uid',localStorage.getItem("uid"))
+      data.append('uid', localStorage.getItem("uid"))
       data.append('file', this.batchFile)
       uploadFile(data).then(res =>{
             console.log(res)
             if(res.success){
-              localStorage.setItem("id", res.data.files.id)
+              localStorage.setItem("id", res.data.id)
               alert("success");
             }
             else{

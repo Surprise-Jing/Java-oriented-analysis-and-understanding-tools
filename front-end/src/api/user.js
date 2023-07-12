@@ -1,6 +1,6 @@
 import service from "@/utils/request";
 
-export function Login(data) {
+export function login(data) {
     return service({
         url: '/user/login',
         method: 'post',
@@ -34,16 +34,16 @@ export function uploadFile(data) {
 
 
 export function getInfo(token) {
-    return request({
-      url: '/vue-admin-template/user/info',
+    return service({
+      url: '/user/info',
       method: 'get',
       params: { token }
     })
 }
 
 export function logout() {
-    return request({
-        url: '/vue-admin-template/user/logout',
+    return service({
+        url: '/user/logout',
         method: 'post'
     })
 }

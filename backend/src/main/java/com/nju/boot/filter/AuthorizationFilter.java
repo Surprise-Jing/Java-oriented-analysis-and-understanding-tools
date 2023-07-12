@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -39,6 +40,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
         //判断JWT Token是否过期
         if (JwtTokenUtils.isExpiration(token)) {
+            System.out.println(new Date(System.currentTimeMillis()));
+            System.out.println(JwtTokenUtils.getExpiration(token));
             ResponseUtils.writeJson(response,
                     new ResponseDto<>(403, "令牌已过期, 请重新登录"));
             return;

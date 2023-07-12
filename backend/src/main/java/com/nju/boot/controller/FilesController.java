@@ -54,7 +54,7 @@ public class FilesController {
 
     @PostMapping("")
     @ApiOperation(value = "上传文件")
-    public Files uploadFile(@RequestBody String uid, @RequestBody MultipartFile file) throws Exception {
+    public Files uploadFile(String uid,MultipartFile file) throws Exception {
         if(file == null) throw new Exception("请求参数缺失");
         if(file.isEmpty()){
             throw new Exception("上传失败，请选择文件");
