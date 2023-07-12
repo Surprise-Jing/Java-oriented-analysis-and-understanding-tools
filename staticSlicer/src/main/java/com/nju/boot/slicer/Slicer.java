@@ -6,7 +6,7 @@ import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
 import com.nju.boot.util.PDGMarker;
-import com.nju.boot.util.GraphUtil;
+import com.nju.boot.util.GraphsUtil;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,13 +36,13 @@ public class Slicer {
     }
     /**根据行号找到方法声明*/
     public CallableDeclaration<?> findCallableDeclaration(int lineNumber){
-        return GraphUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
+        return GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
     }
     public String getResult(){
         return result;
     }
     public String getSlicedCode(int lineNumber,String variableName){
-        CallableDeclaration<?> callableDeclaration =  GraphUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
+        CallableDeclaration<?> callableDeclaration =  GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
         PDG targetPDG = graphs.getPDG(callableDeclaration);
         PDGMarker pdgMarker = new PDGMarker(targetPDG);
         pdgMarker.mark(lineNumber,variableName);

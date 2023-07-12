@@ -7,8 +7,12 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.printer.XmlPrinter;
 import com.nju.boot.graphs.Graphs;
+import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.nodes.GraphNode;
 
-public class GraphUtil {
+import java.util.Set;
+
+public class GraphsUtil {
     public static CallableDeclaration<?>  findMethodByLineNumber(CompilationUnit cu,int lineNumber){
 
         for (TypeDeclaration<?> typeDeclaration:cu.getTypes()){
@@ -22,6 +26,10 @@ public class GraphUtil {
         }
         return null;
     }
+    public static Set<GraphNode<?>> findNodesByLineNumber(Graphs graphs, int lineNumber){
+        return null;
+    }
+
     public static CallableDeclaration<?> findMethodBySignature(Graphs graphs, String signature){
 
         return graphs.getCallGraph().getSignatureToNodeMap().get(signature).getAstNode();

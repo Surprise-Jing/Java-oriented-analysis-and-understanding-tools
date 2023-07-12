@@ -11,7 +11,7 @@ import com.nju.boot.metrics.CodeMetrics;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.slicer.Slicer;
 import com.nju.boot.util.PathUtils;
-import com.nju.boot.util.GraphUtil;
+import com.nju.boot.util.GraphsUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -50,7 +50,7 @@ public class PDGTest {
        Graphs graphs = new Graphs(fileName);
        System.out.println(graphs.getFirstClassName());
        Set<String>methods = graphs.getQualifiedSignatures();
-        CallableDeclaration<?>callableDeclaration = GraphUtil.findMethodByLineNumber(graphs.getCu(),29);
+        CallableDeclaration<?>callableDeclaration = GraphsUtil.findMethodByLineNumber(graphs.getCu(),29);
         String signature  = null;
         if(callableDeclaration instanceof MethodDeclaration){
             signature = ((MethodDeclaration) callableDeclaration).resolve().getQualifiedSignature();

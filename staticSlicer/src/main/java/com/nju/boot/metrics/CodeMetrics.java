@@ -13,7 +13,7 @@ import com.nju.boot.graphs.callgraph.CallGraph;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.graphs.Graphs;
-import com.nju.boot.util.GraphUtil;
+import com.nju.boot.util.GraphsUtil;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class CodeMetrics {
     }
     /**计算方法的圈复杂度*/
     public int getCyclomaticComplexity (String methodSignature){
-        return getCyclomaticComplexity(GraphUtil.findMethodBySignature(graphs,methodSignature));
+        return getCyclomaticComplexity(GraphsUtil.findMethodBySignature(graphs,methodSignature));
     }
     /**计算方法的圈复杂度*/
     public int getCyclomaticComplexity(CallableDeclaration<?> callableDeclaration){
@@ -63,14 +63,14 @@ public class CodeMetrics {
         return 1+getDepthOfInheritance(parentClassType.getTypeDeclaration().get());
     }
     public int getLineOfMethod(String methodSignature){
-        return getLineOfMethod(GraphUtil.findMethodBySignature(graphs,methodSignature)) ;
+        return getLineOfMethod(GraphsUtil.findMethodBySignature(graphs,methodSignature)) ;
     }
     public int getLineOfMethod(CallableDeclaration<?> method){
         return new LineCounter(method.toString()).getLinesOfCode();
     }
     /**根据方法的签名返回该方法调用方法的次数*/
     public int getTimesCalling(String methodSignature){
-        return getTimesCalling(GraphUtil.findMethodBySignature(graphs,methodSignature));
+        return getTimesCalling(GraphsUtil.findMethodBySignature(graphs,methodSignature));
     }
     /**根据方法的ast树结点返回该方法调用方法的次数*/
     public int getTimesCalling(CallableDeclaration<?> method){
@@ -104,7 +104,7 @@ public class CodeMetrics {
 
     /**根据方法的签名返回该方法在文件中被调用的次数*/
     public int getTimesCalled(String methodSignature){
-        return getTimesCalled(GraphUtil.findMethodBySignature(graphs,methodSignature));
+        return getTimesCalled(GraphsUtil.findMethodBySignature(graphs,methodSignature));
     }
     /**根据方法的ast树结点返回该方法在文件中被调用的次数*/
     public int getTimesCalled(CallableDeclaration<?> method){
@@ -137,7 +137,7 @@ public class CodeMetrics {
     }
     /**根据方法的签名返回该方法的入参个数*/
     public int getNumOfParameters(String methodSignature){
-        return getNumOfParameters(GraphUtil.findMethodBySignature(graphs,methodSignature));
+        return getNumOfParameters(GraphsUtil.findMethodBySignature(graphs,methodSignature));
     }
     /**根据方法的ast树结点返回该方法的入参个数*/
     public int getNumOfParameters(CallableDeclaration<?> method){

@@ -2,7 +2,7 @@ package com.nju.boot.controller;
 
 import com.nju.boot.handler.DisableBaseResponse;
 import com.nju.boot.graphs.Graphs;
-import com.nju.boot.util.GraphUtil;
+import com.nju.boot.util.GraphsUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ public class GraphController {
     public String getAST(@RequestParam("id") String id){
         String path = fileUploadPath + "/" + id;
         Graphs graphs = new Graphs(path);
-        return GraphUtil.astNodeToXml(graphs.getCu());
+        return GraphsUtil.astNodeToXml(graphs.getCu());
     }
 
     @DisableBaseResponse
@@ -55,7 +55,7 @@ public class GraphController {
             Set<String> methods = graphs.getQualifiedSignatures();
             method = methods.stream().toList().get(0);
         }
-        return graphs.getCFG(GraphUtil.findMethodBySignature(graphs, method)).toString();
+        return graphs.getCFG(GraphsUtil.findMethodBySignature(graphs, method)).toString();
     }
 
     @DisableBaseResponse
@@ -68,6 +68,6 @@ public class GraphController {
             Set<String> methods = graphs.getQualifiedSignatures();
             method = methods.stream().toList().get(0);
         }
-        return graphs.getPDG(GraphUtil.findMethodBySignature(graphs, method)).toString();
+        return graphs.getPDG(GraphsUtil.findMethodBySignature(graphs, method)).toString();
     }
 }
