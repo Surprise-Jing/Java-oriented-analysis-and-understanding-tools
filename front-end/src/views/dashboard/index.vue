@@ -2,8 +2,10 @@
   <div class="dashboard_container">
 
     <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"  class="data_table">
+      <el-table-column prop="file_id" label="文件id" width="50" v-if="false">
+      </el-table-column>
+
     <el-table-column prop="file_name" label="文件名称" width="180">
-      
     </el-table-column>
     <el-table-column prop="upload_time" label="上传时间" width="280">
     </el-table-column>
@@ -42,26 +44,32 @@ export default {
     return {
        tableData:[
         {
+          file_id:'1111',
           file_name:'test1',
           upload_time:'2022-1-1'
         },
         {
+          file_id:'1111',
           file_name:'test2',
           upload_time:'2022-1-1'
         },
         {
+          file_id:'1111',
           file_name:'test3',
           upload_time:'2022-1-1'
         },
         {
+          file_id:'1111',
           file_name:'test4',
           upload_time:'2022-1-1'
         },
         {
+          file_id:'1111',
           file_name:'test5',
           upload_time:'2022-1-1'
         },
         {
+          file_id:'1111',
           file_name:'test6',
           upload_time:'2022-1-1'
         },
