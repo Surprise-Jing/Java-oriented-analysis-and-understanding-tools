@@ -32,7 +32,6 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
 
     public DataFlowEquationSlicer(Graphs graphs){
         this.graphs = graphs;
-
     }
 
 
@@ -142,6 +141,7 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
                    relevantVariables.get(node).addAll(getRC0(node, new SlicerCriterion(branch, cfg)));
                }
             }
+            System.out.println(relevantVariables);
             relevantStatements.clear();
             for(Edge edge: cfg.edgeSet()){
                 GraphNode<?> src = cfg.getEdgeSource(edge);
@@ -180,8 +180,8 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
             result.addAll(nodes);
         }
          */
-        System.out.println(node);
-        System.out.println(result);
+        //System.out.println(node);
+        //System.out.println(result);
         return result;
     }
 
