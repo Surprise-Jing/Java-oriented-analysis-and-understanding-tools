@@ -1,4 +1,4 @@
-package com.nju.boot.slicer;
+package com.nju.boot.graphs;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -15,7 +15,7 @@ import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.util.SlicerUtil;
+import com.nju.boot.util.GraphUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -107,7 +107,7 @@ public class Graphs {
         this.callGraph = cg;
     }
     public CFG getCFG(String methodSignature){
-        return getCFG(SlicerUtil.findMethodBySignature(this,methodSignature));
+        return getCFG(GraphUtil.findMethodBySignature(this,methodSignature));
     }
     public CFG getCFG(CallableDeclaration<?> callableDeclaration){
         return cfgMap.get(callableDeclaration);
@@ -116,11 +116,11 @@ public class Graphs {
         return pdgMap.get(callableDeclaration);
     }
     public PDG getPDG(String methodSignature){
-        return pdgMap.get(SlicerUtil.findMethodBySignature(this,methodSignature));
+        return pdgMap.get(GraphUtil.findMethodBySignature(this,methodSignature));
     }
     public CDG getCDG(CallableDeclaration<?> callableDeclaration){return cdgMap.get(callableDeclaration);}
     public CDG getCDG(String methodSignature)
-    {return cdgMap.get(SlicerUtil.findMethodBySignature(this,methodSignature));}
+    {return cdgMap.get(GraphUtil.findMethodBySignature(this,methodSignature));}
     public CallGraph getCallGraph(){
         return this.callGraph;
     }

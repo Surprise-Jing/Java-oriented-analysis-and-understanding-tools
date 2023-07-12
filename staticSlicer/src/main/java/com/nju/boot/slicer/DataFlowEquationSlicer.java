@@ -1,16 +1,12 @@
 package com.nju.boot.slicer;
 
 import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.Edge;
-import com.nju.boot.graphs.Graph;
-import com.nju.boot.graphs.augmented.ACFG;
+import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.dependencegraph.CDG;
-import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.util.SlicerUtil;
-import org.checkerframework.checker.units.qual.C;
+import com.nju.boot.util.GraphUtil;
 
 import java.util.*;
 
@@ -111,7 +107,7 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
         }
     }
     public Set<GraphNode<?>>slice(int lineNumber,String variableName){
-        CallableDeclaration<?> tarMethod = SlicerUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
+        CallableDeclaration<?> tarMethod = GraphUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
         this.cfg = graphs.getCFG(tarMethod);
         this.cdg = graphs.getCDG(tarMethod);
         Set<String> variables = new HashSet<>();

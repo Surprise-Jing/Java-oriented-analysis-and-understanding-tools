@@ -1,4 +1,4 @@
-package com.nju.boot.graphs.printer;
+package com.nju.boot.slicer.printer;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitor;
@@ -7,7 +7,6 @@ import com.github.javaparser.printer.configuration.DefaultPrinterConfiguration;
 import com.github.javaparser.printer.configuration.PrinterConfiguration;
 
 import java.util.Set;
-import java.util.function.Function;
 
 public class SelectivePrettyPrinter implements Printer {
     Set<Node> selectedNodes;

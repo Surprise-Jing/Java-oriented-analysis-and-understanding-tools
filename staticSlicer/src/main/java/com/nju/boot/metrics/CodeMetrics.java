@@ -6,15 +6,14 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
-import com.github.javaparser.resolution.declarations.ResolvedTypeParameterDeclaration;
 import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.nju.boot.edges.CallEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.callgraph.CallGraph;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.slicer.Graphs;
-import com.nju.boot.util.SlicerUtil;
+import com.nju.boot.graphs.Graphs;
+import com.nju.boot.util.GraphUtil;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class CodeMetrics {
     }
     /**计算方法的圈复杂度*/
     public int getCyclomaticComplexity (String methodSignature){
-        return getCyclomaticComplexity(SlicerUtil.findMethodBySignature(graphs,methodSignature));
+        return getCyclomaticComplexity(GraphUtil.findMethodBySignature(graphs,methodSignature));
     }
     /**计算方法的圈复杂度*/
     public int getCyclomaticComplexity(CallableDeclaration<?> callableDeclaration){
@@ -64,16 +63,14 @@ public class CodeMetrics {
         return 1+getDepthOfInheritance(parentClassType.getTypeDeclaration().get());
     }
     public int getLineOfMethod(String methodSignature){
-        return getLineOfMethod(SlicerUtil.findMethodBySignature(graphs,methodSignature)) ;
+        return getLineOfMethod(GraphUtil.findMethodBySignature(graphs,methodSignature)) ;
     }
     public int getLineOfMethod(CallableDeclaration<?> method){
-        LineCounterVisitor lineCounterVisitor = new LineCounterVisitor();
-        method.accept(lineCounterVisitor,null);
-        return lineCounterVisitor.getCount();
+        return new LineCounter(method.toString()).getLinesOfCode();
     }
     /**根据方法的签名返回该方法调用方法的次数*/
     public int getTimesCalling(String methodSignature){
-        return getTimesCalling(SlicerUtil.findMethodBySignature(graphs,methodSignature));
+        return getTimesCalling(GraphUtil.findMethodBySignature(graphs,methodSignature));
     }
     /**根据方法的ast树结点返回该方法调用方法的次数*/
     public int getTimesCalling(CallableDeclaration<?> method){
@@ -107,7 +104,7 @@ public class CodeMetrics {
 
     /**根据方法的签名返回该方法在文件中被调用的次数*/
     public int getTimesCalled(String methodSignature){
-        return getTimesCalled(SlicerUtil.findMethodBySignature(graphs,methodSignature));
+        return getTimesCalled(GraphUtil.findMethodBySignature(graphs,methodSignature));
     }
     /**根据方法的ast树结点返回该方法在文件中被调用的次数*/
     public int getTimesCalled(CallableDeclaration<?> method){
@@ -140,7 +137,7 @@ public class CodeMetrics {
     }
     /**根据方法的签名返回该方法的入参个数*/
     public int getNumOfParameters(String methodSignature){
-        return getNumOfParameters(SlicerUtil.findMethodBySignature(graphs,methodSignature));
+        return getNumOfParameters(GraphUtil.findMethodBySignature(graphs,methodSignature));
     }
     /**根据方法的ast树结点返回该方法的入参个数*/
     public int getNumOfParameters(CallableDeclaration<?> method){

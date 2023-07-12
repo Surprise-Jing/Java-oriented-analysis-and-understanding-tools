@@ -3,15 +3,12 @@ package tests;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.nju.boot.graphs.augmented.ACFG;
-import com.nju.boot.graphs.cfg.CFG;
-import com.nju.boot.graphs.printer.SelectivePrettyPrinter;
+import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
 
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.slicer.AbstractSlicer;
 import com.nju.boot.slicer.DataFlowEquationSlicer;
-import com.nju.boot.slicer.Graphs;
-import com.nju.boot.slicer.SlicerCriterion;
+import com.nju.boot.graphs.Graphs;
 import com.nju.boot.util.PathUtils;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;

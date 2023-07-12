@@ -1,4 +1,4 @@
-package com.nju.boot.graphs.printer;
+package com.nju.boot.slicer.printer;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;

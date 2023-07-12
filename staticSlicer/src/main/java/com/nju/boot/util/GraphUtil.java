@@ -6,9 +6,9 @@ import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.printer.XmlPrinter;
-import com.nju.boot.slicer.Graphs;
+import com.nju.boot.graphs.Graphs;
 
-public class SlicerUtil {
+public class GraphUtil {
     public static CallableDeclaration<?>  findMethodByLineNumber(CompilationUnit cu,int lineNumber){
 
         for (TypeDeclaration<?> typeDeclaration:cu.getTypes()){

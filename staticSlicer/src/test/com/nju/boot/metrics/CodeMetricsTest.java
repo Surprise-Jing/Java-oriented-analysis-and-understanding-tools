@@ -1,7 +1,6 @@
 package com.nju.boot.metrics;
 
-import com.nju.boot.metrics.CodeMetrics;
-import com.nju.boot.slicer.Graphs;
+import com.nju.boot.graphs.Graphs;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
