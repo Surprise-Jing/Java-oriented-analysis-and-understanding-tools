@@ -7,7 +7,6 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.printer.XmlPrinter;
 import com.nju.boot.graphs.Graphs;
-import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
 
 import java.util.Set;

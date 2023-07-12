@@ -23,11 +23,11 @@ public class LineCounter {
         text.lines().forEach(line->{
             String trimmedLine = line.trim();
             if(trimmedLine.isBlank())lineOfBlanks++;
-            else if ((!trimmedLine.isBlank())&&
-                    (!trimmedLine.startsWith("//"))&&
-                    (!trimmedLine.startsWith("/*"))&&
-                    (!trimmedLine.startsWith("*"))&&
-                            (!trimmedLine.startsWith("*/")))
+            else if ((trimmedLine.isBlank())||
+                    (trimmedLine.startsWith("//"))||
+                    (trimmedLine.startsWith("/*"))||
+                    (trimmedLine.startsWith("*"))||
+                            (trimmedLine.startsWith("*/")))
                 lineOfComment++;
             else
                 linesOfCode++;

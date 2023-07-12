@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 class CodeMetricsTest {
     static String absolutePath = new File("").getAbsolutePath();
@@ -23,7 +28,9 @@ class CodeMetricsTest {
     void getLineOfMethod() {
         Graphs graphs = new Graphs(lineOfCodeTestPath);
         CodeMetrics codeMetrics = new CodeMetrics(graphs);
-        String methodName = graphs.getQualifiedSignatures().stream().toList().get(0);
-        System.out.println(codeMetrics.getLineOfMethod(methodName));
+        List<Integer>lOCs =  graphs.getQualifiedSignatures().stream()
+                .map(codeMetrics::getLineOfMethod).collect(Collectors.toList());
+        assert lOCs.equals(Arrays.asList(new Integer[]{10}));
+
     }
 }
