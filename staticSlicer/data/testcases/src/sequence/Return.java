@@ -23,9 +23,19 @@ public class Return {
         else if (a == 1){
 
         }
+        else if (a == 2){
+            return 2;
+        }
         else {
-            return 3;
+
         }
         return 4;
+    }
+    public int func05(int a){
+        while(a < 10){
+            a++;
+            if(a ==5) return a;
+        }
+        return a;
     }
 }

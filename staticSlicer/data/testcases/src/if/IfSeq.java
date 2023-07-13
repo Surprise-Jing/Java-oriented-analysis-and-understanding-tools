@@ -1,5 +1,5 @@
 public class IfSeq {
-    public class func01(int a,int b){
+    public void func01(int a,int b){
         int c = 0;
         c++;
         if(a == 0){
@@ -12,7 +12,7 @@ public class IfSeq {
             b = 3;
         }
     }
-    public class func02(int a,int b){
+    public void func02(int a,int b){
         if(a == 0){
             b = 1;
         }

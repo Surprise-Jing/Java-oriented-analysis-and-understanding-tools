@@ -1,5 +1,5 @@
 digraph G {
-  0 [ label="ENTER func03" ];
+  0 [ label="ENTER func04" ];
   2 [ label="a < 10" ];
   3 [ label="b < 10" ];
   4 [ label="b++;" ];
