@@ -1,6 +1,6 @@
 server:
   port: 8888
-  address: 172.27.158.191
+  address: 172.27.139.160
 spring:
   mvc:
     pathmatch:
@@ -12,7 +12,7 @@ spring:
     druid:
       url: jdbc:mysql://localhost:3306/joaut?characterEncoding=utf8&serverTimezone=UTC
       username: root
-      password: 123456
+      password: xiaoding63
       #配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
       #如果允许时报错  java.lang.ClassNotFoundException: org.apache.log4j.Priority
       #则导入 log4j 依赖即可，Maven 地址：https://mvnrepository.com/artifact/log4j/log4j
