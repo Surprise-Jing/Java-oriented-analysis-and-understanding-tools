@@ -39,6 +39,7 @@
 import axios from "axios";
 import store from "@/store/index"
 import {getFile, getFileContext, deleteFile} from "@/api/file"
+import FileSaver from "file-saver"
 
 export default {
   data(){
@@ -79,7 +80,7 @@ export default {
         })
       },
       delete_file(val){
-        deleteFile(val).then(res => {
+        deleteFile(val, localStorage.getItem("uid")).then(res => {
           if(res.success){
             if(res.data){
               this.$message.success('删除成功');
