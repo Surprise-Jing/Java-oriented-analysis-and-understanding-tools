@@ -1,0 +1,6 @@
+digraph G {
+  1 [ label="While.func01(boolean, int)" ];
+  2 [ label="While.func04(boolean, int)" ];
+  3 [ label="java.io.PrintStream.println(int)" ];
+  2 -> 3;
+}

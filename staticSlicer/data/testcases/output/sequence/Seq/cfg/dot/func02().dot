@@ -1,0 +1,15 @@
+digraph G {
+  0 [ label="ENTER func02" ];
+  1 [ label="EXIT func02" ];
+  2 [ label="int a = 0;" ];
+  3 [ label="int b = 1;" ];
+  4 [ label="int c = 2;" ];
+  5 [ label="a = b + c;" ];
+  6 [ label="b = a + c;" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 4;
+  4 -> 5;
+  5 -> 6;
+  6 -> 1;
+}

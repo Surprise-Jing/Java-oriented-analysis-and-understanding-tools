@@ -1,0 +1,15 @@
+digraph G {
+  0 [ label="ENTER func04" ];
+  2 [ label="a == 0" ];
+  3 [ label="return 1;" ];
+  4 [ label="a == 1" ];
+  5 [ label="return 3;" ];
+  6 [ label="return 4;" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+  3 -> 4 [ ];
+  2 -> 4 [ ];
+  4 -> 5 [ ];
+  5 -> 6 [ ];
+  4 -> 6 [ ];
+}
