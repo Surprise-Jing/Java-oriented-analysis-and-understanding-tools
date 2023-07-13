@@ -1,6 +1,8 @@
 <template>
-  <div>
-      DFG,待完善
+    <div class = "dfgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
+    <svg class="graph" width="1200" height="1200">
+      <g class="container"></g>
+    </svg>
       <div>
               <select
               v-model="selectFile.id"
@@ -15,38 +17,21 @@
           </option>
               </select>
       </div>
-  <div class = "dfgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
-    <svg class="graph" width="1200" height="1200">
-      <g class="container"></g>
-    </svg>
-
   </div>
 </template>
-
-<script>
-export default {
-  data(){
-    return{
-      fileData:[],//要选择的文件
-              selectFile:{
-                  id:''
-              },
-    }
-  },
-  methods:{
-    getfileid(val){
-      console.log(val)
-    }
-  }
-
 
 import dagreD3 from 'dagre-d3';
 import * as d3 from 'd3';
 
+<script>
 export default {
   name: 'cfgGraph',
   data() {
     return {
+      fileData:[],//要选择的文件
+              selectFile:{
+                  id:''
+              },
       //nodes: [],
       //edges: []
       //测试用数据
@@ -73,6 +58,9 @@ export default {
     that.draw();
   },
   methods: {
+    getfileid(val){
+      console.log(val)
+    },
 
   //绘图
   draw() {

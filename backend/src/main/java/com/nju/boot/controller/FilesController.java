@@ -65,7 +65,8 @@ public class FilesController {
 
     @PostMapping("")
     @ApiOperation(value = "上传文件")
-    public Files uploadFile(String uid,MultipartFile file) throws Exception {
+    public Files uploadFile(String uid, MultipartFile file) throws Exception {
+        System.out.println(uid);
         if(file == null) throw new Exception("请求参数缺失");
         if(file.isEmpty()){
             throw new Exception("上传失败，请选择文件");
@@ -74,12 +75,6 @@ public class FilesController {
         if(!uploadParentFile.exists()){
             uploadParentFile.mkdirs();
         }
-
-        String uuId = UUID.randomUUID().toString();
-        String originalFilename = file.getOriginalFilename();
-        String type = FileUtil.extName(originalFilename);
-        String fileUUID = uuId + StrUtil.DOT + type;
-        File uploadFile = new File(fileUploadPath + "/" + fileUUID);
 
         String md5 = SecureUtil.md5(file.getInputStream());
         String url;
@@ -93,12 +88,17 @@ public class FilesController {
             }
         }
         else {
+            String uuId = UUID.randomUUID().toString();
+            String originalFilename = file.getOriginalFilename();
+            String type = FileUtil.extName(originalFilename);
+            String fileUUID = uuId + StrUtil.DOT + type;
+            File uploadFile = new File(fileUploadPath + "/" + fileUUID);
             file.transferTo(uploadFile);
             url = "http://" + serverAddress + ":" + serverPort + "/file?id=" + fileUUID;
-            files = new Files(uuId, originalFilename, type, md5, url, uid, DateTimeUtils.getNowTimeString(), false, true);
+            files = new Files(uuId, originalFilename, type, md5, url, DateTimeUtils.getNowTimeString(), false, true);
             iFilesService.save(files);
         }
-        Userfile userfile = new Userfile(UUID.randomUUID().toString(), uid, uuId);
+        Userfile userfile = new Userfile(UUID.randomUUID().toString(), uid, files.getId());
         iUserfileService.save(userfile);
         return files;
     }
@@ -121,7 +121,7 @@ public class FilesController {
         List<Userfile> userfileList = iUserfileService.selectUserFileByUid(uid);
         for(Userfile userfile: userfileList){
             Files files = iFilesService.getById(userfile.getFid());
-            fileDtoList.add(new FileDto(UUID.randomUUID().toString(), files.getName(), files.getUploadTime()));
+            fileDtoList.add(new FileDto(files.getId(), files.getName(), files.getUploadTime()));
         }
         return fileDtoList;
     }

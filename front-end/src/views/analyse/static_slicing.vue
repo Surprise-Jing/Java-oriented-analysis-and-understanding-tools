@@ -1,5 +1,6 @@
 <template>
   <div class="static_slicing_container">
+    <el-input v-model="input" placeholder="请输入内容"></el-input>
       <div  class="file_selector">
       选择文件:
               <select
@@ -33,6 +34,7 @@
 export default {
   data(){
     return {
+      input: '',
       code:'import { createApp } from "vue"; \nimport App from "./App.vue";',//这里放要展示的代码
       slice_code:'import { createApp } from "vue"; \nimport App from "\n./App.vue";',//切片后的代码
       Variable:'',

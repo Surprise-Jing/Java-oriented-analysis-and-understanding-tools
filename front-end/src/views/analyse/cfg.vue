@@ -1,67 +1,64 @@
 <template>
-  <div>
-      CFG,待完善
-      <div>
-              <select
-              v-model="selectFile.id"
-              @change="getfileid(selectFile.id)" style="width: 150px;">
-        <option
-          class="choose_file"
-              v-for="item in fileData"
-              :key="item.fileId"
-              :label="item.fileName"
-              :value="item.fileId"
-              >
-          </option>
-              </select>
-      </div>
-  <div class = "cfgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
-    <svg class="graph" width="1200" height="1200">
-      <g class="container"></g>
-    </svg>
+    <div class = "cfgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
+      <el-select v-model="value" placeholder="请选择">
+        <el-option
+          v-for="item in fileData"
+          :key="item.id"
+          :label="item.fileName"
+          :value="item.id">
+        </el-option>
+      </el-select>
 
-  </div>
+    <div class="col-8">
+      <center><div class="image" v-html="image"></div></center>
+    </div>
+</div>
 </template>
+
+<script src="viz.js"></script>
+<script src="full.render.js"></script>
 
 <script>
 
-
-import dagreD3 from 'dagre-d3';
-import * as d3 from 'd3';
+  // var viz = new Viz();
+  // viz.renderSVGElement('digraph { a -> b }')
+  // .then(function(element) {
+  //   document.body.appendChild(element);
+  //   image = element;
+  // })
+  // .catch(error => {
+  //   // Create a new Viz instance (@see Caveats page for more info)
+  //   viz = new Viz();
+  //   // Possibly display the error
+  //   console.error(error);
+  // });
 
 export default {
-  data(){
+  name: 'cfgGraph',
+  data() {
     return {
+      value: '',
       fileData:[
         {
-          fileId:'111',
+          id:'111',
           fileName:'test1',
           file_time:'2022.0.1'
         },
         {
-          fileId:'222',
+          id:'222',
           fileName:'test2',
           file_time:'2022.0.1'
         },
         {
-          fileId:'333',
+          id:'333',
           fileName:'test3',
           file_time:'2022.0.1'
         },
       ],
       selectFile:{
         id:''
-      }
-    }
-  },
-  methods:{
-    getfileid(val){
-      console.log(val)
-    }
-  }
-  name: 'cfgGraph',
-  data() {
-    return {
+      },
+      dots:'digraph "x"{\n  1->2\n  5->2;\n  1->3;\n  3->4;\n  4->1\n}',
       //nodes: [],
       //edges: []
       //测试用数据
@@ -83,12 +80,22 @@ export default {
     ]
     };
   },
+  computed:{
+    image: function(){
+      var viz = new Viz({workURL});
+      var image = Viz(this.dots, {format: 'png-image-element'});
+      document.body.appendChild(image);
+      return image;
+    }
+  },
   mounted() {
     var that = this;
     that.draw();
   },
   methods: {
-
+    getfileid(val){
+      console.log(val)
+    },
   //绘图
   draw() {
     let g = new dagreD3.graphlib.Graph();
@@ -132,5 +139,11 @@ export default {
 </script>
 
 <style>
+
+.image {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+}
 
 </style>

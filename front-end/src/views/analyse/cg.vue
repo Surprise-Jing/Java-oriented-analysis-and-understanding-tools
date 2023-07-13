@@ -1,6 +1,9 @@
 <template>
-  <div>
-      CG,待完善
+    <div class = "cgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
+    <svg class="graph" width="1200" height="1200">
+      <g class="container"></g>
+    </svg>
+
       <div>
               <select
               v-model="selectFile.id"
@@ -15,32 +18,19 @@
           </option>
               </select>
       </div>
-  <div class = "cgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
-    <svg class="graph" width="1200" height="1200">
-      <g class="container"></g>
-    </svg>
+    </div>
 
-  </div>
 </template>
 
 <script>
 export default {
-  data(){
-    return{
+  name: 'cfgGraph',
+  data() {
+    return {
       fileData:[],//要选择的文件
               selectFile:{
                   id:''
               },
-    }
-  },
-  methods:{
-    getfileid(val){
-      console.log(val)
-    }
-  }
-  name: 'cfgGraph',
-  data() {
-    return {
       //nodes: [],
       //edges: []
       //测试用数据
@@ -67,6 +57,9 @@ export default {
     that.draw();
   },
   methods: {
+    getfileid(val){
+      console.log(val)
+    },
 
   //绘图
   draw() {
