@@ -1,27 +1,27 @@
 public class If {
-    public int func(int a,int b){
+    public void func01(int a){
         if(a == 0){
-            b=1
+            System.out.println(1);
         }
 
     }
-    public int func(int a,int b){
+    public void func02(int a){
         if(a == 0){
-            b=1
+            System.out.println(1);
         }
         else {
-            b=3
+            System.out.println(3);
         }
     }
-    public int func(int a,int b){
+    public void func03(int a){
         if(a == 0){
-            b=1
+            System.out.println(1);
         }
         else if(a == 1){
-            b=2
+            System.out.println(2);
         }
         else {
-            b=3
+            System.out.println(3);
         }
     }
 }

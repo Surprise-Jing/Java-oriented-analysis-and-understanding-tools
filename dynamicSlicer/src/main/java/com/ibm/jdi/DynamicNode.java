@@ -1,4 +1,4 @@
-package com.ibm.jdi.test;
+package com.ibm.jdi;
 
 import lombok.Data;
 

@@ -1,0 +1,7 @@
+digraph G {
+  0 [ label="ENTER func01" ];
+  2 [ label="a == 0" ];
+  3 [ label="System.out.println(1);" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+}

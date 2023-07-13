@@ -1,4 +1,4 @@
-package com.ibm.jdi.test;
+package com.ibm.jdi;
 
 import com.github.javaparser.ast.stmt.BreakStmt;
 import com.nju.boot.edges.Edge;

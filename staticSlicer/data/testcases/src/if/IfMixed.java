@@ -1,5 +1,5 @@
 public class IfMixed {
-    pubic void func01(int a,int b){
+    public void func01(int a,int b){
         if(a == 0){
             b = 1;
         }
