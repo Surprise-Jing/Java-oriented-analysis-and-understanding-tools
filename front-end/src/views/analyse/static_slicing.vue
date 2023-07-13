@@ -93,11 +93,12 @@ export default {
     }
   },
   watch:{
-    code, slice_code:{
-        handler(item1, item2){
-        this.
-      }
-    }
+    code(newValue){
+      this.code = newValue;
+    },
+    slice_code(newValue){
+      this.slice_code = newValue;
+    },
     immediate: true
   },
   methods:{

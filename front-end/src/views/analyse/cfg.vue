@@ -13,14 +13,8 @@
       <center><div class="image" v-html="image"></div></center>
     </div>
 </div>
-  <div class = "cfgGraph">
-  <div id = "image">
-  </div>
-  </div>
 </template>
 
-<script src="viz.js"></script>
-<script src="full.render.js"></script>
 
 <script>
 
