@@ -13,6 +13,10 @@
       <center><div class="image" v-html="image"></div></center>
     </div>
 </div>
+  <div class = "cfgGraph">
+  <div id = "image">
+  </div>
+  </div>
 </template>
 
 <script src="viz.js"></script>
@@ -20,130 +24,120 @@
 
 <script>
 
-  // var viz = new Viz();
-  // viz.renderSVGElement('digraph { a -> b }')
-  // .then(function(element) {
-  //   document.body.appendChild(element);
-  //   image = element;
-  // })
-  // .catch(error => {
-  //   // Create a new Viz instance (@see Caveats page for more info)
-  //   viz = new Viz();
-  //   // Possibly display the error
-  //   console.error(error);
-  // });
+
+import * as vis from 'vis-network'
 
 export default {
   name: 'cfgGraph',
   data() {
     return {
-      value: '',
-      fileData:[
-        {
-          id:'111',
-          fileName:'test1',
-          file_time:'2022.0.1'
-        },
-        {
-          id:'222',
-          fileName:'test2',
-          file_time:'2022.0.1'
-        },
-        {
-          id:'333',
-          fileName:'test3',
-          file_time:'2022.0.1'
-        },
-      ],
-      selectFile:{
-        id:''
-      },
-      dots:'digraph "x"{\n  1->2\n  5->2;\n  1->3;\n  3->4;\n  4->1\n}',
-      //nodes: [],
-      //edges: []
-      //测试用数据
-    nodes: [
-      { id: 0, label: "流动人员", shape: "rect" },
-      { id: 1, label: "安全筛查", shape: "rect" },
-      { id: 2, label: "热像仪人体测温筛查", shape: "diamond" },
-      { id: 3, label: "人工复测", shape: "diamond" },
-      { id: 4, label: "快速通过", shape: "rect" },
-      { id: 5, label: "紧急处理", shape: "rect" }
-    ],
-    edges: [
-      { source: 0, target: 1, label: "" },
-      { source: 1, target: 2, label: "" },
-      { source: 2, target: 4, label: "正常" },
-      { source: 2, target: 3, label: "不正常" },
-      { source: 3, target: 5, label: "不正常" },
-      { source: 3, target: 4, label: "正常" }
-    ]
+      showHover: false,
+      dot : `
+      digraph G {
+  0 [ label="ENTER main" ];
+  1 [ label="EXIT main" ];
+  2 [ label="int n = 0;" ];
+  3 [ label="int i = 1;" ];
+  4 [ label="int sum = 0;" ];
+  5 [ label="int product = 1;" ];
+  6 [ shape="diamond" label="i < n" ];
+  7 [ label="sum = sum + i;" title="test"];
+  8 [ label="product = product * i;" ];
+  9 [ label="i = i + 1;" ];
+  10 [ label="System.out.println(sum);" ];
+  11 [ label="System.out.println(product);" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 4;
+  4 -> 5;
+  5 -> 6;
+  6 -> 7;
+  7 -> 8;
+  8 -> 9;
+  9 -> 6;
+  6 -> 10;
+  10 -> 11;
+  11 -> 1;
+}
+`,
+
     };
   },
-  computed:{
-    image: function(){
-      var viz = new Viz({workURL});
-      var image = Viz(this.dots, {format: 'png-image-element'});
-      document.body.appendChild(image);
-      return image;
-    }
+  mounted () {
+    this.draw();
+
   },
-  mounted() {
-    var that = this;
-    that.draw();
-  },
-  methods: {
-    getfileid(val){
-      console.log(val)
+  methods : {
+    draw(){
+
+      let that = this;
+      let parsedData = vis.parseDOTNetwork(that.dot);
+      let data = {
+        nodes: parsedData.nodes,
+        edges: parsedData.edges
+      }
+
+console.log(data.nodes.label);
+console.log(data.edges);
+
+let options = parsedData.options;
+
+
+options.nodes = {
+  color: {
+      border: '#000',
+      background: '#fff',
     },
-  //绘图
-  draw() {
-    let g = new dagreD3.graphlib.Graph();
-  //设置图
-  g.setGraph({
-    rankdir: 'LR'
-  });
+  fixed: {
+    x: false,
+    y: false
+  }
+};
+options.edges = {
+  color: "black"
+};
+options.layout = {
+    hierarchical: {
+      direction: 'UD',
+      sortMethod: 'directed',
+      levelSeparation: 75,
+      nodeSpacing: 200
+    }
+  };
 
-  console.log(this.nodes);
-  console.log(this.edges);
+  options.interaction = {
+    tooltipDelay: 300
+  }
 
-  this.nodes.forEach(item => {
-    g.setNode(item.id, {
-      //节点标签
-      label: item.label,
-      //节点形状
-      shape: item.shape,
-      //节点样式
-      style: "fill:#F0F8FF;stroke:#000"
-    })
-  })
-  this.edges.forEach(item => {
-    g.setEdge(item.source, item.target, {
-      //边标签
-      label: item.label,
-      //边样式
-      style: "fill:#4682B4;stroke:#000;stroke-width:2px"
-    })
-  })
-  // 创建渲染器
-  let render = new dagreD3.render();
-  // 选择 svg 并添加一个g元素作为绘图容器.
-  let svgGroup = d3.select('svg').append('g');
-  // 在绘图容器上运行渲染器生成流程图.
-  render(svgGroup, g);
+  options.physics = {
 
-  },
+enabled: false,}
 
-},
+
+let container = document.getElementById("image");
+let network = new vis.Network(container, data, options);
+
+  }}
+
 }
 </script>
 
-<style>
-
-.image {
-    position: fixed;
-    top: 80px;
-    left: 50%;
+<style type="text/css">
+.cfgGraph {
+	width: 1200px;
+	height: 500px;
+	border: 1px solid #000000;
+	position: relative;
 }
-
-</style>
+      #image {
+        width: 1000px;
+	height: 500px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	background: #ffffff;
+      }
+    </style>
