@@ -2,6 +2,7 @@ package com.nju.boot.slicer;
 
 import com.github.javaparser.ast.Node;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
 import com.nju.boot.util.GraphsUtil;
 
 import java.util.Set;
@@ -18,4 +19,6 @@ public abstract class AbstractSlicer {
     public  Set<Integer> getSlicedLines(){
         return GraphsUtil.getLinesCoveredByNodes(getSlicedAstNode());
     }
+    public  abstract String getResultCode();
+
 }

@@ -1,0 +1,9 @@
+digraph G {
+  1 [ label="If.func01(int)" ];
+  2 [ label="If.func02(int)" ];
+  3 [ label="If.func03(int)" ];
+  4 [ label="java.io.PrintStream.println(int)" ];
+  1 -> 4;
+  2 -> 4;
+  3 -> 4;
+}

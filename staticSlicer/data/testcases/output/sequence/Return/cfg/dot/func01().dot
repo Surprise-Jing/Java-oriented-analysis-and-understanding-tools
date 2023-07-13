@@ -1,0 +1,7 @@
+digraph G {
+  0 [ label="ENTER func01" ];
+  1 [ label="EXIT func01" ];
+  2 [ label="return;" ];
+  0 -> 2;
+  2 -> 1;
+}

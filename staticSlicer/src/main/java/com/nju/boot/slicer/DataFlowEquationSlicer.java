@@ -6,6 +6,7 @@ import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
 import com.nju.boot.util.GraphsUtil;
 
 import java.util.*;
@@ -117,6 +118,11 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
     @Override
     public Set<GraphNode<?>> getSlicedGraphNode() {
         return  relevantStatements;
+    }
+
+    @Override
+    public String getResultCode() {
+        return new SelectivePrettyPrinter(getSlicedAstNode()).print(graphs.getCu());
     }
 
     public AbstractSlicer slice(SlicerCriterion slicerCriterion){

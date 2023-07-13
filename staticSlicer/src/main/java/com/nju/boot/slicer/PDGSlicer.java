@@ -38,7 +38,10 @@ public class PDGSlicer extends AbstractSlicer{
         return slicedNodes;
     }
 
-
+    @Override
+    public String getResultCode() {
+        return new SelectivePrettyPrinter(getSlicedAstNode()).print(graphs.getCu());
+    }
 
 
     /**根据行号找到方法声明*/

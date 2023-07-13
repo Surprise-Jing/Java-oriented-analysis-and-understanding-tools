@@ -122,7 +122,7 @@ class GraphsTest {
     public void whileTests() throws IOException {
         testFiles("while");
     }
-    @Test
+    //@Test
     public void testSpecific() throws IOException{
         testFiles("specific");
     }

@@ -1,5 +1,0 @@
-digraph G {
-  1 [ label="WhileIf.function()" ];
-  2 [ label="java.io.PrintStream.println(int)" ];
-  1 -> 2;
-}

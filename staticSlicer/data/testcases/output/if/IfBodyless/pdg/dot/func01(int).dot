@@ -1,0 +1,5 @@
+digraph G {
+  0 [ label="ENTER func01" ];
+  2 [ label="a == 0" ];
+  0 -> 2 [ ];
+}

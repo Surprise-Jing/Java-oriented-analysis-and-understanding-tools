@@ -1,5 +1,6 @@
 package com.ibm.jdi.test;
 
+import com.ibm.jdi.DynamicSlicer;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.util.GraphsUtil;
@@ -20,7 +21,8 @@ class DynamicSlicerTest {
         Graphs graphs = new Graphs(wholePath);
         CDG cdg = graphs.getCDG(GraphsUtil.findMethodByLineNumber(graphs.getCu(), 20));
         System.out.println(cdg.toString());
-        Set<Integer> result = new DynamicSlicer().ProgramExecute(filePath, fileName, "Test1", "", 20, cdg);
+        Set<Integer> result = new DynamicSlicer(wholePath).slice("",20).getSlicedLines();
+
         System.out.println(result);
     }
 }

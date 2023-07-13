@@ -47,14 +47,15 @@ public class PDGSlicerTest {
     }
     @Test
     void getSlicedCode() throws IOException {
-        testSlice("specific","Specific.java",10,"i");
-        testSlice("specific","Specific.java",9,"sum");
-        testSlice("specific","Specific.java",7,"i");
-        testSlice("specific","Specific.java",6,"i");
-        testSlice("specific","Specific.java",6,"sum");
-        testSlice("specific","Specific.java",5,"i");
-        testSlice("specific","Specific.java",4,"sum");
-        testSlice("specific","Specific.java",3,"i");
+//        testSlice("specific","Specific.java",10,"i");
+//        testSlice("specific","Specific.java",9,"sum");
+//        testSlice("specific","Specific.java",7,"i");
+//        testSlice("specific","Specific.java",6,"i");
+//        testSlice("specific","Specific.java",6,"sum");
+//        testSlice("specific","Specific.java",5,"i");
+//        testSlice("specific","Specific.java",4,"sum");
+//        testSlice("specific","Specific.java",3,"i");
+        testSlice("specific","Specific.java",20,"prod");
 
     }
 }

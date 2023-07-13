@@ -1,6 +1,0 @@
-digraph G {
-  1 [ label="If1.ifFunc()" ];
-  2 [ label="If1.ifElseFunc()" ];
-  3 [ label="If1.ifElseIfElseFunc()" ];
-  4 [ label="If1.ifTrueFunc()" ];
-}
