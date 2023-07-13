@@ -1,0 +1,12 @@
+digraph G {
+  0 [ label="ENTER func02" ];
+  1 [ label="EXIT func02" ];
+  2 [ shape="diamond" label="b < 4" ];
+  3 [ label="b++;" ];
+  4 [ label="System.out.println(b);" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 2;
+  2 -> 4;
+  4 -> 1;
+}

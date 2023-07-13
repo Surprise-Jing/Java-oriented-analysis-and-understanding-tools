@@ -1,0 +1,38 @@
+server:
+  port: 8888
+  address: 172.27.158.191
+spring:
+  mvc:
+    pathmatch:
+      # 引入swagger3.0时加入的配置 localhost:8080/swagger-ui/index.html
+      matching-strategy: ant_path_matcher
+  datasource:
+    type:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      url: jdbc:mysql://localhost:3306/joaut?characterEncoding=utf8&serverTimezone=UTC
+      username: root
+      password: 123456
+      #配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+      #如果允许时报错  java.lang.ClassNotFoundException: org.apache.log4j.Priority
+      #则导入 log4j 依赖即可，Maven 地址：https://mvnrepository.com/artifact/log4j/log4j
+      filters: stat,log4j,wall
+      maxPoolPreparedStatementPerConnectionSize: 20
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  cache:
+    redis:
+      #使用前缀
+      use-key-prefix: true
+      #redis过期时间
+      time-to-live: 60s
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: ASSIGN_UUID
+      #schema: classpath:/sql/schema.sql
+  type-aliases-package: com.nju.boot.entity
+files:
+  upload:
+    path: D:/Java-oriented-analysis-and-understanding-tools/backend/file
+
