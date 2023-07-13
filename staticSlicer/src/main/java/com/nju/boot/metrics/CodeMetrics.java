@@ -19,7 +19,9 @@ import java.util.List;
 
 public class CodeMetrics {
     Graphs graphs;
-
+    public CodeMetrics(String fileName){
+        this.graphs = new Graphs(fileName);
+    }
     public CodeMetrics(Graphs graphs) {
         this.graphs = graphs;
     }

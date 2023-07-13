@@ -73,8 +73,8 @@ public class Graphs {
 
         try {
             Optional<CompilationUnit> _cu =  javaParser.parse(file).getResult();
-
             cu = _cu.orElse(null);
+
             if (cu==null) throw new RuntimeException("ast树生成时发生错误");
         } catch (FileNotFoundException e) {
             throw new RuntimeException("找不到要切片的文件",e);
