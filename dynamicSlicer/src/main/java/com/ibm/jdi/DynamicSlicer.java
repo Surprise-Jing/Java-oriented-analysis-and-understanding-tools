@@ -5,7 +5,9 @@ import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.util.GraphsUtil;
 
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DynamicSlicer {
     Set<Integer> result;
@@ -15,7 +17,7 @@ public class DynamicSlicer {
     String className;
 
     public DynamicSlicer(String filePath) {
-        path = Paths.get(filePath).getRoot().toString();
+        path = Paths.get(filePath).getParent().toString();
         fileName = Paths.get(filePath).getFileName().toString();
         className = fileName.substring(0, fileName.lastIndexOf('.'));
         graphs = new Graphs(filePath);
@@ -40,6 +42,12 @@ public class DynamicSlicer {
         return result;
     }
     public String getSlicedCode() {
-        return "";
+        String fileStr = graphs.getCu().toString();
+        List<String> lines = fileStr.lines().collect(Collectors.toList());
+        String resultStr = new String();
+        for(int i = 0;i<lines.size();i++){
+            if(result.contains(i+1))resultStr+=lines.get(i);
+        }
+        return resultStr;
     }
 }
