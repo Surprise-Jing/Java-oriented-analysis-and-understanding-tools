@@ -57,7 +57,7 @@ public class SlicerTest {
 //        }
         Graphs graphs = new Graphs(fileName);
         AbstractSlicer slicer = new DataFlowEquationSlicer(graphs);
-        Set<GraphNode<?>> slicedResults = slicer.slice(13,"product");
+        Set<GraphNode<?>> slicedResults = slicer.slice(13,"product").getSlicedGraphNode();
         File outDir = new File(outDirPath);
         if(!outDir.exists())outDir.mkdirs();
         FileWriter writer = new FileWriter(Paths.get(outDirPath,outFileName).toFile());

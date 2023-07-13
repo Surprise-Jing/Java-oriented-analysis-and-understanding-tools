@@ -6,7 +6,8 @@ import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.util.GraphUtil;
+import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
+import com.nju.boot.util.GraphsUtil;
 
 import java.util.*;
 
@@ -105,8 +106,8 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
             }
         }
     }
-    public Set<GraphNode<?>>slice(int lineNumber,String variableName){
-        CallableDeclaration<?> tarMethod = GraphUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
+    public AbstractSlicer slice(int lineNumber,String variableName){
+        CallableDeclaration<?> tarMethod = GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
         this.cfg = graphs.getCFG(tarMethod);
         this.cdg = graphs.getCDG(tarMethod);
         Set<String> variables = new HashSet<>();
@@ -114,7 +115,17 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
         return slice(new SlicerCriterion(variables,lineNumber,cfg));
     }
 
-    public Set<GraphNode<?>> slice(SlicerCriterion slicerCriterion){
+    @Override
+    public Set<GraphNode<?>> getSlicedGraphNode() {
+        return  relevantStatements;
+    }
+
+    @Override
+    public String getResultCode() {
+        return new SelectivePrettyPrinter(getSlicedAstNode()).print(graphs.getCu());
+    }
+
+    public AbstractSlicer slice(SlicerCriterion slicerCriterion){
         InitializeRC0(slicerCriterion);
         InitializeSC0(slicerCriterion);
         System.out.println(relevantVariables);
@@ -160,7 +171,7 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
             }
         }
         relevantStatements.add(cfg.getRootNode().get());
-        return relevantStatements;
+        return this;
     }
 
     Set<GraphNode<?>> INFL(GraphNode<?> node){

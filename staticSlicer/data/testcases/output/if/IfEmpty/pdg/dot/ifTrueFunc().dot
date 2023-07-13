@@ -1,7 +1,0 @@
-digraph G {
-  0 [ label="ENTER ifTrueFunc" ];
-  2 [ label="true" ];
-  3 [ label="false" ];
-  0 -> 2 [ ];
-  0 -> 3 [ ];
-}

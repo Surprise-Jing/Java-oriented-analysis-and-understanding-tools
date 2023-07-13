@@ -1,0 +1,4 @@
+digraph G {
+  1 [ label="Seq.func01()" ];
+  2 [ label="Seq.func02()" ];
+}

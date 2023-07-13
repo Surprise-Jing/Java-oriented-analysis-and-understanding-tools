@@ -1,4 +1,0 @@
-digraph G {
-  1 [ label="Sequence1.func()" ];
-  2 [ label="Sequence1.func2()" ];
-}
