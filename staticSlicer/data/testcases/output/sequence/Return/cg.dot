@@ -1,0 +1,6 @@
+digraph G {
+  1 [ label="Return.func01()" ];
+  2 [ label="Return.func02()" ];
+  3 [ label="Return.func03(int)" ];
+  4 [ label="Return.func04(int)" ];
+}

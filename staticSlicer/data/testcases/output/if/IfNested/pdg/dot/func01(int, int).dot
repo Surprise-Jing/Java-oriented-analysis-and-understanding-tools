@@ -1,0 +1,11 @@
+digraph G {
+  0 [ label="ENTER func01" ];
+  2 [ label="a == 0" ];
+  3 [ label="b == 0" ];
+  4 [ label="b == 1" ];
+  5 [ label="a == 1" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+  3 -> 4 [ ];
+  2 -> 5 [ ];
+}
