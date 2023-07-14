@@ -68,5 +68,4 @@ public abstract class Graph<RootN extends Node> extends DirectedPseudograph<Grap
         return Optional.ofNullable(exit);
     }
 
-
 }

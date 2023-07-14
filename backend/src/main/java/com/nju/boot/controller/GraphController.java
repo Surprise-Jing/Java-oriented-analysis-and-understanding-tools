@@ -21,7 +21,7 @@ public class GraphController {
     @GetMapping("/ast")
     @ApiOperation(value = "获得语法分析树AST")
     public String getAST(@RequestParam("id") String id){
-        String path = fileUploadPath + "/" + id;
+        String path = fileUploadPath + "/" + id + ".java";
         Graphs graphs = new Graphs(path);
         return GraphsUtil.astNodeToXml(graphs.getCu());
     }
@@ -29,7 +29,7 @@ public class GraphController {
     @GetMapping("/cg")
     @ApiOperation(value = "获得函数调用图Call graph")
     public String getCallGraph(@RequestParam("id") String id){
-        String path = fileUploadPath + "/" + id;
+        String path = fileUploadPath + "/" + id + ".java";
         Graphs graphs = new Graphs(path);
         return graphs.getCallGraph().toString();
     }
@@ -37,7 +37,7 @@ public class GraphController {
     @GetMapping("/method")
     @ApiOperation(value = "获得文件的所有方法")
     public Set<String> getMethod(@RequestParam("id") String id){
-        String path = fileUploadPath + "/" + id;
+        String path = fileUploadPath + "/" + id + ".java";
         Graphs graphs = new Graphs(path);
         return graphs.getQualifiedSignatures();
     }
@@ -45,7 +45,7 @@ public class GraphController {
     @GetMapping("/cfg")
     @ApiOperation(value = "获得控制流程图CFG")
     public String getCFG(String id, String method){
-        String path = fileUploadPath + "/" + id;
+        String path = fileUploadPath + "/" + id + ".java";
         Graphs graphs = new Graphs(path);
         if(method == null){
             Set<String> methods = graphs.getQualifiedSignatures();
@@ -57,7 +57,7 @@ public class GraphController {
     @GetMapping("/pdg")
     @ApiOperation(value = "获得程序依赖图PDG")
     public String getPDG(String id, String method){
-        String path = fileUploadPath + "/" + id;
+        String path = fileUploadPath + "/" + id + ".java";
         Graphs graphs = new Graphs(path);
         if(method == null){
             Set<String> methods = graphs.getQualifiedSignatures();

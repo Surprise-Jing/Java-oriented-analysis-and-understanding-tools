@@ -1,6 +1,6 @@
 server:
   port: 8888
-  address: 172.27.139.160
+  address: 172.24.79.137
 spring:
   mvc:
     pathmatch:

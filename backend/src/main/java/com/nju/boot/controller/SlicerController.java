@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/slicer")
 @Api(tags = "程序切片接口")
@@ -22,29 +25,38 @@ public class SlicerController {
 
     @GetMapping("/dataflow")
     @ApiOperation(value = "基于数据流方程的切片")
-    public String DataFlowEquationSlicing(String id, int lineNumber, String variable) throws Exception{
+    public Object DataFlowEquationSlicing(String id, int lineNumber, String variable) throws Exception{
         if(lineNumber == 0 || variable.equals("")) {
             throw new Exception("切片参数不齐全");
         }
         String path = fileUploadPath + "/" + id + ".java";
         AbstractSlicer abstractSlicer = new DataFlowEquationSlicer(path);
-        return abstractSlicer.slice(lineNumber,variable).getResultCode();
+        Map<String, String> res = new HashMap<>();
+        res.put("result", abstractSlicer.slice(lineNumber,variable).getResultCode());
+        return res;
     }
 
     @GetMapping("/pdg")
     @ApiOperation(value = "基于程序依赖图的切片")
-    public String PDGSlicing(String id, int lineNumber, String variable){
+    public Map<String, String> PDGSlicing(String id, int lineNumber, String variable) throws Exception {
+        if(lineNumber == 0 || variable.equals("")) {
+            throw new Exception("切片参数不齐全");
+        }
         String path = fileUploadPath + "/" + id + ".java";
         AbstractSlicer abstractSlicer = new PDGSlicer(path);
-        return abstractSlicer.slice(lineNumber,variable).getResultCode();
+        Map<String, String> res = new HashMap<>();
+        res.put("result", abstractSlicer.slice(lineNumber,variable).getResultCode());
+        return res;
     }
 
     @GetMapping("/dynamic")
     @ApiOperation(value = "动态切片")
-    public String DynamicSlicing(String id, int lineNumber, String input) throws Exception{
+    public Map<String, String> DynamicSlicing(String id, int lineNumber, String input) throws Exception{
         String path = fileUploadPath + "/" + id + ".java";
         DynamicSlicer dynamicSlicer = new DynamicSlicer(path);
-        return dynamicSlicer.slice(input, lineNumber).getSlicedCode();
+        Map<String, String> res = new HashMap<>();
+        res.put("result", dynamicSlicer.slice(input, lineNumber).getSlicedCode());
+        return res;
     }
 
 }
