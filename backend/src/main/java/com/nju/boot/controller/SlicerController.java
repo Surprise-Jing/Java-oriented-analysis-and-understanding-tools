@@ -1,9 +1,12 @@
 package com.nju.boot.controller;
 
 import com.ibm.jdi.DynamicSlicer;
+import com.nju.boot.mapper.FilesMapper;
+import com.nju.boot.service.IFilesService;
 import com.nju.boot.slicer.AbstractSlicer;
 import com.nju.boot.slicer.DataFlowEquationSlicer;
 import com.nju.boot.slicer.PDGSlicer;
+import com.nju.boot.utils.PathUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +23,8 @@ import java.util.Map;
 @Api(tags = "程序切片接口")
 public class SlicerController {
 
-    @Value("${files.upload.path}")
-    private String fileUploadPath;
+    @Resource
+    private FilesMapper filesMapper;
 
 
     @GetMapping("/dataflow")
@@ -29,7 +33,8 @@ public class SlicerController {
         if(lineNumber == 0 || variable.equals("")) {
             throw new Exception("切片参数不齐全");
         }
-        String path = fileUploadPath + "/" + id + ".java";
+        String fileName = filesMapper.selectById(id).getName();
+        String path = PathUtils.FILEPATH + "/" + fileName;
         AbstractSlicer abstractSlicer = new DataFlowEquationSlicer(path);
         Map<String, String> res = new HashMap<>();
         res.put("result", abstractSlicer.slice(lineNumber,variable).getResultCode());
@@ -42,7 +47,8 @@ public class SlicerController {
         if(lineNumber == 0 || variable.equals("")) {
             throw new Exception("切片参数不齐全");
         }
-        String path = fileUploadPath + "/" + id + ".java";
+        String fileName = filesMapper.selectById(id).getName();
+        String path = PathUtils.FILEPATH + "/" + fileName;
         AbstractSlicer abstractSlicer = new PDGSlicer(path);
         Map<String, String> res = new HashMap<>();
         res.put("result", abstractSlicer.slice(lineNumber,variable).getResultCode());
@@ -52,8 +58,10 @@ public class SlicerController {
     @GetMapping("/dynamic")
     @ApiOperation(value = "动态切片")
     public Map<String, String> DynamicSlicing(String id, int lineNumber, String input) throws Exception{
-        String path = fileUploadPath + "/" + id + ".java";
-        DynamicSlicer dynamicSlicer = new DynamicSlicer(path);
+        String fileName = filesMapper.selectById(id).getName();
+        String path = PathUtils.FILEPATH + "/" + fileName;
+        String className = fileName.substring(0, fileName.indexOf("."));
+        DynamicSlicer dynamicSlicer = new DynamicSlicer(path, className);
         Map<String, String> res = new HashMap<>();
         res.put("result", dynamicSlicer.slice(input, lineNumber).getSlicedCode());
         return res;

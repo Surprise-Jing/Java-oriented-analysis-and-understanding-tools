@@ -4,26 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="603b80da-ea32-4c66-8f51-0a1edb9e811b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+    <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/PathUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/WhileIf.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicExecuter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicExecuter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/staticSlicer.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/0645acfd-3ae0-4b23-abae-7c21096b342f.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/2db0e800-f397-4160-865d-43c6045da38f.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/2f7bcb8c-0918-4ba5-b976-f65a3610e7f6.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/3550c7aa-b167-4285-9613-dbb4962af958.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/4f966c07-13d1-4f9b-993d-5a364d8382e8.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/549f8274-f15b-4066-9399-bcf6b7d8d83e.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/781cd92f-9e50-4048-bfd2-54ac5872cfd1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/Test2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/cc33bf96-3f55-4020-8e90-2ed7e3c552be.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/file/d74124b2-34ab-4372-8905-a285386eea35.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/FilesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/FilesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/GraphController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/GraphController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/MetricsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/MetricsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/SlicerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/SlicerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/Files.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/Files.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicSlicer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicSlicer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/permission.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/dynamic_slicing.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/dynamic_slicing.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/pdg.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/pdg.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/dashboard/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/dashboard/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/metrics/CodeMetricsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/metrics/CodeMetricsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/test/tests/PDGTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/test/tests/PDGTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,6 +66,9 @@
     </option>
   </component>
   <component name="ProjectId" id="2SZHcnjzub9K7Qhbm4jhN1s15Bk" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -51,10 +76,20 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/Java-oriented-analysis-and-understanding-tools/backend/file",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Java-oriented-analysis-and-understanding-tools\backend\file" />
+      <recent name="D:\Java-oriented-analysis-and-understanding-tools\dynamicSlicer\data\test\src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.MainApplication">
     <configuration name="MainApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.nju.boot.MainApplication" />
       <module name="backend" />
@@ -68,9 +103,47 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DynamicSlicerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="dynamicSlicer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ibm.jdi.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ibm.jdi.test" />
+      <option name="MAIN_CLASS_NAME" value="com.ibm.jdi.test.DynamicSlicerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DynamicSlicerTest.programExecute" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="dynamicSlicer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ibm.jdi.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.ibm.jdi.test" />
+      <option name="MAIN_CLASS_NAME" value="com.ibm.jdi.test.DynamicSlicerTest" />
+      <option name="METHOD_NAME" value="programExecute" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.MainApplication" />
+      <item itemvalue="JUnit.DynamicSlicerTest" />
+      <item itemvalue="JUnit.DynamicSlicerTest.programExecute" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MainApplication" />
+        <item itemvalue="JUnit.DynamicSlicerTest" />
+        <item itemvalue="JUnit.DynamicSlicerTest.programExecute" />
       </list>
     </recent_temporary>
   </component>
@@ -95,5 +168,15 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.sql.SQLException" package="java.sql" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -7,7 +7,7 @@
       <div class="input_x">
         请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
         <p></p>
-        请输入变量:<el-input class="getvar" v-model="variable"></el-input>
+        请输入程序输入值:<el-input class="getvar" v-model="variable"></el-input>
         <el-button @click="input_ok">确定</el-button>
       </div>
       <div class="choose_file" >
@@ -50,7 +50,7 @@ export default {
     input_ok() {
       DynamicSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
         if(res.success){
-            this.content2 = res.data;
+            this.content2 = res.data.result;
           }
           else{
             this.$message({

@@ -22,13 +22,13 @@ public class DynamicSlicer {
     String fileName;
     String className;
 
-    public DynamicSlicer(String filePath) {
+    public DynamicSlicer(String filePath, String nameOfFile) {
         System.out.println(filePath);
         path = Paths.get(filePath).getParent().toString();
         System.out.println(path);
         fileName = Paths.get(filePath).getFileName().toString();
         System.out.println(fileName);
-        className = fileName.substring(0, fileName.lastIndexOf('.'));
+        className = nameOfFile;
         System.out.println(className);
         graphs = new Graphs(filePath);
     }
@@ -74,7 +74,7 @@ public class DynamicSlicer {
         List<String> lines = fileStr.lines().collect(Collectors.toList());
         String resultStr = new String();
         for(int i = 0;i<lines.size();i++){
-            if(result.contains(i+1))resultStr+=lines.get(i);
+            if(result.contains(i+1))resultStr+=lines.get(i)+'\n';
         }
         return resultStr;
     }

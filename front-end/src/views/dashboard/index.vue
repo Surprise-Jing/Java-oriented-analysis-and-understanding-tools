@@ -36,8 +36,6 @@
 </template>
 
 <script>
-import axios from "axios";
-import store from "@/store/index"
 import {getFile, getFileContext, deleteFile} from "@/api/file"
 import FileSaver from "file-saver"
 

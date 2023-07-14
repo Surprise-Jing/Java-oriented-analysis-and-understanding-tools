@@ -16,6 +16,7 @@ import com.nju.boot.service.IFilesService;
 import com.nju.boot.service.IUserfileService;
 import com.nju.boot.service.impl.FilesServiceImpl;
 import com.nju.boot.utils.DateTimeUtils;
+import com.nju.boot.utils.PathUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
@@ -43,9 +44,6 @@ import java.util.*;
 @Api(tags = "文件上传接口")
 public class FilesController {
 
-    @Value("${files.upload.path}")
-    private String fileUploadPath;
-
     @Value("${server.port}")
     private String serverPort;
 
@@ -69,7 +67,7 @@ public class FilesController {
         if(file.isEmpty()){
             throw new Exception("上传失败，请选择文件");
         }
-        File uploadParentFile = new File(fileUploadPath);
+        File uploadParentFile = new File(PathUtils.FILEPATH);
         if(!uploadParentFile.exists()){
             uploadParentFile.mkdirs();
         }
@@ -90,7 +88,7 @@ public class FilesController {
             String originalFilename = file.getOriginalFilename();
             String type = FileUtil.extName(originalFilename);
             String fileUUID = uuId + StrUtil.DOT + type;
-            File uploadFile = new File(fileUploadPath + "/" + fileUUID);
+            File uploadFile = new File(PathUtils.FILEPATH + "/" + originalFilename);
             file.transferTo(uploadFile);
             url = "http://" + serverAddress + ":" + serverPort + "/file?id=" + fileUUID;
             files = new Files(uuId, originalFilename, type, md5, url, DateTimeUtils.getNowTimeString(), false, true);
@@ -108,7 +106,8 @@ public class FilesController {
         if("".equals(id)){
             return map;
         }
-        String path = fileUploadPath + "/" + id + ".java";
+        String fileName = filesMapper.selectById(id).getName();
+        String path = PathUtils.FILEPATH + "/" + fileName;
         File file = new File(path);
         Files files = iFilesService.getById(id);
         map.put("fileName", files.getName());
