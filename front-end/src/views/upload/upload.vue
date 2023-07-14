@@ -122,7 +122,8 @@ export default {
       top:30%;
       transform: translate(-50%,-50%);
       background-color:darkslategrey;
-      //border-radius: 5%;
+      opacity: 0.75;
+      border-radius: 5%;
     }
     .uploader-tips {
       text-align: center;
