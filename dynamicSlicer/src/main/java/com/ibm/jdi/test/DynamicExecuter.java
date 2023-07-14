@@ -39,8 +39,6 @@ public class DynamicExecuter {
 
     private Map<Integer, List<DynamicNode>> CurrentNode = new HashMap<>();
 
-    private List<Set<Integer>> ReachableStmt = new ArrayList<Set<Integer>>();
-
     private void setLogOfLines(){
         logOfLines = new ArrayList<Integer>();
     }
@@ -242,7 +240,6 @@ public class DynamicExecuter {
                         }
                     }
                 }*/
-
 //                System.out.println("Line " + i + ":" + Reach);
 
                 if( CurrentNode.containsKey(i)/*S[i] was Executed*/ && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).sameDef(Def) && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).samePred(Pred) ){

@@ -16,15 +16,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class DynamicSlicerTest {
     String absolutePath = new File("").getAbsolutePath();
     String filePath = Paths.get(absolutePath,"data","test","src").toString();
-    String fileName = "Test1.java";
+    String fileName = "Test3.java";
     String wholePath = Paths.get(filePath,fileName).toString();
     @Test
     void programExecute() throws Exception {
         Graphs graphs = new Graphs(wholePath);
 
-        CDG cdg  = graphs.getCDG(SlicerUtil.findMethodByLineNumber(graphs.getCu(),20));
+        CDG cdg  = graphs.getCDG(SlicerUtil.findMethodByLineNumber(graphs.getCu(),16));
         System.out.println(cdg.toString());
-        Set<Integer> result = new DynamicSlicer().ProgramExecute(filePath,fileName,"Test1","",20,cdg);
+        Set<Integer> result = new DynamicSlicer().ProgramExecute(filePath,fileName,"Test3","2",16,cdg);
         System.out.println(result);
     }
 }
