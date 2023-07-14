@@ -1,115 +1,144 @@
 <template>
-    <div class = "astGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
-      <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
-      collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
-      <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
-        <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
-</div>
+    <div class="box">
+        <div class="graph">
+        <svg class="canvas">
+            <g></g>
+        </svg>
+        </div>
+    </div>
 </template>
 
-
-
 <script>
-import orgtree from "../../components/orgtree";
+    import dagreD3 from "dagre-d3";
+    import * as d3 from "d3";
+    export default {
+        data() {
+            return {
+                list: {
+                    nodeInfos: [
+                        {
+                            id: "node1",
+                            label: "节点1",
+                        },
+                        {
+                            id: "node2",
+                            label: "节点2",
+                        },
+                        {
+                            id: "node3",
+                            label: "节点3",
+                        },
+                        {
+                            id: "node4",
+                            label: "节点4",
+                        },
+                    ],
+                    edges: [
+                        {
+                            source: "node1",
+                            target: "node2",
+                        },
+                        {
+                            source: "node2",
+                            target: "node3",
+                        },
+                        {
+                            source: "node4",
+                            target: "node2",
+                        },
+                        {
+                            source: "node3",
+                            target: "node4",
+                        }
+                    ]
+                }
+            };
+        },
+        mounted() {
+            this.initGraph();
 
-  export default {
-    components:{
-      orgtree
-    },
-    data () {
-      return {
-        BasicSwich:false,	
-        BasicInfo:{id:null,label:null},
-        testData: {
-          label: 'xxx科技有有限公司',
-          children: [{
-            label: '产品研发部',
-            children: [{
-              label: '研发-前端',
-            }, {
-              label: '研发-后端',
-            }, {
-              label: 'UI 设计',
-            }]
-          }, {
-            label: '销售部',
-            children: [{
-                label: '销售一部',
-              },{
-                label: '销售二部',
-              }
-            ]
-          },{
-            label: '财务部'
-          }]
+        },
+        methods: {
+            initGraph() {
+                var g = new dagreD3.graphlib.Graph().setGraph({rankdir: 'LR'});
+                // 添加节点
+                let that = this;
+                that.list.nodeInfos.forEach(item => {
+                    g.setNode(item.id, {
+                    //节点标签
+                    label: item.label,
+                    //节点形状
+                    shape: "diamond",
+                    //节点样式
+                    style: "fill:#fff;stroke:#000",
+
+                    labelStyle: "fill:#000;font-weight:bold"
+                    })
+                });
+                this.list.edges.forEach(item => {
+                    g.setEdge(item.source, item.target, {
+                    //边标签
+                    label: item.label,
+                    //边样式
+                    style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                    })
+                })
+                //绘制图形
+                var svg = d3.select(".box").select(".graph").select("svg")
+                    .attr("preserveAspectRatio", "xMidYMid meet")
+                    .attr("viewBox", "0 0 1000 500");
+                var inner = svg.select("g");
+                //缩放
+                var zoom = d3.zoom().on("zoom", function () {
+                    inner.attr("transform", d3.zoomTransform(svg.node()));
+                });
+                svg.call(zoom);
+
+                var render = new dagreD3.render();
+                render(inner, g);
+
+
+                
         }
-      }
-    },
-    methods: {
-      collapse(list) {   
-        var _this = this;    
-        list.forEach(
-          function(child) {        
-            if (child.expand) {          
-              child.expand = false;        
-            }        
-            child.children && _this.collapse(child.children);	
-          });},
-      onExpand(e,data) {    
-        if ("expand" in data) {       
-          data.expand = !data.expand;    	
-          if (!data.expand && data.children) {       		
-            this.collapse(data.children);    	
-          }    
-        } 
-        else {        
-          this.$set(data, "expand", true);    
-        }},
-      renderLabelClass (node) {
-        return 'label-class-blue'
-      },
-      renderCurrentClass (node) {
-        return 'label-bg-blue'
-      },
-      onMouseout(e, data) {    
-        this.BasicSwich = false
-      },
-      onMouseover(e, data) {    
-        this.BasicInfo = data;    
-        this.BasicSwich = true;    
-        var floating = document.getElementsByClassName('floating')[0];    
-        floating.style.left = e.clientX +'px';    
-        floating.style.top = e.clientY+'px';
-      }
     }
-  }
+}
 </script>
-<style>
-.label-class-blue{
-  color: #1989fa;
+
+<style lang="less">
+    svg {
+        font-size: 14px;
+    }
+
+    .node rect {
+        stroke: #606266;
+        fill: #fff;
+    }
+
+    .edgePath path {
+        stroke: #606266;
+        fill: #333;
+        stroke-width: 1.5px;
+    }
+    .box {
+        width:1200px;
+        height:550px;
+        background-color:rgb(255, 255, 255);
+        position: relative;
 }
-.label-bg-blue{
-  background: #1989fa;
-  color: #fff;
-}
-/* 盒子css */
-.floating{    
-  background: rgba(0, 0, 0, 0.7);    
-  width: 160px;    
-  height: 100px;    
-  position: absolute;    
-  color: #fff;    
-  padding-top: 15px;    
-  border-radius: 15px;    
-  padding-left: 15px;    
-  box-sizing: border-box;    
-  left:0;    
-  top: 0;    
-  transition: all 0.3s;    
-  z-index: 999;    
-  text-align: left;    
-  font-size: 12px;
-}
+    .graph {
+        width: 1000px;
+        height: 500px;
+        border: solid;
+        background-color: rgb(255, 255, 255);
+        position: absolute;
+        left:0px;
+        right: 0px;
+        top:0px;
+        bottom: 0px;
+        margin: auto;
+    }
+    .canvas {
+        width: 1000px;
+        height: 500px;
+    }
 </style>
-
-
