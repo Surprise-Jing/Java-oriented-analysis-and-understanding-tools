@@ -1,218 +1,144 @@
 <template>
-    <div class="ast">
-        <vue2-org-tree 
-        :data="data" 
-        :horizontal="true" 
-        name="test" 
-        :NodeClass="NodeClass" 
-        :judge="judge" 
-        :label-class-name="labelClassName" 
-        collapsable 
-        @on-expand="onExpand" 
-        @on-node-mouseover="onMouseover" 
-        @on-node-mouseout="onMouseout" />
-        <div v-show="BasicSwich" class="floating">
-            <p>ID:{{BasicInfo.id}}</p>
-            <p>Name:{{BasicInfo.label}}</p>
+    <div class="box">
+        <div class="graph">
+        <svg class="canvas">
+            <g></g>
+        </svg>
         </div>
     </div>
 </template>
 
 <script>
-import Vue2OrgTree from 'vue2-org-tree';
-
+    import dagreD3 from "dagre-d3";
+    import * as d3 from "d3";
     export default {
         data() {
             return {
-                BasicSwich: false,
-                BasicInfo: { id: null, label: null },
-                judge: { swtich: true },
-                NodeClass:[
-                    "myred",
-                    "myger",
-                    "myblue"
-                ],
-                data: {
-                    id: 0,
-                    label: "XXX科技有限公司",
-                    children: [
+                list: {
+                    nodeInfos: [
                         {
-                            id: 2,
-                            label: "产品研发部",
-                            children: [
-                                {
-                                    id: 5,
-                                    label: "研发-前端",
-                                    swtich: "myred"
-                                },
-                                {
-                                    id: 6,
-                                    label: "研发-后端",
-                                    swtich: "myger"
-                                },
-                                {
-                                    id: 9,
-                                    label: "UI设计",
-                                    swtich: 111
-                                },
-                                {
-                                    id: 10,
-                                    label: "产品经理"
-                                }
-                            ]
+                            id: "node1",
+                            label: "节点1",
                         },
                         {
-                            id: 3,
-                            label: "销售部",
-                            children: [
-                                {
-                                    id: 7,
-                                    label: "销售一部",
-                                    swtich: "myblue"
-                                },
-                                {
-                                    id: 8,
-                                    label: "销售二部",
-                                    swtich: false
-                                }
-                            ]
+                            id: "node2",
+                            label: "节点2",
                         },
                         {
-                            id: 4,
-                            label: "财务部"
+                            id: "node3",
+                            label: "节点3",
                         },
                         {
-                            id: 9,
-                            label: "HR人事"
+                            id: "node4",
+                            label: "节点4",
+                        },
+                    ],
+                    edges: [
+                        {
+                            source: "node1",
+                            target: "node2",
+                        },
+                        {
+                            source: "node2",
+                            target: "node3",
+                        },
+                        {
+                            source: "node4",
+                            target: "node2",
+                        },
+                        {
+                            source: "node3",
+                            target: "node4",
                         }
                     ]
-                },
-                horizontal: false,
-                collapsable: true,
-                expandAll: false,
-                labelClassName: "bg-lightpink"
+                }
             };
         },
-        created() {
-            this.expandChange();
+        mounted() {
+            this.initGraph();
+
         },
         methods: {
-            renderContent(h, data) {
-                return data.label;
-            },
-            onMouseout(e, data) {
-                this.BasicSwich = false;
-            },
-            onMouseover(e, data) {
-                this.BasicInfo = data;
-                this.BasicSwich = true;
-                var floating = document.getElementsByClassName("floating")[0];
-                floating.style.left = e.clientX+10 + "px";
-                floating.style.top = e.clientY+10 + "px";
-            },
-            onExpand(e, data) {
-                if ("expand" in data) {
-                    data.expand = !data.expand;
-                    if (!data.expand && data.children) {
-                        this.collapse(data.children);
-                    }
-                } else {
-                    this.$set(data, "expand", true);
-                }
-            },
-            NodeClick(e, data) {
-                alert(data.label);
-                console.log(e, data);
-            },
-            collapse(list) {
-                var _this = this;
-                list.forEach(function(child) {
-                    if (child.expand) {
-                        child.expand = false;
-                    }
-                    child.children && _this.collapse(child.children);
+            initGraph() {
+                var g = new dagreD3.graphlib.Graph().setGraph({rankdir: 'LR'});
+                // 添加节点
+                let that = this;
+                that.list.nodeInfos.forEach(item => {
+                    g.setNode(item.id, {
+                    //节点标签
+                    label: item.label,
+                    //节点形状
+                    shape: "diamond",
+                    //节点样式
+                    style: "fill:#fff;stroke:#000",
+
+                    labelStyle: "fill:#000;font-weight:bold"
+                    })
                 });
-            },
-            expandChange() {
-                this.toggleExpand(this.data, true);
-            },
-            toggleExpand(data, val) {
-                var _this = this;
-                if (Array.isArray(data)) {
-                    data.forEach(function(item) {
-                        _this.$set(item, "expand", val);
-                        if (item.children) {
-                            _this.toggleExpand(item.children, val);
-                        }
-                    });
-                } else {
-                    this.$set(data, "expand", val);
-                    if (data.children) {
-                        _this.toggleExpand(data.children, val);
-                    }
-                }
-            }
+                this.list.edges.forEach(item => {
+                    g.setEdge(item.source, item.target, {
+                    //边标签
+                    label: item.label,
+                    //边样式
+                    style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                    })
+                })
+                //绘制图形
+                var svg = d3.select(".box").select(".graph").select("svg")
+                    .attr("preserveAspectRatio", "xMidYMid meet")
+                    .attr("viewBox", "0 0 1000 500");
+                var inner = svg.select("g");
+                //缩放
+                var zoom = d3.zoom().on("zoom", function () {
+                    inner.attr("transform", d3.zoomTransform(svg.node()));
+                });
+                svg.call(zoom);
+
+                var render = new dagreD3.render();
+                render(inner, g);
+
+
+                
         }
-    };
+    }
+}
 </script>
-<style lang="less" >
-.myblue{
-    background: skyblue;
-    color: #fff;
+
+<style lang="less">
+    svg {
+        font-size: 14px;
+    }
+
+    .node rect {
+        stroke: #606266;
+        fill: #fff;
+    }
+
+    .edgePath path {
+        stroke: #606266;
+        fill: #333;
+        stroke-width: 1.5px;
+    }
+    .box {
+        width:1200px;
+        height:550px;
+        background-color:rgb(255, 255, 255);
+        position: relative;
 }
-.myred{
-    background-color: tomato;
-    color: #fff;
-}
-.myger{
-    background: green;
-    color: #fff;
-}
-.org-bg-err {
-    background-color: tomato;
-    color: #fff;
-}
-.org-tree-node-label {
-    white-space: nowrap;
-}
-.bg-white {
-    background-color: white;
-}
-.org-bg-res {
-    background-color: orange;
-    color: #fff;
-    cursor: pointer;
-}
-.bg-gold {
-    background-color: gold;
-}
-.bg-gray {
-    background-color: gray;
-}
-.bg-lightpink {
-    background-color: lightpink;
-}
-.bg-chocolate {
-    background-color: chocolate;
-}
-.bg-tomato {
-    background-color: tomato;
-}
-.floating {
-    background: rgba(0, 0, 0, 0.7);
-    width: 160px;
-    height: 100px;
-    position: absolute;
-    color: #fff;
-    padding-top: 15px;
-    border-radius: 15px;
-    padding-left: 15px;
-    box-sizing: border-box;
-    left: 0;
-    top: 0;
-    transition: all 0.3s;
-    z-index: 999;
-    text-align: left;
-    font-size: 12px;
-}
+    .graph {
+        width: 1000px;
+        height: 500px;
+        border: solid;
+        background-color: rgb(255, 255, 255);
+        position: absolute;
+        left:0px;
+        right: 0px;
+        top:0px;
+        bottom: 0px;
+        margin: auto;
+    }
+    .canvas {
+        width: 1000px;
+        height: 500px;
+    }
 </style>
