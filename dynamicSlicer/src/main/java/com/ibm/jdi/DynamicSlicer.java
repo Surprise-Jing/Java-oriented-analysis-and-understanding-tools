@@ -1,5 +1,6 @@
 package com.ibm.jdi;
 
+import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.LabeledStmt;
 import com.github.javaparser.ast.stmt.SwitchEntry;
 import com.nju.boot.edges.Edge;
@@ -37,7 +38,7 @@ public class DynamicSlicer {
 
         Map<Integer, Integer> labels = new HashMap<>();
         for(GraphNode<?> GN : cdg.vertexSet()) {
-            if(GN.getAstNode() instanceof LabeledStmt || GN.getAstNode() instanceof SwitchEntry) {
+            if(GN.getAstNode() instanceof LabeledStmt || GN.getAstNode() instanceof SwitchEntry || GN.getAstNode() instanceof ForStmt) {
                 Integer label = GN.getAstNode().getBegin().get().line;
                 int closest = Integer.MAX_VALUE;
                 for (Edge edge : cdg.outgoingEdgesOf(GN)) {

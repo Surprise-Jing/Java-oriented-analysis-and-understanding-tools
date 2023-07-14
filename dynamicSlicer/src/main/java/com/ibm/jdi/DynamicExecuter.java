@@ -1,8 +1,8 @@
 package com.ibm.jdi;
 
-import com.github.javaparser.ast.stmt.BreakStmt;
-import com.github.javaparser.ast.stmt.ContinueStmt;
-import com.github.javaparser.ast.stmt.SwitchEntry;
+import com.github.javaparser.Range;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.stmt.*;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.graphs.dependencegraph.PDG;
@@ -56,22 +56,22 @@ public class DynamicExecuter {
         return launchingConnector.launch(arguments);
     }
 
-//    public void getAllcaseLocations(@NotNull VirtualMachine vm) throws AbsentInformationException {
-//        List<ReferenceType> classes = vm.classesByName(debugClass);
-//        ReferenceType targetClass = classes.get(0);
-//
-//        // 获取方法
-//        List<Method> methods = targetClass.methodsByName("main");
-//        Method method = methods.get(0);
-//
-//        // 获取方法的所有行号
-//        List<Location> locations = method.allLineLocations();
-//
-//        // 遍历所有行号，查找switch语句的case标签位置
-//        for (Location location : locations) {
-//            System.out.println("Case标签位置：" + location.lineNumber());
-//        }
-//    }
+    public void getAllcaseLocations(@NotNull VirtualMachine vm) throws AbsentInformationException {
+        List<ReferenceType> classes = vm.classesByName(debugClass);
+        ReferenceType targetClass = classes.get(0);
+
+        // 获取方法
+        List<Method> methods = targetClass.methodsByName("main");
+        Method method = methods.get(0);
+
+        // 获取方法的所有行号
+        List<Location> locations = method.allLineLocations();
+
+        // 遍历所有行号，查找switch语句的case标签位置
+        for (Location location : locations) {
+            System.out.println("Case标签位置：" + location.lineNumber());
+        }
+    }
 
     public boolean executeFile(String path, String fileName, String className, String input) throws Exception {
         this.setDebugClass(className);
@@ -100,7 +100,7 @@ public class DynamicExecuter {
                         this.setBreakPoints(vm, (ClassPrepareEvent)event);
                     }
                     if (event instanceof BreakpointEvent) {
-//                        this.getAllcaseLocations(vm);
+                        this.getAllcaseLocations(vm);
                         this.enableStepRequest(vm, (BreakpointEvent)event);
                     }
                     if (event instanceof StepEvent) {
@@ -205,7 +205,110 @@ public class DynamicExecuter {
             ReachableStmt.add(nl);
         }
     }*/
+    public Set<Integer> getLines(@NotNull GraphNode<?> GN) {
+        Set<Integer> lns = new HashSet<>();
+
+        if (GN.getAstNode() instanceof WhileStmt) {
+
+            Range conditionRange = ((WhileStmt) GN.getAstNode()).getCondition().getRange().get();
+            Range bodyRange = ((WhileStmt) GN.getAstNode()).getBody().getRange().get();
+
+            for (int j = conditionRange.begin.line; j <= conditionRange.begin.line; j++) {
+                lns.add(j);
+            }
+
+            lns.add(bodyRange.begin.line);
+            lns.add(bodyRange.end.line);
+        }
+        else if (GN.getAstNode() instanceof ForStmt) {
+
+            for (Expression expr :((ForStmt) GN.getAstNode()).getInitialization()) {
+                Range initRange = expr.getRange().get();
+                for (int j = initRange.begin.line; j <= initRange.begin.line; j++) {
+                    lns.add(j);
+                }
+            }
+
+            Range conditionRange = null;
+            if(((ForStmt) GN.getAstNode()).getCompare().isPresent()) {
+                conditionRange = ((ForStmt) GN.getAstNode()).getCompare().get().getRange().get();
+                for (int j = conditionRange.begin.line; j <= conditionRange.begin.line; j++) {
+                    lns.add(j);
+                }
+            }
+
+            for (Expression expr :((ForStmt) GN.getAstNode()).getUpdate()) {
+                Range initRange = expr.getRange().get();
+                for (int j = initRange.begin.line; j <= initRange.begin.line; j++) {
+                    lns.add(j);
+                }
+            }
+
+            Range bodyRange = ((ForStmt) GN.getAstNode()).getBody().getRange().get();
+
+            lns.add(bodyRange.begin.line);
+            lns.add(bodyRange.end.line);
+        }else if (GN.getAstNode() instanceof ForEachStmt) {
+            Range varRange = ((ForEachStmt) GN.getAstNode()).getVariable().getRange().get();
+            Range iteRange = ((ForEachStmt) GN.getAstNode()).getIterable().getRange().get();
+            Range bodyRange = ((ForEachStmt) GN.getAstNode()).getBody().getRange().get();
+
+            for (int j = varRange.begin.line; j <= varRange.begin.line; j++) {
+                lns.add(j);
+            }
+
+            for (int j = iteRange.begin.line; j <= iteRange.begin.line; j++) {
+                lns.add(j);
+            }
+
+            lns.add(bodyRange.begin.line);
+            lns.add(bodyRange.end.line);
+        } else if (GN.getAstNode() instanceof SwitchStmt) {
+            Range selectorRange = ((SwitchStmt) GN.getAstNode()).getSelector().getRange().get();
+
+            for (int j = selectorRange.begin.line; j <= selectorRange.begin.line; j++) {
+                lns.add(j);
+            }
+
+            lns.add(GN.getAstNode().getBegin().get().line);
+            lns.add(GN.getAstNode().getEnd().get().line);
+        /*} else if (GN.getAstNode() instanceof DoStmt) {
+            Range bodyRange = ((DoStmt) GN.getAstNode()).getBody().getRange().get();
+
+            lns.add(bodyRange.begin.line);
+            lns.add(bodyRange.end.line);
+
+            Range consitionRange = ((DoStmt) GN.getAstNode()).getCondition().getRange().get();
+
+            for (int j = consitionRange.begin.line; j <= consitionRange.begin.line; j++) {
+                lns.add(j);
+            }
+*/
+        } else if (GN.getAstNode() instanceof IfStmt) {
+            Range consitionRange = ((IfStmt) GN.getAstNode()).getCondition().getRange().get();
+            for (int j = consitionRange.begin.line; j <= consitionRange.begin.line; j++) {
+                lns.add(j);
+            }
+
+            Range bodyRange = ((IfStmt) GN.getAstNode()).getThenStmt().getRange().get();
+            lns.add(bodyRange.begin.line);
+            lns.add(bodyRange.end.line);
+        } else {
+            Range range = GN.getAstNode().getRange().get();
+
+            for (int j = range.begin.line; j <= range.end.line; j++) {
+                lns.add(j);
+            }
+
+        }
+
+        return lns;
+    }
+
     public void buildingDDG(CDG _cdg) throws NoSuchElementException {
+
+        System.out.println(logOfLines);
+
         for(int i : logOfLines){
 //                        DDG
 //            ReachableStmt /staic /const
@@ -215,8 +318,12 @@ public class DynamicExecuter {
             for(GraphNode<?> GN : graphNodes /* 行号i to 结点GN */){
                 Set<DynamicNode> Def = new HashSet<>();
                 Set<DynamicNode> Pred = new HashSet<>();
-                Set<Integer> Reach = new HashSet<>();
-                Reach.add(i);
+                Set<Integer> lns = getLines(GN);
+//                Range range = GN.getAstNode().getRange().get();
+//                for (int j = range.begin.line; j <= range.begin.line; j++) {
+//                    lns.add(j);
+//                }
+                Set<Integer> Reach = new HashSet<>(lns);
 
                 Set<String> Use = GN.getUsedVariables();
                 for(String v : Use){
@@ -232,7 +339,7 @@ public class DynamicExecuter {
                 for(Edge inEdge : _cdg.incomingEdgesOf(GN)){
                     GraphNode<?> p = _cdg.getEdgeSource(inEdge);
                     Integer NodeId = p.getAstNode().getBegin().get().line;
-//                    System.out.println( i + " Controled by: " + NodeId);
+                    System.out.println( i + " Controled by: " + NodeId);
                     if(PrednNode.containsKey(NodeId)){
                         Pred.add(PrednNode.get(NodeId));
 //                        System.out.println("add reachable: " + PrednNode.get(NodeId).getReachableStmt());
@@ -283,7 +390,7 @@ public class DynamicExecuter {
                 }
                 else {
 //                new Node n'
-                    DynamicNode newDn = new DynamicNode(i, Def, Pred, Reach);
+                    DynamicNode newDn = new DynamicNode(lns, Def, Pred, Reach);
 //                Dealing Loop Control
                     List<DynamicNode> childNodes = new ArrayList<>();
                     childNodes.addAll(Def);

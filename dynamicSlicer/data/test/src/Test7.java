@@ -1,17 +1,15 @@
 import java.util.Scanner;
-public class Test5 {
+public class Test7 {
     public static void main(String[]args) {
         int sum = 0;
         int prod = 1;
 
-        for( ; ; prod++){
-            sum = sum;
+        int[] numbers = {1,2,3,4,5};
 
-            prod = prod;
-            sum++;
-            if(sum > 2)
-                break;
-            sum++;
+        for(int i:numbers){
+            prod = sum;
+            sum += i;
+
         }
         System.out.println(sum);
         System.out.println(prod);

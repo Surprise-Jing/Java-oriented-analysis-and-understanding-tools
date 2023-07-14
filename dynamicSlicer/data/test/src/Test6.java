@@ -1,18 +1,19 @@
 import java.util.Scanner;
-public class Test5 {
+public class Test6 {
     public static void main(String[]args) {
         int sum = 0;
         int prod = 1;
 
-        for( ; ; prod++){
-            sum = sum;
-
-            prod = prod;
-            sum++;
-            if(sum > 2)
-                break;
-            sum++;
+        if(prod > 0) {
+            sum = prod;
         }
+        else if (prod == 0) {
+            sum = 0;
+        }
+        else {
+            sum = -prod;
+        }
+
         System.out.println(sum);
         System.out.println(prod);
     }
