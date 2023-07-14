@@ -102,7 +102,7 @@ export default {
 .upload_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image2.png');
+  background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
@@ -113,21 +113,22 @@ export default {
     .drag-area {
       height: 300px;
       width: 700px;
-      border: dashed 1px gray;
+      border: dashed 1px darkslategrey;
       margin-bottom: 10px;
       color: #777;
       position: absolute;
-      left:50%;
+      left:45%;
       top:30%;
       transform: translate(-50%,-50%);
-      background-color:gray;
-      border-radius: 5%;
+      background-color:darkslategrey;
+      //border-radius: 5%;
     }
     .uploader-tips {
       text-align: center;
       height: 200px;
       line-height: 200px;
-      color:white;
+      //color:white;
+      color:darkgray;
      
     }
     .file-name {
@@ -137,12 +138,14 @@ export default {
     }
     .uploadbtn{
       position: absolute;
-      left:50%;
+      left:45%;
       top:60%;
       height: 50px;
       width:70px;
       transform: translate(-50%,-50%);
-      color:gray;
+      color:darkgray;
+      background-color: darkslategray;
+      border-color: black;
     }
     
 

@@ -1,6 +1,9 @@
 <template>
   <div>
       DFG,待完善
+      
+
+
       <div>
               <select
               v-model="selectFile.id" 
@@ -22,6 +25,7 @@
 export default {  
   data(){
     return{
+      num:'0',
       fileData:[],//要选择的文件
               selectFile:{
                   id:''
@@ -31,7 +35,12 @@ export default {
   methods:{
     getfileid(val){
       console.log(val)
-    }
+    },
+
+
+  
+    
+
   }
 }
 </script>

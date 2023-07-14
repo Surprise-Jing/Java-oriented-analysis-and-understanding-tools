@@ -6,7 +6,7 @@
           <span class="login">
             <em class="bold">已有账号？</em>
             <a href="/login" >
-              <el-button type="primary" size="mini">登录</el-button>
+              <el-button type="primary" size="mini" style="background-color:darkslategray;color:darkgray;border-color:black;">登录</el-button>
             </a>
           </span>
         </header>
@@ -59,7 +59,7 @@
             <el-form-item>
               <el-button
                 type="primary"
-                style="width: 40%"
+                style="width: 40%; background-color:darkslategray;color:darkgray;border-color: black;"
                 @click="register"
               >注册</el-button>
             </el-form-item>
@@ -166,6 +166,16 @@
     }
   }
   
+  input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+
+
+
   /* reset element-ui css */
   .register-container {
     background-image:url('../../assets/bg-image.png');//todo 
@@ -181,7 +191,8 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         -webkit-appearance: none;
         padding: 12px 5px 12px 15px;
-        color:black;
+        //color:black;
+        color:darkgray;
         //color: $light_gray;
         height: 47px;
         caret-color: $cursor;
@@ -198,7 +209,7 @@
         font-style: normal;
         font-size: 12px;
         //color: $light_gray;
-        color:#2d3a4b;
+        color:darkgray;
       }
     }
   }
@@ -231,8 +242,8 @@
   
         .bold {
           font-style: normal;
-          //color: $light_gray;
-          color:black;
+          //color:black;
+          color:darkgray;
         }
       }
     }
@@ -242,9 +253,11 @@
       padding-top: 30px;
       width: 980px;
       min-height: 300px;
-      padding-right: 100px;
+      padding-left: 170px;
+      
       box-sizing: border-box;
-  
+      //background-color: white;
+      background-color: transparent;
       .status {
         font-size: 12px;
         margin-left: 20px;
@@ -253,6 +266,7 @@
   
       .error {
         color: red;
+        //color:lightblue;
       }
     }
   
@@ -260,7 +274,8 @@
       float: right;
       font-size: 14px;
       //color: #fff;
-      color:black;
+      //color:black;
+      color:darkgray;
       margin-bottom: 10px;
   
       span {
@@ -272,16 +287,4 @@
   }
   </style>
   
-  <!-- <style scoped>
-  /* 修改验证器样式 */
-  /deep/ .el-form-item.is-error .el-input__inner {
-    border-color: #889aa4;
-  }
-  /deep/ .el-form-item.is-error .el-input__validateIcon {
-    color: #889aa4;
-  }
-  /deep/ .el-form-item__error {
-    color: #e6a23c;
-  }
-  </style> -->
   
