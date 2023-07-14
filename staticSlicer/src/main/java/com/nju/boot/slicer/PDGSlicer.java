@@ -1,17 +1,14 @@
 package com.nju.boot.slicer;
 
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.exceptions.MethodNotFoundException;
 import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
-import com.nju.boot.util.PDGMarker;
 import com.nju.boot.util.GraphsUtil;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PDGSlicer extends AbstractSlicer{
 
@@ -26,6 +23,8 @@ public class PDGSlicer extends AbstractSlicer{
     }
 
     public AbstractSlicer slice(int lineNumber, String variableName){
+        if(!isSlicable(lineNumber,variableName))
+            throw new MethodNotFoundException();
         CallableDeclaration<?> targetDeclaration = findCallableDeclaration(lineNumber);
         PDG pdg = graphs.getPDG(targetDeclaration);
         pdg.slice(lineNumber,variableName);
@@ -39,6 +38,20 @@ public class PDGSlicer extends AbstractSlicer{
     }
 
     @Override
+    public boolean isSlicable(int lineNumber, String variable) {
+        try{
+            GraphNode<?> g = GraphsUtil.getNodeBy(graphs,lineNumber,variable);
+            return g!=null;
+        }
+        catch (IllegalArgumentException e){
+            System.out.println("输入不合法");
+            return  false;
+        }
+
+
+    }
+
+    @Override
     public String getResultCode() {
         return new SelectivePrettyPrinter(getSlicedAstNode()).print(graphs.getCu());
     }
@@ -49,13 +62,5 @@ public class PDGSlicer extends AbstractSlicer{
         return GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
     }
 
-    public String getSlicedCode(int lineNumber,String variableName){
-        CallableDeclaration<?> callableDeclaration =  GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
-        PDG targetPDG = graphs.getPDG(callableDeclaration);
-        PDGMarker pdgMarker = new PDGMarker(targetPDG);
-        pdgMarker.mark(lineNumber,variableName);
-        SelectivePrettyPrinter selectivePrettyPrinter =  new SelectivePrettyPrinter(targetPDG.getMarkedNodes().stream()
-                .map(node -> node.getAstNode()).collect(Collectors.toSet()));
-        return selectivePrettyPrinter.print(graphs.getCu());
-    }
+
 }

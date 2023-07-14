@@ -9,8 +9,10 @@ import com.nju.boot.graphs.dependencegraph.DominatorTree;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.graphs.printer.*;
 import com.nju.boot.metrics.CodeMetrics;
+import com.nju.boot.slicer.exceptions.FileUnparsableException;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -122,8 +124,16 @@ class GraphsTest {
     public void whileTests() throws IOException {
         testFiles("while");
     }
+    @Test
+    public void switchTests()throws  IOException{
+        testFiles("switch");
+    }
     //@Test
     public void testSpecific() throws IOException{
         testFiles("specific");
+    }
+    @Test
+    public void testWrongFile(){
+        Assertions.assertThrows(FileUnparsableException.class,()->testFiles("error"));
     }
 }

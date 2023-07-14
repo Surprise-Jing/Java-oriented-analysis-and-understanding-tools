@@ -70,6 +70,7 @@ public class CodeMetrics {
     public int getLineOfMethod(CallableDeclaration<?> method){
         return new LineCounter(method.toString()).getLinesOfCode();
     }
+
     /**根据方法的签名返回该方法调用方法的次数*/
     public int getTimesCalling(String methodSignature){
         return getTimesCalling(GraphsUtil.findMethodBySignature(graphs,methodSignature));
