@@ -1,6 +1,7 @@
 package com.ibm.jdi;
 
 import com.github.javaparser.ast.stmt.BreakStmt;
+import com.github.javaparser.ast.stmt.ContinueStmt;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.graphs.dependencegraph.PDG;
@@ -10,9 +11,7 @@ import com.sun.jdi.*;
 import com.sun.jdi.connect.Connector;
 import com.sun.jdi.connect.LaunchingConnector;
 import com.sun.jdi.event.*;
-import com.sun.jdi.request.BreakpointRequest;
-import com.sun.jdi.request.ClassPrepareRequest;
-import com.sun.jdi.request.StepRequest;
+import com.sun.jdi.request.*;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,8 +37,6 @@ public class DynamicExecuter {
 
     private Map<Integer, List<DynamicNode>> CurrentNode = new HashMap<>();
 
-    private List<Set<Integer>> ReachableStmt = new ArrayList<Set<Integer>>();
-
     private void setLogOfLines(){
         logOfLines = new ArrayList<Integer>();
     }
@@ -57,7 +54,7 @@ public class DynamicExecuter {
         return launchingConnector.launch(arguments);
     }
 
-    public void executeFile(String path, String fileName, String className, String input) throws Exception {
+    public boolean executeFile(String path, String fileName, String className, String input) throws Exception {
         this.setDebugClass(className);
         this.setLogOfLines();
         VirtualMachine vm = null;
@@ -72,12 +69,13 @@ public class DynamicExecuter {
             outputStream.close();
 
             this.enableClassPrepareRequest(vm);
+            this.enableExceptionRequest(vm);
 
-            EventSet eventSet = null;
+            EventSet eventSet;
             while ((eventSet = vm.eventQueue().remove()) != null) {
                 for (Event event : eventSet) {
                     if (event instanceof VMStartEvent) {
-                        System.out.println("VM started");
+                        System.out.println("VM started.");
                     }
                     if (event instanceof ClassPrepareEvent) {
                         this.setBreakPoints(vm, (ClassPrepareEvent)event);
@@ -87,6 +85,11 @@ public class DynamicExecuter {
                     }
                     if (event instanceof StepEvent) {
                         this.updatingLog((StepEvent) event);
+                    }
+                    if (event instanceof ExceptionEvent) {
+                        System.out.println("Exception catched.");
+                        vm.exit(0);
+                        return false;
                     }
                     vm.resume();
                 }
@@ -106,12 +109,19 @@ public class DynamicExecuter {
         }
 
         vm.process().destroy();
+        return true;
     }
 
     public void enableClassPrepareRequest(@NotNull VirtualMachine vm) {
         ClassPrepareRequest classPrepareRequest = vm.eventRequestManager().createClassPrepareRequest();
         classPrepareRequest.addClassFilter(debugClass);
         classPrepareRequest.enable();
+    }
+
+    public void enableExceptionRequest(@NotNull VirtualMachine vm) {
+        ExceptionRequest exceptionRequest = vm.eventRequestManager().createExceptionRequest(null, true, true);
+//        exceptionRequest.addClassFilter(debugClass);
+        exceptionRequest.enable();
     }
 
     public void setBreakPoints(@NotNull VirtualMachine vm, @NotNull ClassPrepareEvent event) throws AbsentInformationException, NoSuchMethodException {
@@ -207,6 +217,14 @@ public class DynamicExecuter {
                     }
                 }
 
+                if(GN.getAstNode() instanceof ContinueStmt){
+                    for(Edge outEdge : _cdg.outgoingEdgesOf(GN)){
+                        GraphNode<?> w = _cdg.getEdgeTarget(outEdge);
+                        Integer LoopId = w.getAstNode().getBegin().get().line;
+                        CurrentNode.get(LoopId).get(CurrentNode.get(LoopId).size() - 1).getReachableStmt().add(i);
+                    }
+                }
+
                 /*Set<Edge> edges = new HashSet<>(_cdg.incomingEdgesOf(GN));
                 Set<GraphNode<?>> visited = new HashSet<>();
                 visited.add(GN);
@@ -233,7 +251,6 @@ public class DynamicExecuter {
                         }
                     }
                 }*/
-
 //                System.out.println("Line " + i + ":" + Reach);
 
                 if( CurrentNode.containsKey(i)/*S[i] was Executed*/ && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).sameDef(Def) && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).samePred(Pred) ){
