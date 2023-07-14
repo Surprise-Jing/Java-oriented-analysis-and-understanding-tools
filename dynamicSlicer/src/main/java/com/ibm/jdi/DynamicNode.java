@@ -3,12 +3,13 @@ package com.ibm.jdi;
 import lombok.Data;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
 public class DynamicNode {
 
-    private int lineNumber;
+    private Set<Integer> lineNumber;
 
     private Set<DynamicNode> Def;
 
@@ -16,8 +17,8 @@ public class DynamicNode {
 
     private Set<Integer> ReachableStmt;
 
-    DynamicNode(int ln, Set<DynamicNode> def, Set<DynamicNode> pred, Set<Integer> reachableStmt){
-        this.lineNumber = ln;
+    DynamicNode(Set<Integer> lns, Set<DynamicNode> def, Set<DynamicNode> pred, Set<Integer> reachableStmt){
+        this.lineNumber = lns;
         this.Def = new HashSet<>(def);
         this.Pred = new HashSet<>(pred);
         this.ReachableStmt = new HashSet<>(reachableStmt);
