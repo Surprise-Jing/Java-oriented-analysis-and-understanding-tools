@@ -21,12 +21,12 @@
       <div  class="file_selector">
       选择文件:
               <select
-              v-model="selectFile.id" 
+              v-model="selectFile.id"
               @change="getfilecontext(selectFile.id)" style="width: 200px;">
-        <option 
-          class="choose_file" 
+        <option
+          class="choose_file"
               v-for="item in fileData"
-              :key="item.id" 
+              :key="item.id"
               :label="item.fileName"
               :value="item.id"
               >
@@ -36,12 +36,12 @@
       <div  class="method_selector">
       选择切片方法:
               <select
-              v-model="selectMethod.id" 
+              v-model="selectMethod.id"
               @change="selectMethod.id" style="width: 200px;">
-        <option 
-          class="choose_file" 
+        <option
+          class="choose_file"
               v-for="item in methodData"
-              :key="item.methodId" 
+              :key="item.methodId"
               :label="item.methodName"
               :value="item.methodId"
               >

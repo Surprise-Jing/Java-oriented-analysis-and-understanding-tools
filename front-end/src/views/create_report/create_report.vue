@@ -7,7 +7,7 @@
       需要生成的内容
       <img src="../../assets/bg-image.png" width="500px">
       <br>
-      <img src="../../assets/bg-image2.png" width="500px">
+      <img src="../../assets/bg-image.png" width="500px">
       </div>
   </div>
 
@@ -142,7 +142,7 @@ export default {
 .report_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image2.png');
+  background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
