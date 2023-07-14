@@ -1,6 +1,6 @@
 
 <template>
-    <div :id=id>
+    <div :id=id class="ast_container">
         <div>
               <select
               v-model="selectFile.id" 
@@ -362,3 +362,14 @@
       return result.width;
   }
 </script>
+
+
+<style lang="less" scoped>
+.ast_container{
+  min-height: 100%;
+  width: 100%;
+  background-image:url('../../assets/bg-image.png');
+  background-size:100%;
+  position: fixed;
+}
+</style>
