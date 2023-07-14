@@ -1,13 +1,10 @@
-
-public class Test1{
-
-    public static void main(String[]args){
+import java.util.Scanner;
+public class Test5 {
+    public static void main(String[]args) {
         int sum = 0;
-        int prod = 2;
+        int prod = 1;
 
-        int i = 0;
-       while(i<10){
-           i=i+1;
+        for(int i = 1; i < 10; i++){
             if(prod > i){
                 i = i - 1;
                 break;
@@ -15,12 +12,8 @@ public class Test1{
             sum = sum+i;
             sum = prod;
             prod = prod*i;
-
         }
-       System.out.println(i);
         System.out.println(sum);
         System.out.println(prod);
-
     }
-
 }
