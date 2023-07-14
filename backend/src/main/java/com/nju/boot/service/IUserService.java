@@ -10,7 +10,7 @@ import com.nju.boot.entity.dto.LoginDto;
  * </p>
  *
  * @author JingYa
- * @since 2023-07-06
+ * @since 2023-06-28
  */
 public interface IUserService extends IService<User> {
 

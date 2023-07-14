@@ -1,5 +1,6 @@
 package com.nju.boot.controller;
 
+import com.ibm.jdi.DynamicSlicer;
 import com.nju.boot.slicer.AbstractSlicer;
 import com.nju.boot.slicer.DataFlowEquationSlicer;
 import com.nju.boot.slicer.PDGSlicer;
@@ -40,8 +41,10 @@ public class SlicerController {
 
     @GetMapping("/dynamic")
     @ApiOperation(value = "动态切片")
-    public String DynamicSlicing(String id, int lineNumber, String variable){
-        return "";
+    public String DynamicSlicing(String id, int lineNumber, String input) throws Exception{
+        String path = fileUploadPath + "/" + id + ".java";
+        DynamicSlicer dynamicSlicer = new DynamicSlicer(path);
+        return dynamicSlicer.slice(input, lineNumber).getSlicedCode();
     }
 
 }
