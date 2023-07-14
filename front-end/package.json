@@ -32,6 +32,7 @@
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
+    "vis": "^4.21.0-EOL",
     "vis-network": "^9.1.6",
     "viz": "^3.0.1",
     "viz.js": "^2.1.2",

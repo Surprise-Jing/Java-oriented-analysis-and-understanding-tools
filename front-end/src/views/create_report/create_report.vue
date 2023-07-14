@@ -89,48 +89,6 @@ export default {
         })
       })
     },
-
-      downLoadAll() {
-        this.getPDF();
-        console.log(this.pdfSave)
-        
-        const data = [this.pdfSave]; //todo 
-        const zip = new JSZip();
-
-
-        const cache = {};
-        const promises = [];
-
-        data.forEach(item => {
-        const promise = data => {
-          // 下载文件, 并存成ArrayBuffer对象
-          const file_name = item.name // 获取文件名
-          zip.file(file_name, data.data, { binary: true }) // 逐个添加文件
-          cache[file_name] = data.data
-        }
-        promises.push(promise)
-      })
-
-
-
-      //   data.forEach(item => {
-      //   const promise = getFile(item).then(data => {
-      //     // 下载文件, 并存成ArrayBuffer对象
-      //     const arr_name = item.split('-')
-      //     const file_name = arr_name[arr_name.length - 1] // 获取文件名
-      //     zip.file(file_name, data.data, { binary: true }) // 逐个添加文件
-      //     cache[file_name] = data.data
-      //   })
-      //   promises.push(promise)
-      // })
-
-        Promise.all(promises).then(() => {
-          zip.generateAsync({ type: "blob" }).then(content => {
-            // 生成二进制流
-            FileSaver.saveAs(content, "测试.zip"); // 利用file-saver保存文件  自定义文件名
-          });
-        });
-      },
   },
   
     

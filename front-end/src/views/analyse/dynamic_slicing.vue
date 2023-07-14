@@ -1,16 +1,18 @@
 <template>
-  <div  class="file_selector">
-      <!--只需要双向绑定代码块即可-->
-    <CodeEdit v-model="content" />
-    <el-button @click="getCode">获取代码</el-button>
-  <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
-    <el-option
-    v-for="item in fileData"
-              :key="item.id" 
-              :label="item.fileName"
-              :value="item.id">
-    </el-option>
-  </el-select>
+  <div class="slice_container">
+    <div  class="file_selector">
+        <!--只需要双向绑定代码块即可-->
+      <CodeEdit v-model="content" />
+      <el-button @click="getCode">获取代码</el-button>
+    <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
+      <el-option
+      v-for="item in fileData"
+                :key="item.id" 
+                :label="item.fileName"
+                :value="item.id">
+      </el-option>
+    </el-select>
+    </div>
   </div>
 </template>
 
@@ -60,4 +62,17 @@ export default {
       })
   }
 }
+
 </script>
+
+
+<style lang="scss" scoped>
+.slice_container{
+  min-height: 100%;
+  width: 100%;
+  background-image:url('../../assets/bg-image.png');
+  background-size:100%;
+  position: fixed;
+}
+</style>
+

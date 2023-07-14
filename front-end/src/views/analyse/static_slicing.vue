@@ -1,128 +1,118 @@
 <template>
-  <!-- <el-form ref="form" :model="form" label-width="80px" class="frame">
-    <el-form-item label="选择文件"></el-form-item>
-  <div class="static_slicing_container">
-    选择文件：
-    <el-select v-model="selectFile.id" filterable placeholder="请选择">
-      <el-option
-        v-for="item in fileData"
-        :key="item.fileId"
-        :label="item.fileName"
-        :value="item.fileId">
-      </el-option>
-    </el-select>
-    <div class="input_x">
-      输入切片行号：
-    <el-input v-model="lineNumber" placeholder="请输入切片行号" size="medium"></el-input>
-    <div class="input_x">
-      输入切片变量：
-    <el-input v-model="variable" placeholder="请输入切片变量"></el-input> -->
-    <div class="static_slicing_container">
-      <div  class="file_selector">
-      选择文件:
-              <select
-              v-model="selectFile.id"
-              @change="getfilecontext(selectFile.id)" style="width: 200px;">
-        <option
-          class="choose_file"
-              v-for="item in fileData"
-              :key="item.id"
-              :label="item.fileName"
-              :value="item.id"
-              >
-          </option>
-              </select>
-      </div>
-      <div  class="method_selector">
-      选择切片方法:
-              <select
-              v-model="selectMethod.id"
-              @change="selectMethod.id" style="width: 200px;">
-        <option
-          class="choose_file"
-              v-for="item in methodData"
-              :key="item.methodId"
-              :label="item.methodName"
-              :value="item.methodId"
-              >
-          </option>
-              </select>
-      </div>
+  <div class="slice_container">
+    <div  class="file_selector">
+        <!--只需要双向绑定代码块即可-->
+      <CodeEdit v-model="content1" class="show_code"/>
+      <CodeEdit2 v-model="content2" class="show_slicecode"/>
       <div class="input_x">
-        选择输入变量:<input class="java_input" type="text" v-model="variable" style="width: 100px;">
-        <button @click="input_var">确定</button>
+        请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
         <p></p>
-        选择输入行数:<input class="java_input" type="number" v-model="lineNumber"  min="1" style="width: 100px;">
-        <button @click="input_row">确定</button>
+        请输入变量:<el-input class="getvar" v-model="variable"></el-input>
+        <el-button @click="input_ok">确定</el-button>
       </div>
-      <div class="displayArea" >
-        <pre v-highlightjs  class="displayCode"><code class="java">{{code}}</code></pre>
-        <pre v-highlightjs  class="displaySlice"><code class="java">{{slice_code}}</code></pre>
+      <div class="choose_file" >
+            选择文件：
+        <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
+          <el-option
+          v-for="item in fileData"
+                    :key="item.id" 
+                    :label="item.fileName"
+                    :value="item.id">
+          </el-option>
+        </el-select>
       </div>
-</div>
+      <div class="choose_method">
+        选择方法:
+        <el-select v-model="selectMethod.id" @change="getMethod(selectMethod.id)" placeholder="请选择">
+          <el-option
+          v-for="item in selectMethod"
+                    :key="item.id" 
+                    :label="item.methodName"
+                    :value="item.id">
+          </el-option>
+        </el-select>
+      </div>
+      
+    </div>
+  </div>
 </template>
 
 <script>
 import {getFile, getFileContext} from "@/api/file"
-
+import {DataFlowSlicer, PDGSlicer} from "@/api/slicer"
+import CodeEdit from "@/components/CodeEdit";
+import CodeEdit2 from "@/components/CodeEdit2";
 export default {
-  data(){
+  components: {CodeEdit,CodeEdit2},
+  data() {
     return {
-      input: '',
-      code:'',//这里放要展示的代码
-      slice_code:'',//切片后的代码
+     content1:'',
+     content2:'',
       variable:'',
-      lineNumber:'',
+      rowNumber:'',
+     // content: '', // 代码块
       fileData:[],
       selectFile:{
         id:''
       },
-      methodData:[
-        {
-          methodId:'1',
-          methodName:'基于数据流方程的切片',
-        },
-        {
-          methodId:'2',
-          methodName:'基于控制依赖图的切片'
-        },
-      ],
-      selectMethod:{
-        id:''
-      }
+      selectMethod:[{
+        id:'1', methodName : "基于数据流方程的切片" 
+      },
+    {
+      id:'2', methodName: '基于程序依赖图的切片'
+    }]
     }
   },
-  watch:{
-    code:{
-      handler(val){
-        if(val && val != this.code){
-          this.code = val;
-          this.$nextTick(this.refresh);
-        };
-      }
-    },
-    immediate: true
-  },
-  methods:{
+  methods: {
+    // 获取代码
+    input_ok() {
+    
+      if(this.getMethod.id == 1){
+        DataFlowSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
+          if(res.success){
+            this.content2 = res.data;
+            //console.log(this.code);
+           // this.$forceUpdate()
+          }
+          else{
+            this.$message({
+            type:'warning',
+            message: res.msg
+          });
+          }})
+        }
+      else{
+        PDGSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
+          if(res.success){
+            this.content2 = res.data;
+            //console.log(this.code);
+           // this.$forceUpdate()
+          }
+          else{
+            this.$message({
+            type:'warning',
+            message: res.msg
+          });
+          }})
+        }
+      },
+      //console.log(this.content)
     getfilecontext(val){
       getFileContext(val).then(res => {
           if(res.success){
-            this.code = res.data.content;
-            this.$set(data, 'code', res.data.content);
-            console.log(this.code);
-            this.$forceUpdate()
+            this.content1 = res.data.content;
+            //console.log(this.code);
+           // this.$forceUpdate()
           }
           else{
-            this.code = '程序加载有误，请重新选择文件'
+            this.content1 = '程序加载有误，请重新选择文件'
           }});
     },
-    input_var(){
-      console.log('variable',this.variable)
-    },
-    input_row(){
-      console.log('rowNumber',this.lineNumber)
+    getMethod(val){
+      //val=2;
     }
   },
+    
   mounted() {
       getFile(localStorage.getItem("uid")).then(res => {
         if(res.success){
@@ -137,47 +127,55 @@ export default {
         }
       })
   }
-
 }
+
 </script>
 
 
 <style lang="scss" scoped>
-.static_slicing_container{
+.slice_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image2.png');
+  background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
-</style>
-
-<style>
-.file_selector{
-  position: absolute;
-  left:0%;
-  top:10%;
+.choose_file{
+position: fixed;
+left:15%;
+top:15%;
+color:darkgray;
 }
-.displayCode{
-  left:15%;
-  top:20%;
-  width: 400px;
-  height: 500px;
-  position:fixed;
-  background-color:rgb(40, 44, 52);
+.input_x{
+  position: fixed;
+  left:50%;
+  top:5%;
+  color:darkgray;
 }
-.displaySlice{
-  left:65%;
-  top:20%;
-  width: 400px;
-  height: 500px;
-  position:fixed;
-  background-color:rgb(40, 44, 52);
+.getvar{
+  width:200px;
 }
-.method.selector{
-  position: absolute;
-  left:0%;
-  top:10%;
+.getrow{
+  width:200px;
 }
 
+.show_code{
+    left:55%;
+  top:20%;
+  font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
+  
+  }
+
+  .show_slicecode{
+    left:55%;
+  top:20%;
+    font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
+  }
 </style>
+

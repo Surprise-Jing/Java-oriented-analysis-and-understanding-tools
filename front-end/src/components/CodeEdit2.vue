@@ -19,7 +19,7 @@
         <!-- </a-button> -->
         <!--editor插件-->  
         <!--其中的@input中的方法就是子组件值改变时调用的方法，该方法会给父组件传入改变值-->
-        <editor class="show_code" 
+        <!-- <editor class="show_code" 
             :value="content"
             @input="handleInput"
             @init="editorInit"
@@ -29,8 +29,8 @@
            
             width="35%"
             height="600px"
-            />
-            <!-- <editor class="show_slicecode" 
+            /> -->
+            <editor class="show_slicecode" 
             :value="content"
             @input="handleInput"
             @init="editorInit"
@@ -40,7 +40,7 @@
           
             width="35%"
             height="600px"
-            /> -->
+            />
       <!-- </a-card> -->
       <!--编辑器设置模态窗口（未开发完成，可以自行拓展）-->
       <!-- <a-modal v-model="visible" width="500px" title="编辑器设置(功能暂未开发)" @ok="handleOk">
@@ -103,7 +103,7 @@
     enableLiveAutocompletion: true, // 启用实时自动完成
   }
   export default {
-    name: "CodeEdit",
+    name: "CodeEdit2",
     components: {
       editor: require('vue2-ace-editor'),
     },
