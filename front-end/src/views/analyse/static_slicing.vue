@@ -56,8 +56,8 @@
         <button @click="input_row">确定</button>
       </div>
       <div class="displayArea" >
-        <pre v-highlightjs  class="displayCode"><code>{{code}}</code></pre>
-        <pre v-highlightjs  class="displaySlice"><code>{{slice_code}}</code></pre>
+        <pre v-highlightjs  class="displayCode"><code class="java">{{code}}</code></pre>
+        <pre v-highlightjs  class="displaySlice"><code class="java">{{slice_code}}</code></pre>
       </div>
 </div>
 </template>
@@ -93,11 +93,13 @@ export default {
     }
   },
   watch:{
-    code(newValue){
-      this.code = newValue;
-    },
-    slice_code(newValue){
-      this.slice_code = newValue;
+    code:{
+      handler(val){
+        if(val && val != this.code){
+          this.code = val;
+          this.$nextTick(this.refresh);
+        };
+      }
     },
     immediate: true
   },
@@ -105,12 +107,14 @@ export default {
     getfilecontext(val){
       getFileContext(val).then(res => {
           if(res.success){
-            this.code = res.data.content
+            this.code = res.data.content;
+            this.$set(data, 'code', res.data.content);
+            console.log(this.code);
+            this.$forceUpdate()
           }
           else{
             this.code = '程序加载有误，请重新选择文件'
           }});
-      console.log(val)
     },
     input_var(){
       console.log('variable',this.variable)
