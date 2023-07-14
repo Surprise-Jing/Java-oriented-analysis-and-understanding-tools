@@ -1,0 +1,25 @@
+digraph G {
+  0 [ label="ENTER main" ];
+  1 [ label="EXIT main" ];
+  2 [ label="int n = 0;" ];
+  3 [ label="int i = 1;" ];
+  4 [ label="int sum = 0;" ];
+  5 [ label="int product = 1;" ];
+  6 [ label="i < n" ];
+  7 [ label="sum = sum + i;" ];
+  8 [ label="product = product * i;" ];
+  9 [ label="i = i + 1;" ];
+  10 [ label="System.out.println(sum);" ];
+  11 [ label="System.out.println(product);" ];
+  9 -> 8;
+  6 -> 5;
+  4 -> 3;
+  8 -> 7;
+  3 -> 2;
+  11 -> 10;
+  6 -> 9;
+  1 -> 11;
+  10 -> 6;
+  5 -> 4;
+  1 -> 0;
+}

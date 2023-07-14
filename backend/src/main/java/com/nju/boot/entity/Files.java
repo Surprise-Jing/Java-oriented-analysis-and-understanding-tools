@@ -39,9 +39,6 @@ public class Files implements Serializable {
     @ApiModelProperty("下载链接")
     private String url;
 
-    @ApiModelProperty("用户编号")
-    private String uid;
-
     @ApiModelProperty("上传时间")
     private String uploadTime;
 
@@ -89,14 +86,6 @@ public class Files implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getUploadTime() {

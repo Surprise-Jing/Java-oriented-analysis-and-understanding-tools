@@ -191,7 +191,7 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-background-image:url('../../assets/bg-image.png');//todo 
+background-image:url('../../assets/bg-image.png');//todo
 background-size:100%;
 
 display: flex;
