@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -28,16 +29,19 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
         //从Request Header 取出Token
         String token = request.getHeader(JwtTokenUtils.TOKEN_HEADER);
+        //System.out.println(token);
 
         //Token为空放行
         //如果接下来进入的URL不是公共的地址SpringSecurity会返回403的错误
-        if (token == null || "null".equals(token)) {
+        if (token == null || "null".equals(token) || "undefined".equals(token)) {
             chain.doFilter(request, response);
             return;
         }
 
         //判断JWT Token是否过期
         if (JwtTokenUtils.isExpiration(token)) {
+            System.out.println(new Date(System.currentTimeMillis()));
+            System.out.println(JwtTokenUtils.getExpiration(token));
             ResponseUtils.writeJson(response,
                     new ResponseDto<>(403, "令牌已过期, 请重新登录"));
             return;

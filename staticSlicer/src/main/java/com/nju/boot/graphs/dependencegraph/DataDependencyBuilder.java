@@ -37,8 +37,7 @@ public class DataDependencyBuilder {
     }
 
     public void backwardTraverse(GraphNode<?>src,GraphNode<?>target,Set<String>usedVariables,Set<GraphNode<?>>visited){
-        //当遇到判断过的节点时停止遍历
-        if(visited.contains(target))return;
+
         //当遇到根节点停止遍历
         if(target == acfg.getRootNode().get())return;
 
@@ -65,7 +64,8 @@ public class DataDependencyBuilder {
             if (usedVariables.isEmpty())return;
         }
 
-
+        //当遇到判断过的节点时停止继续
+        if(visited.contains(target))return;
 
         visited.add(target);
 

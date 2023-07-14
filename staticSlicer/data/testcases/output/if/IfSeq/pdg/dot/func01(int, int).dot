@@ -1,0 +1,18 @@
+digraph G {
+  0 [ label="ENTER func01" ];
+  2 [ label="int c = 0;" ];
+  3 [ label="c++;" ];
+  4 [ label="a == 0" ];
+  5 [ label="b = 1;" ];
+  6 [ label="a == 1" ];
+  7 [ label="b = 2;" ];
+  8 [ label="b = 3;" ];
+  2 -> 3 [ style="dashed" label="[c]" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+  0 -> 4 [ ];
+  4 -> 5 [ ];
+  4 -> 6 [ ];
+  6 -> 7 [ ];
+  6 -> 8 [ ];
+}

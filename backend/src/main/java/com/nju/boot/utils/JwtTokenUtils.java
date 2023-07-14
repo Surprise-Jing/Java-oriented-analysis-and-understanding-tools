@@ -12,11 +12,8 @@ public class JwtTokenUtils {
     //在http header中的名字
     public final static String TOKEN_HEADER = "Authorization";
 
-    //三天过期
-    public final static long REMEMBER_EXPIRATION_TIME = 1000 * 60 * 60 * 60 * 24 * 3;
-
-    //半天过期
-    public final static long EXPIRATION_TIME = 1000 * 60 * 60 * 60 * 12;
+    //一个小时过期
+    public final static long EXPIRATION_TIME = 1000 * 60 * 60 * 60;
 
     // 应用密钥
     private static final String SIGNATURE = "nju.joaut";
@@ -59,6 +56,10 @@ public class JwtTokenUtils {
      */
     public static String getUsername(String token) {
         return getTokenClaims(token).getSubject();
+    }
+
+    public static Date getExpiration(String token){
+        return getTokenClaims(token).getExpiration();
     }
 
     /**

@@ -1,0 +1,8 @@
+digraph G {
+  0 [ label="ENTER func01" ];
+  1 [ label="EXIT func01" ];
+  2 [ shape="diamond" label="a == 0" ];
+  0 -> 2;
+  2 -> 1;
+  2 -> 1;
+}

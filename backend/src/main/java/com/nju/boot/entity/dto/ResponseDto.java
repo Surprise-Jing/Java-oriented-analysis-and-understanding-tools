@@ -18,7 +18,7 @@ public class ResponseDto<T> {
     private T data;
 
     public ResponseDto() {
-        this.code = 200;
+        this.code = 20000;
         this.success = true;
         this.msg = null;
         this.data = null;
@@ -26,7 +26,7 @@ public class ResponseDto<T> {
 
     //不附带msg返回数据
     public ResponseDto(T data) {
-        this.code = 200;
+        this.code = 20000;
         this.success = true;
         this.msg = null;
         this.data = data;
@@ -34,7 +34,7 @@ public class ResponseDto<T> {
 
     //默认附带msg返回数据
     public ResponseDto(String msg, T data) {
-        this.code = 200;
+        this.code = 20000;
         this.success = true;
         this.msg = msg;
         this.data = data;

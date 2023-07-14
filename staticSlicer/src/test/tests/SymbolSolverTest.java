@@ -4,24 +4,18 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.printer.DefaultPrettyPrinter;
-import com.github.javaparser.printer.configuration.DefaultPrinterConfiguration;
-import com.github.javaparser.printer.configuration.PrinterConfiguration;
 import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.nju.boot.graphs.callgraph.CallGraph;
-import com.nju.boot.graphs.printer.CallGraphPrinter;
 
-import com.nju.boot.graphs.printer.SelectivePrettyPrinterVisitor;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.file.Paths;
-import java.util.function.Function;
 
 public class SymbolSolverTest {
     public static final String absolutePath = new File("").getAbsolutePath();

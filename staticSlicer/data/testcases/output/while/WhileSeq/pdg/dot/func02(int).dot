@@ -1,0 +1,13 @@
+digraph G {
+  0 [ label="ENTER func02" ];
+  2 [ label="b < 4" ];
+  3 [ label="b++;" ];
+  4 [ label="System.out.println(b);" ];
+  3 -> 2 [ style="dashed" label="[b]" ];
+  3 -> 3 [ style="dashed" label="[b]" ];
+  3 -> 4 [ style="dashed" label="[b]" ];
+  0 -> 2 [ ];
+  0 -> 4 [ ];
+  2 -> 3 [ ];
+  2 -> 2 [ ];
+}

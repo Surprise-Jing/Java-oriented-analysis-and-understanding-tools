@@ -1,0 +1,15 @@
+digraph G {
+  0 [ label="ENTER func04" ];
+  2 [ label="a" ];
+  3 [ label="b++;" ];
+  4 [ label="b *= 2;" ];
+  5 [ label="System.out.println(b);" ];
+  4 -> 3 [ style="dashed" label="[b]" ];
+  3 -> 4 [ style="dashed" label="[b]" ];
+  4 -> 5 [ style="dashed" label="[b]" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+  2 -> 4 [ ];
+  2 -> 5 [ ];
+  2 -> 2 [ ];
+}
