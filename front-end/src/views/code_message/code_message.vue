@@ -2,7 +2,7 @@
     <div class="message_container">
         <div class="choose_file" >
             选择文件:
-        <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
+        <el-select v-model="selectFile.id" @change="getmethod(selectFile.id)" placeholder="请选择">
           <el-option
           v-for="item in fileData"
                     :key="item.id" 
@@ -43,6 +43,8 @@
 
 <script>
 import { methods } from 'vue2-ace-editor'
+import {getFile} from "@/api/file"
+import {getMethod} from "@/api/graph"
 export default{
     data(){
       return{
@@ -62,29 +64,28 @@ export default{
             { value: '', name: '注释行数', itemStyle: '#6DC8EC' },
             { value: '', name: '空行数', itemStyle: '#3F8FFF' }
         ],
-        callData:[7,3,5,4,6],//调用，被调用，圈复杂度，代码深度，参数个数
-
-
-
+        callData:[],//调用，被调用，圈复杂度，代码深度，参数个数
 
       }
     },
 
 
     methods:{
-        getfilecontext(val){
-          getFileContext(val).then(res => {
-          if(res.success){
-            this.content1 = res.data.content;
-          }
-          else{
-            this.content1 = '程序加载有误，请重新选择文件'
-          }});
+        getmethod(val){
+            getMethod(val).then(res => {
+                if(res.success){
+                    this.funcData = res.data
+                    console.log(this.funcData)
+                }
+                else{
+                    this.$message({
+                    type:'warning',
+                    message: res.msg
+                });
+                }
+            })
         },
 
-
-
-       
         drawLine () {
             this.rowAnalyse = this.$echarts.init(document.getElementById('rowChart'))
             this.rowAnalyse.setOption({
@@ -196,6 +197,20 @@ export default{
             this.drawLine()
         }
         
+    },
+    mounted(){
+        getFile(localStorage.getItem("uid")).then(res => {
+        if(res.success){
+          this.fileData = res.data
+          console.log(this.fileData)
+        }
+        else{
+          this.$message({
+            type:'warning',
+            message: res.msg
+          });
+        }
+      })
     }
 }
 </script>
@@ -210,7 +225,7 @@ export default{
 .message_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image.png');
+  //background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }

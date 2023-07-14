@@ -239,6 +239,7 @@ export default {
       },
 
       getData(){
+        //代码度量
         this.rowData.push({
           totalraw:'20',
           coderow:'12',

@@ -13,3 +13,10 @@ export function PDGSlicer(id, lineNumber, variable) {
         method: 'get',
     })
 }
+
+export function DynamicSlicer(id, lineNumber, input) {
+    return service({
+        url: '/slicer/dynamic?id=' + id + '&lineNumber=' + lineNumber + '&input=' + input,
+        method: 'get',
+    })
+}
