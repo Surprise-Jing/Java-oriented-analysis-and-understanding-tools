@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
  * </p>
  *
  * @author JingYa
- * @since 2023-07-06
+ * @since 2023-06-28
  */
 public interface UserMapper extends BaseMapper<User> {
 

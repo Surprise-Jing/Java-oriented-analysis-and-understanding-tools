@@ -64,12 +64,39 @@ public class CodeMetrics {
             return 0;
         return 1+getDepthOfInheritance(parentClassType.getTypeDeclaration().get());
     }
-    public int getLineOfMethod(String methodSignature){
-        return getLineOfMethod(GraphsUtil.findMethodBySignature(graphs,methodSignature)) ;
+    public int getLinesCodeOfMethod(String methodSignature){
+        return getLinesCodeOfMethod(GraphsUtil.findMethodBySignature(graphs,methodSignature)) ;
     }
-    public int getLineOfMethod(CallableDeclaration<?> method){
+    public int getLinesCodeOfMethod(CallableDeclaration<?> method){
         return new LineCounter(method.toString()).getLinesOfCode();
     }
+
+    public int getLinesCommentOfMethod(String methodSignature){
+        return getLinesCommentOfMethod(GraphsUtil.findMethodBySignature(graphs,methodSignature)) ;
+    }
+    public int getLinesCommentOfMethod(CallableDeclaration<?> method){
+        return new LineCounter(method.toString()).getLinesOfComment();
+    }
+
+    public int getLinesBlankOfMethod(String methodSignature){
+        return getLinesBlankOfMethod(GraphsUtil.findMethodBySignature(graphs,methodSignature)) ;
+    }
+    public int getLinesBlankOfMethod(CallableDeclaration<?> method){
+        return new LineCounter(method.toString()).getLinesOfBlanks();
+    }
+
+    public int getLinesCode(){
+        return new LineCounter(graphs.getCu().toString()).getLinesOfCode();
+    }
+
+    public int getLinesComment(){
+        return new LineCounter(graphs.getCu().toString()).getLinesOfComment();
+    }
+
+    public int getLinesBlank(){
+        return new LineCounter(graphs.getCu().toString()).getLinesOfBlanks();
+    }
+
     /**根据方法的签名返回该方法调用方法的次数*/
     public int getTimesCalling(String methodSignature){
         return getTimesCalling(GraphsUtil.findMethodBySignature(graphs,methodSignature));

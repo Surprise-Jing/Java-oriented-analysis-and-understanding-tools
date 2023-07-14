@@ -28,9 +28,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * <p>
@@ -38,7 +36,7 @@ import java.util.UUID;
  * </p>
  *
  * @author JingYa
- * @since 2023-07-07
+ * @since 2023-06-28
  */
 @RestController
 @RequestMapping("/file")
@@ -105,13 +103,17 @@ public class FilesController {
 
     @GetMapping("")
     @ApiOperation(value = "获取文件内容")
-    public String getFileContent(@RequestParam("id") String id) throws Exception{ //流请求还是字符串请求？
+    public Map<String, String> getFileContent(@RequestParam("id") String id) throws Exception{ //流请求还是字符串请求？
+        Map<String, String> map = new HashMap<>();
         if("".equals(id)){
-            return "";
+            return map;
         }
         String path = fileUploadPath + "/" + id + ".java";
         File file = new File(path);
-        return FileUtils.readFileToString(file, "utf-8");
+        Files files = iFilesService.getById(id);
+        map.put("fileName", files.getName());
+        map.put("content", FileUtils.readFileToString(file, "utf-8"));
+        return map;
     }
 
     @GetMapping("/user")
