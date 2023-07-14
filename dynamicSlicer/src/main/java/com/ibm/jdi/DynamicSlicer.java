@@ -25,15 +25,17 @@ public class DynamicSlicer {
 
     public Set<Integer> programExecute(String path, String fileName, String className, String input, Integer line, CDG cdg) throws Exception {
         DynamicExecuter dynamicExecuter = new DynamicExecuter();
-        dynamicExecuter.executeFile(path, fileName, className, input);
-        dynamicExecuter.buildingDDG(cdg);
-        result  = dynamicExecuter.dynamicSlice(line);
+        boolean bld = dynamicExecuter.executeFile(path, fileName, className, input);
+        if (bld)
+            dynamicExecuter.buildingDDG(cdg);
+        else
+            return null;
+        result = dynamicExecuter.dynamicSlice(line);
         return result;
         //return dynamicExecuter.dynamicSlice(line);
     }
 
     public DynamicSlicer slice( String input, int line) throws Exception {
-
         CDG cdg = graphs.getCDG(GraphsUtil.findMethodByLineNumber(graphs.getCu(), line));
         result = programExecute(path, fileName, className, input, line, cdg);
         return this;
