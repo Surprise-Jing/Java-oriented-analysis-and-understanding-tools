@@ -14,25 +14,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PDGPrinter extends GraphPrinter{
-    PDG pdg;
 
-    DOTExporter<GraphNode<?>, Edge> dotExporter = new DOTExporter<>(v->String.valueOf(v.getId()));
     public PDGPrinter(PDG pdg,Writer writer) {
-        this.pdg = pdg;
-        this.writer = writer;
-        setUpDotExporter();
+        super(pdg,writer);
     }
-    public void setUpDotExporter(){
-        dotExporter.setVertexAttributeProvider(
+    @Override
+    protected void setUpExporter(){
+        exporter.setVertexAttributeProvider(
                 v->{
                     Map<String, Attribute> map = new HashMap<>();
                     map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
-                    if(pdg.isMarked(v))
-                        map.put("color",DefaultAttribute.createAttribute("red"));
                     return map;
                 }
         );
-        dotExporter.setEdgeAttributeProvider(e->{
+        exporter.setEdgeAttributeProvider(e->{
             Map<String,Attribute> map = new HashMap<>();
             if(e instanceof ControlDependencyEdge);
             else if (e instanceof DataDependencyEdge){
@@ -47,9 +42,5 @@ public class PDGPrinter extends GraphPrinter{
 
 
 
-    @Override
-    public void print() {
 
-        dotExporter.exportGraph(pdg,writer);
-    }
 }
