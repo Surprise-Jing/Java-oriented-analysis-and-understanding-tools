@@ -1,111 +1,115 @@
 <template>
     <div class = "pdgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
-    <svg class="graph" width="1200" height="1200">
-      <g class="container"></g>
-    </svg>
-      <div>
-              <select
-              v-model="selectFile.id"
-              @change="getfileid(selectFile.id)" style="width: 150px;">
-        <option
-          class="choose_file"
-              v-for="item in fileData"
-              :key="item.fileId"
-              :label="item.fileName"
-              :value="item.fileId"
-              >
-          </option>
-              </select>
-      </div>
-  </div>
+      <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
+      collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
+      <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
+        <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
+</div>
 </template>
 
+
+
 <script>
+import orgtree from "../../components/orgtree";
 
-
-import dagreD3 from 'dagre-d3';
-import * as d3 from 'd3';
-
-export default {
-  name: 'cfgGraph',
-  data() {
-    return {
-      fileData:[],//要选择的文件
-              selectFile:{
-                  id:''
-              },
-      //nodes: [],
-      //edges: []
-      //测试用数据
-    nodes: [
-      { id: 0, label: "流动人员", shape: "rect" },
-      { id: 1, label: "安全筛查", shape: "rect" },
-      { id: 2, label: "热像仪人体测温筛查", shape: "diamond" },
-      { id: 3, label: "人工复测", shape: "diamond" },
-      { id: 4, label: "快速通过", shape: "rect" },
-      { id: 5, label: "紧急处理", shape: "rect" }
-    ],
-    edges: [
-      { source: 0, target: 1, label: "" },
-      { source: 1, target: 2, label: "" },
-      { source: 2, target: 4, label: "正常" },
-      { source: 2, target: 3, label: "不正常" },
-      { source: 3, target: 5, label: "不正常" },
-      { source: 3, target: 4, label: "正常" }
-    ]
-    };
-  },
-  mounted() {
-    var that = this;
-    that.draw();
-  },
-  methods: {
-    getfileid(val){
-      console.log(val)
+  export default {
+    components:{
+      orgtree
     },
-
-  //绘图
-  draw() {
-    let g = new dagreD3.graphlib.Graph();
-  //设置图
-  g.setGraph({
-    rankdir: 'LR'
-  });
-
-  console.log(this.nodes);
-  console.log(this.edges);
-
-  this.nodes.forEach(item => {
-    g.setNode(item.id, {
-      //节点标签
-      label: item.label,
-      //节点形状
-      shape: item.shape,
-      //节点样式
-      style: "fill:#F0F8FF;stroke:#000"
-    })
-  })
-  this.edges.forEach(item => {
-    g.setEdge(item.source, item.target, {
-      //边标签
-      label: item.label,
-      //边样式
-      style: "fill:#4682B4;stroke:#000;stroke-width:2px"
-    })
-  })
-  // 创建渲染器
-  let render = new dagreD3.render();
-  // 选择 svg 并添加一个g元素作为绘图容器.
-  let svgGroup = d3.select('svg').append('g');
-  // 在绘图容器上运行渲染器生成流程图.
-  render(svgGroup, g);
-
-  },
-
-},
-}
+    data () {
+      return {
+        BasicSwich:false,	
+        BasicInfo:{id:null,label:null},
+        testData: {
+          label: 'xxx科技有有限公司',
+          children: [{
+            label: '产品研发部',
+            children: [{
+              label: '研发-前端',
+            }, {
+              label: '研发-后端',
+            }, {
+              label: 'UI 设计',
+            }]
+          }, {
+            label: '销售部',
+            children: [{
+                label: '销售一部',
+              },{
+                label: '销售二部',
+              }
+            ]
+          },{
+            label: '财务部'
+          }]
+        }
+      }
+    },
+    methods: {
+      collapse(list) {   
+        var _this = this;    
+        list.forEach(
+          function(child) {        
+            if (child.expand) {          
+              child.expand = false;        
+            }        
+            child.children && _this.collapse(child.children);	
+          });},
+      onExpand(e,data) {    
+        if ("expand" in data) {       
+          data.expand = !data.expand;    	
+          if (!data.expand && data.children) {       		
+            this.collapse(data.children);    	
+          }    
+        } 
+        else {        
+          this.$set(data, "expand", true);    
+        }},
+      renderLabelClass (node) {
+        return 'label-class-blue'
+      },
+      renderCurrentClass (node) {
+        return 'label-bg-blue'
+      },
+      onMouseout(e, data) {    
+        this.BasicSwich = false
+      },
+      onMouseover(e, data) {    
+        this.BasicInfo = data;    
+        this.BasicSwich = true;    
+        var floating = document.getElementsByClassName('floating')[0];    
+        floating.style.left = e.clientX +'px';    
+        floating.style.top = e.clientY+'px';
+      }
+    }
+  }
 </script>
-
 <style>
-
+.label-class-blue{
+  color: #1989fa;
+}
+.label-bg-blue{
+  background: #1989fa;
+  color: #fff;
+}
+/* 盒子css */
+.floating{    
+  background: rgba(0, 0, 0, 0.7);    
+  width: 160px;    
+  height: 100px;    
+  position: absolute;    
+  color: #fff;    
+  padding-top: 15px;    
+  border-radius: 15px;    
+  padding-left: 15px;    
+  box-sizing: border-box;    
+  left:0;    
+  top: 0;    
+  transition: all 0.3s;    
+  z-index: 999;    
+  text-align: left;    
+  font-size: 12px;
+}
 </style>
+
+

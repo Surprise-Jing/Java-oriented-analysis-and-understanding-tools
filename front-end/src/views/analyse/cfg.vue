@@ -10,7 +10,7 @@
     </el-select>
 
   <div class="col-8">
-    <center><div id="image" style="border: solid; padding: 20px; width: 1170px; height: 400px"></div></center>
+    <center><div id="image" style="border: solid; padding: 20px; width: 1170px; height: 800px"></div></center>
   </div>
 </div>
 </template>
@@ -25,55 +25,91 @@ export default {
       container: null,
       nodesArray: [
         {
-          id: 0,
-          label: "大前端",
-          shape: "rect",
-        },
-        {
-          id: 1,
-          label: "HTML",
-          shape: "circle",
-        },
-        {
-          id: 2,
-          label: "JavaScript",
-          shape: "circle",
-        },
-        {
-          id: 3,
-          label: "CSS",
-          shape: "circle",
-        },
-        {
-          id: 4,
-          label: "三大主流框架",
-          shape: "circle",
-        },
-        {
-          id: 5,
-          label: "vue.js",
-          shape: "circle",
-        },
-        {
-          id: 6,
-          label: "react.js",
-          shape: "diamond",
-        },
-        {
-          id: 7,
-          label: "angular.js",
-          shape: "diamond",
-        }
-      ],
+      "id": "0",
+      "label": "ENTER func01"
+    },
+    {
+      "id": "1",
+      "label": "EXIT func01"
+    },
+    {
+      "id": "2",
+      "label": "switch (a)"
+    },
+    {
+      "id": "3",
+      "label": "case 1"
+    },
+    {
+      "id": "4",
+      "label": "System.out.println(\"1\");"
+    },
+    {
+      "id": "5",
+      "label": "case 2"
+    },
+    {
+      "id": "6",
+      "label": "System.out.println(\"2\");"
+    },
+    {
+      "id": "7",
+      "label": "default"
+    },
+    {
+      "id": "8",
+      "label": "System.out.println(\"default\");"
+    },
+    {
+      "id": "9",
+      "label": "System.out.println(\"endSwitch\");"
+    }
+  ],
       edgesArray: [
-        { from: 0, to: 1 },
-        { from: 1, to: 0 },
-        { from: 0, to: 2 },
-        { from: 0, to: 3 },
-        { from: 0, to: 4 },
-        { from: 4, to: 5 },
-        { from: 4, to: 6 },
-        { from: 4, to: 7 }
+        {
+      "from": "0",
+      "to": "2"
+    },
+    {
+      "from": "2",
+      "to": "3"
+    },
+    {
+      "from": "3",
+      "to": "4"
+    },
+    {
+      "from": "4",
+      "to": "5"
+    },
+    {
+      "from": "2",
+      "to": "5"
+    },
+    {
+      "from": "5",
+      "to": "6"
+    },
+    {
+      "from": "6",
+      "to": "7"
+    },
+    {
+      "from": "2",
+      "to": "7"
+    },
+    {
+      "from": "7",
+      "to": "8"
+    },
+    {
+      "from": "8",
+      "to": "9"
+    },
+    {
+      "from": "9",
+      "to": "1"
+    }
       ],
       options: {},
       data: {}
@@ -136,7 +172,7 @@ export default {
             //设置两个节点之前的连线的状态
             enabled: false //默认是true，设置为false之后，两个节点之前的连线始终为直线，不会出现贝塞尔曲线
           },
-          arrows: { to: true } //箭头指向to
+          arrows: { "to": true } //箭头指向to
         },
         layout: {
           hierarchical: {
