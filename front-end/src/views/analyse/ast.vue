@@ -1,14 +1,14 @@
 
 <template>
-    <div :id=id>
+    <div :id=id class="ast_container">
         <div>
               <select
-              v-model="selectFile.id" 
+              v-model="selectFile.id"
               @change="getfileid(selectFile.id)" style="width: 150px;">
-        <option 
-          class="choose_file" 
+        <option
+          class="choose_file"
               v-for="item in fileData"
-              :key="item.fileId" 
+              :key="item.fileId"
               :label="item.fileName"
               :value="item.fileId"
               >
@@ -16,7 +16,7 @@
               </select>
       </div>
     </div>
-  
+
 </template>
 
 <script type="text/javascript" src="../../main.js"></script>
@@ -362,3 +362,14 @@
       return result.width;
   }
 </script>
+
+
+<style lang="less" scoped>
+.ast_container{
+  min-height: 100%;
+  width: 100%;
+  background-image:url('../../assets/bg-image.png');
+  background-size:100%;
+  position: fixed;
+}
+</style>

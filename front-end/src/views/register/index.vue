@@ -1,153 +1,156 @@
 <template>
-  <div class="register-container">
-    <article class="header">
-      <header>
-        <el-avatar icon="el-icon-user-solid" shape="circle" />
-        <span class="login">
-          <em class="bold">已有账号？</em>
-          <a href="/login">
-            <el-button type="primary" size="mini">登录</el-button>
-          </a>
-        </span>
-      </header>
-    </article>
-    <section>
-      <el-form
-        ref="ruleForm"
-        :model="ruleForm"
-        :rules="rules"
-        label-width="100px"
-        autocomplete="off"
+    <div class="register-container">
+      <article class="header">
+        <header>
+          <el-avatar icon="el-icon-user-solid" shape="circle" />
+          <span class="login">
+            <em class="bold">已有账号？</em>
+            <a href="/login" >
+              <el-button type="primary" size="mini" style="background-color:darkslategray;color:darkgray;border-color:black;">登录</el-button>
+            </a>
+          </span>
+        </header>
+      </article>
+      <section>
+        <el-form
+          ref="ruleForm"
+          :model="ruleForm"
+          :rules="rules"
+          label-width="100px"
+          autocomplete="off"
 
-        size="medium"
-      >
-        <div style="padding-top: 10px">
-          <el-form-item label="用户名" prop="username">
-            <el-col :span="10">
-              <el-input
-                v-model="ruleForm.username"
-              />
-            </el-col>
-          </el-form-item>
-          <span class="status">{{ statusMsg }}</span>
+          size="medium"
+        >
+          <div style="padding-top: 10px">
+            <el-form-item label="用户名" prop="username">
+              <el-col :span="10">
+                <el-input
+                  v-model="ruleForm.username"
 
-          <el-form-item label="密码" prop="pwd">
-            <el-col :span="10">
-              <el-input v-model="ruleForm.pwd" type="password" />
-            </el-col>
-          </el-form-item>
-          <el-form-item label="确认密码" prop="cpwd">
-            <el-col :span="10">
-              <el-input v-model="ruleForm.cpwd" type="password" />
-            </el-col>
-          </el-form-item>
+                />
+              </el-col>
+            </el-form-item>
+              <span class="status">{{ statusMsg }}</span>
 
-          <el-form-item label="邮箱(非必填)" prop="email">
-            <el-col :span="10">
-              <el-input v-model="ruleForm.email" type="email" />
-            </el-col>
-          </el-form-item>
+            <el-form-item label="密码" prop="pwd">
+              <el-col :span="10">
+                <el-input v-model="ruleForm.pwd" type="password" />
+              </el-col>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="cpwd">
+              <el-col :span="10">
+                <el-input v-model="ruleForm.cpwd" type="password" />
+              </el-col>
+            </el-form-item>
 
-          <el-form-item label="电话(非必填)" prop="phone">
-            <el-col :span="10">
-              <el-input v-model="ruleForm.phone" type="number" />
-            </el-col>
-          </el-form-item>
+            <el-form-item label="邮箱(非必填)" prop="email">
+              <el-col :span="10">
+                <el-input v-model="ruleForm.email" type="email" />
+              </el-col>
+            </el-form-item>
 
-          <el-form-item>
-            <el-button
-              type="primary"
-              style="width: 40%"
-              @click="register"
-            >注册</el-button>
-          </el-form-item>
-        </div>
-      </el-form>
-    </section>
+            <el-form-item label="电话(非必填)" prop="phone">
+              <el-col :span="10">
+                <el-input v-model="ruleForm.phone" type="number" />
+              </el-col>
+            </el-form-item>
 
-    <div class="error">{{ error }}</div>
-  </div>
-</template>
 
-<script>
-import { Register } from '@/api/user'
-// import { encrypt } from '@/utils/rsaEncrypt'
-export default {
-  name: 'Register',
-  data() {
-    return {
-      statusMsg: '',
-      error: '',
-      isDisable: false,
-      codeLoading: false,
-      ruleForm: {
-        username: '',
-        pwd: '',
-        cpwd: '',
-        email: '',
-        phone: ''
-      },
-      rules: {
-        username: [{
-          required: true,
-          type: 'string',
-          message: '请输入用户名',
-          trigger: 'blur'
-        }],
-        pwd: [{
-          required: true,
-          message: '创建密码',
-          trigger: 'blur'
-        }, { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/, message: '密码必须同时包含数字与字母,且长度为 8-20位' }],
-        cpwd: [{
-          required: true,
-          message: '确认密码',
-          trigger: 'blur'
-        }, {
-          validator: (rule, value, callback) => {
-            if (value === '') {
-              callback(new Error('请再次输入密码'))
-            } else if (value !== this.ruleForm.pwd) {
-              callback(new Error('两次输入密码不一致'))
-            } else {
-              callback()
-            }
-          },
-          trigger: 'blur'
-        }]
+            <el-form-item>
+              <el-button
+                type="primary"
+                style="width: 40%; background-color:darkslategray;color:darkgray;border-color: black;"
+                @click="register"
+              >注册</el-button>
+            </el-form-item>
+          </div>
+        </el-form>
+      </section>
 
+      <div class="error">{{ error }}</div>
+    </div>
+  </template>
+
+  <script>
+  import {Register} from '@/api/user'
+  //import { encrypt } from '@/utils/rsaEncrypt'
+  export default {
+    name: 'Register',
+    data() {
+      return {
+        statusMsg: '',
+        error: '',
+        isDisable: false,
+        codeLoading: false,
+        ruleForm: {
+          username: '',
+          pwd: '',
+          cpwd: '',
+          email:'',
+          phone:'',
+        },
+        rules: {
+          username: [{
+            required: true,
+            type: 'string',
+            message: '请输入用户名',
+            trigger: 'blur'
+          }],
+          pwd: [{
+            required: true,
+            message: '创建密码',
+            trigger: 'blur'
+          }, { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/, message: '密码必须同时包含数字与字母,且长度为 8-20位' }],
+          cpwd: [{
+            required: true,
+            message: '确认密码',
+            trigger: 'blur'
+          }, {
+            validator: (rule, value, callback) => {
+              if (value === '') {
+                callback(new Error('请再次输入密码'))
+              } else if (value !== this.ruleForm.pwd) {
+                callback(new Error('两次输入密码不一致'))
+              } else {
+                callback()
+              }
+            },
+            trigger: 'blur'
+          }]
+
+        }
       }
-    }
-  },
-  methods: {
+    },
+    methods: {
 
-    // 用户注册
-    register: function() {
-      this.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          const user = {
-            username: this.ruleForm.username,
-            // password: encrypt(this.ruleForm.pwd)
-            password: this.ruleForm.pwd,
-            phoneNumber: this.ruleForm.phone,
-            email: this.ruleForm.email
-          }
-          Register(user).then(res => {
-            console.log(res)
-            if (res.success) {
-              this.$router.push('/login')
-            } else {
-              this.$message({
-                type: 'warning',
-                message: res.msg
-              })
+      // 用户注册
+      register: function() {
+        this.$refs['ruleForm'].validate((valid) => {
+          if (valid) {
+            const user = {
+              username: this.ruleForm.username,
+             // password: encrypt(this.ruleForm.pwd)
+              password:this.ruleForm.pwd,
+              phoneNumber:this.ruleForm.phone,
+              email:this.ruleForm.email
+            };
+            Register(user).then(res => {
+              console.log(res)
+              if(res.success){
+                this.$router.push("/login")
+              }
+              else{
+                this.$message({
+                  type:'warning',
+                  message: res.msg
+                });
             }
           })
         }
       })
-    } }
-}
-</script>
+    }}
+  }
+  </script>
 
   <style lang="scss">
   /* 修复input 背景不协调 和光标变色 */
@@ -162,6 +165,16 @@ export default {
       color: $cursor;
     }
   }
+
+  input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type="number"]{
+        -moz-appearance: textfield;
+    }
+
+
 
   /* reset element-ui css */
   .register-container {
@@ -178,7 +191,8 @@ export default {
         border: 1px solid rgba(255, 255, 255, 0.1);
         -webkit-appearance: none;
         padding: 12px 5px 12px 15px;
-        color:black;
+        //color:black;
+        color:darkgray;
         //color: $light_gray;
         height: 47px;
         caret-color: $cursor;
@@ -195,7 +209,7 @@ export default {
         font-style: normal;
         font-size: 12px;
         //color: $light_gray;
-        color:#2d3a4b;
+        color:darkgray;
       }
     }
   }
@@ -228,8 +242,8 @@ export default {
 
         .bold {
           font-style: normal;
-          //color: $light_gray;
-          color:black;
+          //color:black;
+          color:darkgray;
         }
       }
     }
@@ -239,9 +253,11 @@ export default {
       padding-top: 30px;
       width: 980px;
       min-height: 300px;
-      padding-right: 100px;
-      box-sizing: border-box;
+      padding-left: 170px;
 
+      box-sizing: border-box;
+      //background-color: white;
+      background-color: transparent;
       .status {
         font-size: 12px;
         margin-left: 20px;
@@ -250,6 +266,7 @@ export default {
 
       .error {
         color: red;
+        //color:lightblue;
       }
     }
 
@@ -257,7 +274,8 @@ export default {
       float: right;
       font-size: 14px;
       //color: #fff;
-      color:black;
+      //color:black;
+      color:darkgray;
       margin-bottom: 10px;
 
       span {
@@ -269,15 +287,3 @@ export default {
   }
   </style>
 
-  <!-- <style scoped>
-  /* 修改验证器样式 */
-  /deep/ .el-form-item.is-error .el-input__inner {
-    border-color: #889aa4;
-  }
-  /deep/ .el-form-item.is-error .el-input__validateIcon {
-    color: #889aa4;
-  }
-  /deep/ .el-form-item__error {
-    color: #e6a23c;
-  }
-  </style> -->

@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard_container">
-
+    
     <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"  class="data_table">
       <el-table-column prop="id" label="文件id" width="280" v-if="false">
     </el-table-column>
@@ -39,6 +39,7 @@
 import axios from "axios";
 import store from "@/store/index"
 import {getFile, getFileContext, deleteFile} from "@/api/file"
+import FileSaver from "file-saver"
 
 export default {
   data(){
@@ -79,7 +80,7 @@ export default {
         })
       },
       delete_file(val){
-        deleteFile(val).then(res => {
+        deleteFile(val, localStorage.getItem("uid")).then(res => {
           if(res.success){
             if(res.data){
               this.$message.success('删除成功');
@@ -118,7 +119,7 @@ export default {
 .dashboard_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image2.png');
+  background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
@@ -131,15 +132,15 @@ export default {
   margin-bottom: 10px;
   color: #777;
   position: absolute;
-  left:40%;
-  top:30%;
+  left:45%;
+  top:40%;
   transform: translate(-50%,-50%);
   background-color:gray;
 
 }
 .block{
   position: absolute;
-  left:40%;
+  left:45%;
   top:80%;
   transform: translate(-50%,-50%);
   //background-color:gray;

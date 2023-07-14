@@ -1,112 +1,181 @@
 <template>
-  <div class="static_slicing_container">
-    <el-input v-model="input" placeholder="请输入内容"></el-input>
-      <div  class="file_selector">
-      选择文件:
-              <select
-              v-model="selectFile.id" 
-              @change="getfileid(selectFile.id)" style="width: 200px;">
-        <option 
-          class="choose_file" 
-              v-for="item in fileData"
-              :key="item.fileId" 
-              :label="item.fileName"
-              :value="item.fileId"
-              >
-          </option>
-              </select>
-      </div>
+  <div class="slice_container">
+    <div  class="file_selector">
+        <!--只需要双向绑定代码块即可-->
+      <CodeEdit v-model="content1" class="show_code"/>
+      <CodeEdit2 v-model="content2" class="show_slicecode"/>
       <div class="input_x">
-        选择输入变量:<input class="java_input" type="text" v-model="Variable" style="width: 100px;">
-        <button @click="input_var">确定</button>
+        请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
         <p></p>
-        选择输入行数:<input class="java_input" type="number" v-model="RowNumber"  min="1" style="width: 100px;">
-        <button @click="input_row">确定</button>
+        请输入变量:<el-input class="getvar" v-model="variable"></el-input>
+        <el-button @click="input_ok">确定</el-button>
       </div>
-      <div class="displayArea" >
-        <pre v-highlightjs  class="displayCode"><code>{{code}}</code></pre>
-        <pre v-highlightjs  class="displaySlice"><code>{{slice_code}}</code></pre>
+      <div class="choose_file" >
+            选择文件：
+        <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
+          <el-option
+          v-for="item in fileData"
+                    :key="item.id" 
+                    :label="item.fileName"
+                    :value="item.id">
+          </el-option>
+        </el-select>
       </div>
+      <div class="choose_method">
+        选择方法:
+        <el-select v-model="selectMethod.id" @change="getMethod(selectMethod.id)" placeholder="请选择">
+          <el-option
+          v-for="item in selectMethod"
+                    :key="item.id" 
+                    :label="item.methodName"
+                    :value="item.id">
+          </el-option>
+        </el-select>
+      </div>
+      
+    </div>
   </div>
 </template>
 
 <script>
+import {getFile, getFileContext} from "@/api/file"
+import {DataFlowSlicer, PDGSlicer} from "@/api/slicer"
+import CodeEdit from "@/components/CodeEdit";
+import CodeEdit2 from "@/components/CodeEdit2";
 export default {
-  data(){
+  components: {CodeEdit,CodeEdit2},
+  data() {
     return {
-      input: '',
-      code:'import { createApp } from "vue"; \nimport App from "./App.vue";',//这里放要展示的代码
-      slice_code:'import { createApp } from "vue"; \nimport App from "\n./App.vue";',//切片后的代码
-      Variable:'',
-      RowNumber:'',
-      fileData:[
-        {
-          fileId:'111',
-          fileName:'test1',
-          file_time:'2022.0.1'
-        },
-        {
-          fileId:'222',
-          fileName:'test2',
-          file_time:'2022.0.1'
-        },
-        {
-          fileId:'333',
-          fileName:'test3',
-          file_time:'2022.0.1'
-        },
-      ],
+     content1:'',
+     content2:'',
+      variable:'',
+      rowNumber:'',
+     // content: '', // 代码块
+      fileData:[],
       selectFile:{
         id:''
-      }
+      },
+      selectMethod:[{
+        id:'1', methodName : "基于数据流方程的切片" 
+      },
+    {
+      id:'2', methodName: '基于程序依赖图的切片'
+    }]
     }
   },
-  methods:{
-    getfileid(val){
-      console.log(val)
+  methods: {
+    // 获取代码
+    input_ok() {
+    
+      if(this.getMethod.id == 1){
+        DataFlowSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
+          if(res.success){
+            this.content2 = res.data;
+            //console.log(this.code);
+           // this.$forceUpdate()
+          }
+          else{
+            this.$message({
+            type:'warning',
+            message: res.msg
+          });
+          }})
+        }
+      else{
+        PDGSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
+          if(res.success){
+            this.content2 = res.data;
+            //console.log(this.code);
+           // this.$forceUpdate()
+          }
+          else{
+            this.$message({
+            type:'warning',
+            message: res.msg
+          });
+          }})
+        }
+      },
+      //console.log(this.content)
+    getfilecontext(val){
+      getFileContext(val).then(res => {
+          if(res.success){
+            this.content1 = res.data.content;
+            //console.log(this.code);
+           // this.$forceUpdate()
+          }
+          else{
+            this.content1 = '程序加载有误，请重新选择文件'
+          }});
     },
-    input_var(){
-      console.log('variable',this.Variable)
-    },
-    input_row(){
-      console.log('rowNumber',this.RowNumber)
+    getMethod(val){
+      //val=2;
     }
+  },
+    
+  mounted() {
+      getFile(localStorage.getItem("uid")).then(res => {
+        if(res.success){
+          this.fileData = res.data
+          console.log(this.fileData)
+        }
+        else{
+          this.$message({
+            type:'warning',
+            message: res.msg
+          });
+        }
+      })
   }
-
 }
+
 </script>
 
 
 <style lang="scss" scoped>
-.static_slicing_container{
+.slice_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image2.png');
+  background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
+.choose_file{
+position: fixed;
+left:15%;
+top:15%;
+color:darkgray;
+}
+.input_x{
+  position: fixed;
+  left:50%;
+  top:5%;
+  color:darkgray;
+}
+.getvar{
+  width:200px;
+}
+.getrow{
+  width:200px;
+}
+
+.show_code{
+    left:55%;
+  top:20%;
+  font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
+  
+  }
+
+  .show_slicecode{
+    left:55%;
+  top:20%;
+    font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
+  }
 </style>
 
-<style>
-.file_selector{
-  position: absolute;
-  left:0%;
-  top:10%;
-}
-.displayCode{
-  left:15%;
-  top:20%;
-  width: 400px;
-  height: 500px;
-  position:fixed;
-  background-color:rgb(40, 44, 52);
-}
-.displaySlice{
-  left:65%;
-  top:20%;
-  width: 400px;
-  height: 500px;
-  position:fixed;
-  background-color:rgb(40, 44, 52);
-}
-</style>

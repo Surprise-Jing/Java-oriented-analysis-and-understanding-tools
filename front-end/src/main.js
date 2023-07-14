@@ -20,22 +20,45 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-// import 'highlight.js/styles/atom-one-dark.css'
-// import 'highlight.js/lib/common'
-// import hljsVuePlugin from '@highlightjs/vue-plugin'
-// const app = createApp(App)
-
-//  //引入代码高亮，并进行全局注册
-// app.use(hljsVuePlugin)
-// app.mount('#app')
-import VueHighlightJS from 'vue-highlightjs'
-import 'highlight.js/styles/atom-one-dark.css'
-Vue.use(VueHighlightJS)
 
 
+  //import VueHighlightJS from 'vue-highlightjs'
+//  import 'highlight.js/styles/atom-one-dark.css'
+  //Vue.use(VueHighlightJS)
 
 
+ //import Highlight from './utils/highlight'
+// Vue.use(Highlight)
 
+
+//const app=new App()
+// app.directive('highlight', function (el) {
+//   const blocks = el.querySelectorAll('pre code');
+//   blocks.forEach((block) => {
+//     hljs.highlightBlock(block);
+//     // 从这开始是设置行号
+//     block.innerHTML = `<ol><li>${block.innerHTML.replace(
+//       /\n/g,
+//       `</li><li class="line">`
+//     )}</li></ol>`;
+//   });
+// });
+// app.use(hljs.vuePlugin) 
+
+// import hljs from 'highlight.js'
+// //import 'highlight.js/styles/googlecode.css'
+// Vue.directive('highlight',function (el) {
+//   let blocks = el.querySelectorAll('pre code');
+//   setTimeout(() =>{
+//       blocks.forEach((block)=>{
+//       hljs.highlightBlock(block)
+//       block.innerHTML = `<ol><li>${block.innerHTML.replace(
+//         /'\n'/g,
+//         `</li><li class="line">`
+//       )}</li></ol>`;
+//       })
+//   }, 200)
+// })
 
 
 /**
