@@ -1,6 +1,22 @@
 
 <template>
-  <div :id=id></div>
+    <div :id=id class="ast_container">
+        <div>
+              <select
+              v-model="selectFile.id"
+              @change="getfileid(selectFile.id)" style="width: 150px;">
+        <option
+          class="choose_file"
+              v-for="item in fileData"
+              :key="item.fileId"
+              :label="item.fileName"
+              :value="item.fileId"
+              >
+          </option>
+              </select>
+      </div>
+    </div>
+
 </template>
 
 <script type="text/javascript" src="../../main.js"></script>
@@ -28,6 +44,10 @@
       },
       data() {
           return {
+            fileData:[],//要选择的文件
+            selectFile:{
+                id:''
+            },
               id: 'ASTtree' + randomString(4),
               data: {},
               deep: 0,
@@ -43,6 +63,9 @@
           )
       },
       methods: {
+        getfileid(val){
+        console.log(val)
+        },
           drawMap() {
               let that = this
               // 源数据
@@ -339,3 +362,14 @@
       return result.width;
   }
 </script>
+
+
+<style lang="less" scoped>
+.ast_container{
+  min-height: 100%;
+  width: 100%;
+  background-image:url('../../assets/bg-image.png');
+  background-size:100%;
+  position: fixed;
+}
+</style>

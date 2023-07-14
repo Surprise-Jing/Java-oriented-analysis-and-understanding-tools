@@ -11,6 +11,7 @@
     transition: width 0.28s;
     width: $sideBarWidth !important;
     background-color: $menuBg;
+   //background: transparent;
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -32,11 +33,11 @@
     .el-scrollbar__bar.is-vertical {
       right: 0px;
     }
-
+    .el-scrollbar
     .el-scrollbar {
       height: 100%;
     }
-
+   
     &.has-logo {
       .el-scrollbar {
         height: calc(100% - 50px);
@@ -66,6 +67,7 @@
       border: none;
       height: 100%;
       width: 100% !important;
+      background: transparent;
     }
 
     // menu hover
@@ -78,15 +80,18 @@
 
     .is-active>.el-submenu__title {
       color: $subMenuActiveText !important;
+      //color:transparent !important;
     }
 
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
       min-width: $sideBarWidth !important;
-      background-color: $subMenuBg !important;
+      //background-color: $subMenuBg !important;
+      background:transparent !important;
 
       &:hover {
         background-color: $subMenuHover !important;
+        //background: transparent;
       }
     }
   }
@@ -202,6 +207,7 @@
     &:hover {
       // you can use $subMenuHover
       background-color: $menuHover !important;
+      //background: transparent;
     }
   }
 

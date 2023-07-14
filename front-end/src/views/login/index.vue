@@ -25,7 +25,7 @@
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input
+        <el-input 
           :key="passwordType"
           ref="password"
           v-model="loginForm.password"
@@ -41,7 +41,8 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px; background-color:darkslategray;border-color: black;color: darkgray;"
+       @click.native.prevent="handleLogin">登录</el-button>
       <p class="tips" >
         <!-- <a onclick="/register">还没有帐号？立即注册</a> -->
         <a href= "/#/registerpage" type="primary">还没有帐号？立即注册</a>
@@ -67,8 +68,8 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能少于6位'))//todo
+      if (value.length < 8) {
+        callback(new Error('密码不能少于8位'))//todo
       } else {
         callback()
       }
@@ -161,7 +162,8 @@ $cursor: #fff;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
       //color: $light_gray;
-      color: black;
+      //color: black;
+      color:darkgray;
       height: 47px;
       caret-color: $cursor;
 
@@ -191,7 +193,7 @@ $light_gray:#eee;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-background-image:url('../../assets/bg-image.png');//todo 
+background-image:url('../../assets/bg-image.png');//todo
 background-size:100%;
 
 display: flex;
@@ -203,13 +205,14 @@ align-items: center;
     padding: 160px 35px 60px;
     margin: 0 auto;
     overflow: hidden;
-    background-color: #fff;//todo
+    //background-color: #fff;//todo
+    background-color: transparent;
     border-radius: 10%;
   }
 
   .tips {
     font-size: 14px;
-    color:black;
+    color:$dark_gray;
     margin-bottom: 10px;
 
     span {
@@ -232,8 +235,9 @@ align-items: center;
 
     .title {
       font-size: 26px;
-      //color: $light_gray;
-      color:$dark_gray;
+      color: $light_gray;
+      //color:$dark_gray;
+      
       margin: 0px auto 40px auto;
       text-align: center;
 
@@ -246,10 +250,13 @@ align-items: center;
     right: 10px;
     top: 7px;
     font-size: 16px;
-    //color: $dark_gray;
-    color:black;
+    color: $dark_gray;
+    //color:black;
     cursor: pointer;
     user-select: none;
+  }
+  .input_password{
+    color: red;
   }
 }
 </style>

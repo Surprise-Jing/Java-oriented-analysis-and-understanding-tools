@@ -1,6 +1,7 @@
 
 <template>
-  <div id="app">
+  <div class="upload_container">
+    <div id="app">
     <div class="content">
       <div class="drag-area" @dragover="fileDragover" @drop="fileDrop">
         <div v-if="fileName" class="file-name">{{ fileName }}</div>
@@ -19,12 +20,14 @@
      
     </div>
   </div>
+  </div>
+  
 </template>
 
 
 <script type="text/javascript" src="../../main.js"></script>
 <script >
-import { uploadFile } from '@/api/user'
+import { uploadFile } from '@/api/file'
 
 export default {
   data () {
@@ -80,7 +83,8 @@ export default {
             console.log(res)
             if(res.success){
               localStorage.setItem("id", res.data.id)
-              alert("success");
+              this.$message.success("文件上传成功")
+              this.$router.push("/")
             }
             else{
               this.$message({
@@ -96,38 +100,53 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.upload_container{
+  min-height: 100%;
+  width: 100%;
+  background-image:url('../../assets/bg-image.png');
+  background-size:100%;
+  position: fixed;
+}
     * {
       font-size: 14px;
     }
+    
     .drag-area {
-      height: 200px;
+      height: 300px;
       width: 700px;
-      border: dashed 1px gray;
+      border: dashed 1px darkslategrey;
       margin-bottom: 10px;
       color: #777;
       position: absolute;
-      left:50%;
-      top:20%;
+      left:45%;
+      top:30%;
       transform: translate(-50%,-50%);
+      background-color:darkslategrey;
+      //border-radius: 5%;
     }
     .uploader-tips {
       text-align: center;
       height: 200px;
       line-height: 200px;
-
+      //color:white;
+      color:darkgray;
      
     }
     .file-name {
       text-align: center;
       height: 200px;
       line-height: 200px;
-      
     }
     .uploadbtn{
       position: absolute;
-      left:50%;
-      top:40%;
+      left:45%;
+      top:60%;
+      height: 50px;
+      width:70px;
       transform: translate(-50%,-50%);
+      color:darkgray;
+      background-color: darkslategray;
+      border-color: black;
     }
     
 

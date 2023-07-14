@@ -2,6 +2,7 @@ package com.nju.boot.controller;
 
 import com.nju.boot.entity.Files;
 import com.nju.boot.entity.User;
+import com.nju.boot.entity.dto.FileDto;
 import com.nju.boot.entity.dto.LoginDto;
 import com.nju.boot.service.IFilesService;
 import com.nju.boot.service.IUserService;
@@ -13,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -74,12 +72,6 @@ public class UserController {
     @ApiOperation(value = "更新用户")
     public User updateUser(@RequestBody User user){
         return iUserService.update(user);
-    }
-
-    @GetMapping("/file")
-    @ApiOperation(value = "获得用户上传的所有文件")
-    public List<Files> getUserFiles(@RequestParam("uid") String uid){
-        return iFilesService.getFilesByUid(uid);
     }
 
 }

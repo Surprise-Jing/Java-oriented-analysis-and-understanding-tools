@@ -29,8 +29,16 @@ CREATE TABLE `j_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+DROP TABLE IF EXISTS `j_userfile`;
+CREATE TABLE `j_userfile` (
+  `id` varchar(255) NOT NULL COMMENT '编号',
+  `uid` varchar(255) NOT NULL COMMENT '用户编号',
+  `fid` varchar(255) NOT NULL COMMENT '文件编号',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-DROP TABLE IF EXISTS `j_file`;
+
+DROP TABLE IF EXISTS `j_files`;
 DROP TABLE IF EXISTS `j_files`;
 CREATE TABLE `j_files` (
   `id` varchar(255) NOT NULL COMMENT '编号',
@@ -38,7 +46,6 @@ CREATE TABLE `j_files` (
   `type` varchar(255) DEFAULT NULL COMMENT '文件类型',
   `md5` varchar(255) DEFAULT NULL COMMENT 'MD5值',
   `url` varchar(255) NOT NULL COMMENT '下载链接',
-  `uid` varchar(255) NOT NULL COMMENT '用户编号',
   `upload_time` varchar(25) NOT NULL COMMENT '上传时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '是否删除',
   `enable` tinyint(1) DEFAULT '1' COMMENT '是否禁用链接',
