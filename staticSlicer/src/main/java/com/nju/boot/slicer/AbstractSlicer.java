@@ -4,6 +4,8 @@ import com.github.javaparser.ast.Node;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.GraphsUtil;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,5 +23,6 @@ public abstract class AbstractSlicer {
         return GraphsUtil.getLinesCoveredByNodes(getSlicedAstNode());
     }
     public  abstract String getResultCode();
+
 
 }

@@ -1,0 +1,282 @@
+{
+  "creator": "JGraphT JSON Exporter",
+  "version": "1",
+  "nodes": [
+    {
+      "id": "0",
+      "label": "ENTER main"
+    },
+    {
+      "id": "2",
+      "label": "int sum = 0;"
+    },
+    {
+      "id": "3",
+      "label": "int prod = 1;"
+    },
+    {
+      "id": "4",
+      "label": "int i = 0;"
+    },
+    {
+      "id": "5",
+      "label": "i < 10"
+    },
+    {
+      "id": "6",
+      "label": "i = i + 1;"
+    },
+    {
+      "id": "7",
+      "label": "prod > 100 \/ i"
+    },
+    {
+      "id": "8",
+      "label": "i = i - 1;"
+    },
+    {
+      "id": "9",
+      "label": "break;"
+    },
+    {
+      "id": "10",
+      "label": "sum = sum + i;"
+    },
+    {
+      "id": "11",
+      "label": "sum = prod;"
+    },
+    {
+      "id": "12",
+      "label": "prod = prod * i;"
+    },
+    {
+      "id": "13",
+      "label": "System.out.println(i);"
+    },
+    {
+      "id": "14",
+      "label": "System.out.println(sum);"
+    },
+    {
+      "id": "15",
+      "label": "System.out.println(prod);"
+    }
+  ],
+  "edges": [
+    {
+      "source": "4",
+      "target": "5",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "6",
+      "target": "5",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "4",
+      "target": "6",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "6",
+      "target": "6",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "6",
+      "target": "7",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "3",
+      "target": "7",
+      "style": "dashed",
+      "label": "[prod]"
+    },
+    {
+      "source": "12",
+      "target": "7",
+      "style": "dashed",
+      "label": "[prod]"
+    },
+    {
+      "source": "6",
+      "target": "8",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "6",
+      "target": "10",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "2",
+      "target": "10",
+      "style": "dashed",
+      "label": "[sum]"
+    },
+    {
+      "source": "11",
+      "target": "10",
+      "style": "dashed",
+      "label": "[sum]"
+    },
+    {
+      "source": "3",
+      "target": "11",
+      "style": "dashed",
+      "label": "[prod]"
+    },
+    {
+      "source": "12",
+      "target": "11",
+      "style": "dashed",
+      "label": "[prod]"
+    },
+    {
+      "source": "6",
+      "target": "12",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "3",
+      "target": "12",
+      "style": "dashed",
+      "label": "[prod]"
+    },
+    {
+      "source": "12",
+      "target": "12",
+      "style": "dashed",
+      "label": "[prod]"
+    },
+    {
+      "source": "4",
+      "target": "13",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "6",
+      "target": "13",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "8",
+      "target": "13",
+      "style": "dashed",
+      "label": "[i]"
+    },
+    {
+      "source": "2",
+      "target": "14",
+      "style": "dashed",
+      "label": "[sum]"
+    },
+    {
+      "source": "11",
+      "target": "14",
+      "style": "dashed",
+      "label": "[sum]"
+    },
+    {
+      "source": "3",
+      "target": "15",
+      "style": "dashed",
+      "label": "[prod]"
+    },
+    {
+      "source": "12",
+      "target": "15",
+      "style": "dashed",
+      "label": "[prod]"
+    },
+    {
+      "source": "0",
+      "target": "2"
+    },
+    {
+      "source": "0",
+      "target": "3"
+    },
+    {
+      "source": "0",
+      "target": "4"
+    },
+    {
+      "source": "0",
+      "target": "5"
+    },
+    {
+      "source": "0",
+      "target": "13"
+    },
+    {
+      "source": "0",
+      "target": "14"
+    },
+    {
+      "source": "0",
+      "target": "15"
+    },
+    {
+      "source": "5",
+      "target": "6"
+    },
+    {
+      "source": "5",
+      "target": "7"
+    },
+    {
+      "source": "7",
+      "target": "8"
+    },
+    {
+      "source": "7",
+      "target": "9"
+    },
+    {
+      "source": "9",
+      "target": "10"
+    },
+    {
+      "source": "9",
+      "target": "11"
+    },
+    {
+      "source": "9",
+      "target": "12"
+    },
+    {
+      "source": "9",
+      "target": "5"
+    },
+    {
+      "source": "7",
+      "target": "10"
+    },
+    {
+      "source": "7",
+      "target": "11"
+    },
+    {
+      "source": "7",
+      "target": "12"
+    },
+    {
+      "source": "7",
+      "target": "5"
+    }
+  ]
+}
