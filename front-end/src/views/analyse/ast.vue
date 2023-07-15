@@ -11,13 +11,24 @@
             </el-option>
           </el-select>
       </div>
+      <el-button @click="expandall">全部展开</el-button>
+        <span style="left: 50%;position: relative;">
+          <el-button @click="enlarge" >放大</el-button>
+          <el-button @click="narrow">缩小</el-button>
+     </span>
+     
+     
+      
         <div style="height: 3px;background-color: gray;"></div>
-        <div class = "ast" >
+        <div class="ast">
+          <div  id="ast">
           <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
           collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
           <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
             <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
+          </div>
         </div>
+        
   </div>
   </template>
   
@@ -40,7 +51,8 @@
           },
           BasicSwich:false,	
           BasicInfo:{id:null,label:null},
-          testData:{}
+          testData:{},
+          scal:1,
         }
       },
       created(){
@@ -109,7 +121,48 @@
           var floating = document.getElementsByClassName('floating')[0];    
           floating.style.left = e.clientX +'px';    
           floating.style.top = e.clientY+'px';
-        }
+        },
+        toggleExpand(data, val) {
+          var _this = this;
+          if (Array.isArray(data)) {
+              data.forEach(function(item) {
+                _this.$set(item, "expand", val);
+                if (item.children) {
+                  _this.toggleExpand(item.children, val);
+                }
+              });
+          } else {
+            //console.log('here')
+              this.$set(data, "expand", val);
+              if (data.children) {
+                _this.toggleExpand(data.children, val);
+              }
+          }
+        },
+        expandall(){
+          this.toggleExpand(this.testData,true)
+        },
+
+        narrow() {
+        this.$nextTick(() => {
+            // imageWrapper 获取元素
+            let imageWrapper = document.getElementById('ast');
+            this.scal = (parseFloat(this.scal) - 0.10).toFixed(2);
+            imageWrapper.style.transform = "scale(" + this.scal + ")";
+            imageWrapper.style.transformOrigin = '0 0';
+          })
+        },
+        enlarge() {
+          this.$nextTick(() => {
+            // imageWrapper 获取元素
+            let imageWrapper = document.getElementById('ast');
+            this.scal = (parseFloat(this.scal) + 0.10).toFixed(2);
+            imageWrapper.style.transform = "scale(" + this.scal + ")";
+            imageWrapper.style.transformOrigin = '0 0';
+          })
+       }
+
+
       }
     }
   </script>
@@ -143,13 +196,13 @@
    
   
     width: 1000px;
-    height: 600px;
+    height: 500px;
     left:20%;
-    
+    overflow: scroll;
    
   }
   .pdgGraph{
-   overflow: scroll;
+   
   }
   </style>
   

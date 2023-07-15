@@ -2,11 +2,14 @@
   <div class="slice_container">
     <div  class="file_selector">
         <!--只需要双向绑定代码块即可-->
-        <span style="position: fixed;left:15%;top:16%;font-size: large;color: gray;">源代码:</span> 
+          <span style="position: fixed;left:15%;top:16%;font-size: large;color: gray;">源代码:</span> 
         <span style="position: fixed;left:55%;top:16%;font-size: large;color: gray;">切片结果:</span>
-      <CodeEdit v-model="content1" class="show_code"/>
-      <CodeEdit2 v-model="content2" class="show_slicecode"/>
-      <el-button @click="tipsbtn" style="position: fixed;left:1400px;">{{tip_text}}</el-button>
+      <div style="position: fixed;">
+        <CodeEdit v-model="content1" class="show_code"/>
+        <CodeEdit2 v-model="content2" class="show_slicecode"/>
+      </div>
+      
+      <el-button @click="tipsbtn" style="position: fixed;left:1300px;">{{tip_text}}</el-button>
       <div v-if="tip" class="tiparea">
         <div style="height: 15px;"></div>
         <h1>使用方法:</h1>
@@ -180,24 +183,6 @@ export default {
   width:150px;
 }
 
-.show_code{
-    left:55%;
-  top:20%;
-  font-size: 100%;
-  position:fixed;
-  background-color:rgb(40, 44, 52);
-  color:darkgray;
-
-  }
-
-  .show_slicecode{
-    left:55%;
-  top:20%;
-    font-size: 100%;
-  position:fixed;
-  background-color:rgb(40, 44, 52);
-  color:darkgray;
-  }
   .tiparea{
     position: fixed;
     width:600px;
