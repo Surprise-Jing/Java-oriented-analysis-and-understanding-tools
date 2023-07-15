@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/GraphController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/GraphController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/code_message/code_message.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/code_message/code_message.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/ast.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/ast.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/cfg.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/cfg.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/cg.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/cg.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/pdg.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/pdg.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

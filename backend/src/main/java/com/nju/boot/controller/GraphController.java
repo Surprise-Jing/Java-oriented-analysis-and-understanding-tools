@@ -1,20 +1,22 @@
 package com.nju.boot.controller;
 
+import cn.hutool.json.JSON;
+import com.github.javaparser.printer.XmlPrinter;
 import com.nju.boot.entity.dto.MethodDto;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.util.GraphsUtil;
+import com.nju.boot.util.JsonDataModifier;
 import com.nju.boot.utils.PathUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/graph")
@@ -27,20 +29,26 @@ public class GraphController {
 
     @GetMapping("/ast")
     @ApiOperation(value = "获得语法分析树AST")
-    public String getAST(@RequestParam("id") String id){
+    public Map<String, String> getAST(@RequestParam("id") String id){
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         Graphs graphs = new Graphs(path);
-        return GraphsUtil.astNodeToXml(graphs.getCu());
+        JsonDataModifier jsonDataModifier = new JsonDataModifier(new XmlPrinter(true).output(graphs.getCu()));
+        Map<String, String> res = new HashMap<>();
+        jsonDataModifier.modify();
+        res.put("result", jsonDataModifier.getResult().toString());
+        return res;
     }
 
     @GetMapping("/cg")
     @ApiOperation(value = "获得函数调用图Call graph")
-    public String getCallGraph(@RequestParam("id") String id){
+    public Map<String, String> getCallGraph(@RequestParam("id") String id){
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         Graphs graphs = new Graphs(path);
-        return graphs.getCallGraph().toString();
+        Map<String, String> res = new HashMap<>();
+        res.put("result", graphs.getCallGraph().toString());
+        return res;
     }
 
     @GetMapping("/method")
@@ -60,7 +68,7 @@ public class GraphController {
 
     @PostMapping("/cfg")
     @ApiOperation(value = "获得控制流程图CFG")
-    public String getCFG(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+    public Map<String, String> getCFG(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
         String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
@@ -69,12 +77,14 @@ public class GraphController {
             Set<String> methods = graphs.getQualifiedSignatures();
             func = methods.stream().toList().get(0);
         }
-        return graphs.getCFG(GraphsUtil.findMethodBySignature(graphs, func)).toString();
+        Map<String, String> res = new HashMap<>();
+        res.put("result", graphs.getCFG(GraphsUtil.findMethodBySignature(graphs, func)).toString());
+        return res;
     }
 
     @PostMapping("/pdg")
     @ApiOperation(value = "获得程序依赖图PDG")
-    public String getPDG(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+    public Map<String, String> getPDG(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
         String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
@@ -83,6 +93,8 @@ public class GraphController {
             Set<String> methods = graphs.getQualifiedSignatures();
             func = methods.stream().toList().get(0);
         }
-        return graphs.getPDG(GraphsUtil.findMethodBySignature(graphs, func)).toString();
+        Map<String, String> res = new HashMap<>();
+        res.put("result", graphs.getPDG(GraphsUtil.findMethodBySignature(graphs, func)).toString());
+        return res;
     }
 }
