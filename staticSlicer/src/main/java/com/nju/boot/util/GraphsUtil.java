@@ -6,13 +6,20 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.printer.DotPrinter;
 import com.github.javaparser.printer.XmlPrinter;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.slicer.exceptions.MethodNotFoundException;
 import com.nju.boot.slicer.exceptions.VariableNotFoundException;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,7 +48,14 @@ public class GraphsUtil {
     public static String astNodeToXml(CompilationUnit compilationUnit){
         XmlPrinter xmlPrinter = new XmlPrinter(true);
         return xmlPrinter.output(compilationUnit);
-
+    }
+    public static void astNodeToPNGOutput(CompilationUnit compilationUnit, File outFile) throws IOException {
+        String srcDot = new DotPrinter(true).output(compilationUnit);
+        Graphviz.fromString(srcDot).render(Format.PNG).toOutputStream(new FileOutputStream(outFile));
+    }
+    public static void astNodeToPNGOutput(CompilationUnit compilationUnit, String outFilePath) throws IOException {
+        File outFile = new File(outFilePath);
+        astNodeToPNGOutput(compilationUnit,outFile);
     }
     public static Set<Integer> getLinesCoveredByNode(Node node){
         int start = node.getRange().get().begin.line;
