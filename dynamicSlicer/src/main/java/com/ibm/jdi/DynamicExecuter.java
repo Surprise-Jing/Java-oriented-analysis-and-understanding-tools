@@ -132,7 +132,11 @@ public class DynamicExecuter {
             }
         } catch (VMDisconnectedException e) {
             System.out.println("Virtual Machine is disconnected.");
-        } catch (Exception e) {
+        }
+        catch (IndexOutOfBoundsException e) {
+            throw new FileUnexecutableException();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         finally {
@@ -172,7 +176,7 @@ public class DynamicExecuter {
         exceptionRequest.enable();
     }
 
-    public void setBreakPoints(@NotNull VirtualMachine vm, @NotNull ClassPrepareEvent event) throws AbsentInformationException {
+    public void setBreakPoints(@NotNull VirtualMachine vm, @NotNull ClassPrepareEvent event) throws AbsentInformationException, IndexOutOfBoundsException {
         ClassType classType = (ClassType) event.referenceType();
         Method methods = classType.methodsByName("main").get(0);
         List<Location> locations = methods.allLineLocations();

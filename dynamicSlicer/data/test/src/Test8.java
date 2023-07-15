@@ -1,6 +1,6 @@
 import java.util.Scanner;
 public class Test8 {
-    public static void main(String[]args) {
+    public static void mai(String[]args) {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
         int sum = 0;
