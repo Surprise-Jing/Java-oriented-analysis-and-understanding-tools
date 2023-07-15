@@ -1,10 +1,8 @@
 package com.ibm.jdi;
 
-import com.github.javaparser.Range;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.stmt.*;
+import com.github.javaparser.ast.stmt.BreakStmt;
+import com.github.javaparser.ast.stmt.ContinueStmt;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.nodes.GraphNode;
@@ -13,7 +11,10 @@ import com.sun.jdi.*;
 import com.sun.jdi.connect.Connector;
 import com.sun.jdi.connect.LaunchingConnector;
 import com.sun.jdi.event.*;
-import com.sun.jdi.request.*;
+import com.sun.jdi.request.BreakpointRequest;
+import com.sun.jdi.request.ClassPrepareRequest;
+import com.sun.jdi.request.ExceptionRequest;
+import com.sun.jdi.request.StepRequest;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,8 +27,6 @@ import java.util.*;
 @Data
 public class DynamicExecuter {
     private String debugClass;
-
-//    private int[] breakPointLines;
 
     private List<Integer> logOfLines;
 
@@ -42,7 +41,7 @@ public class DynamicExecuter {
     private Map<GraphNode<?>, List<DynamicNode>> GNToDN = new HashMap<>();
 
     private void setLogOfLines(){
-        logOfLines = new ArrayList<Integer>();
+        logOfLines = new ArrayList<>();
     }
 
     public VirtualMachine connectAndLaunchVM(String path, String fileName) throws Exception {
@@ -79,18 +78,33 @@ public class DynamicExecuter {
         this.setDebugClass(className);
         this.setLogOfLines();
         VirtualMachine vm = null;
+
+        // 设置执行时间限制为60秒
+        int timeoutSeconds = 60;
+        Timer timer = new Timer();
+
+        // 在这里执行你的JDI代码
         try {
             vm = this.connectAndLaunchVM(path, fileName);
 
             Process process = vm.process();
             OutputStream outputStream = process.getOutputStream();
-//            String str = "12";
             outputStream.write(input.getBytes());
             outputStream.flush();
             outputStream.close();
 
             this.enableClassPrepareRequest(vm);
             this.enableExceptionRequest(vm);
+
+            //计时器
+            VirtualMachine finalVm = vm;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    finalVm.exit(0); // 终止程序执行
+                    throw new FileTimeLimitExceedException();
+                }
+            }, timeoutSeconds * 1000);
 
             EventSet eventSet;
             while ((eventSet = vm.eventQueue().remove()) != null) {
@@ -109,28 +123,45 @@ public class DynamicExecuter {
                         this.updatingLog((StepEvent) event);
                     }
                     if (event instanceof ExceptionEvent) {
-                        System.out.println("Exception catched.");
+//                        System.out.println("Exception catched.");
                         vm.exit(0);
-                        return false;
+                        throw new FileRunningException();
                     }
                     vm.resume();
                 }
             }
         } catch (VMDisconnectedException e) {
             System.out.println("Virtual Machine is disconnected.");
-        } catch (Exception e) {
+        }
+        catch (IndexOutOfBoundsException e) {
+            throw new FileUnexecutableException();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         finally {
-            InputStreamReader reader = new InputStreamReader(vm.process().getInputStream());
+//            InputStreamReader reader = null;
+//            if (vm != null) {
+//                reader = new InputStreamReader(vm.process().getInputStream());
+//            }
             OutputStreamWriter writer = new OutputStreamWriter(System.out);
-            char[] buf = new char[512];
-            reader.read(buf);
+            String buf = "";
+//            if (reader != null) {
+//                reader.read(buf.toCharArray());
+//            }
             writer.write(buf);
             writer.flush();
         }
 
-        vm.process().destroy();
+        if (vm != null) {
+            vm.process().destroy();
+        }
+
+        // 取消计时器
+        timer.cancel();
+
+        System.out.println("Execute over.");
+
         return true;
     }
 
@@ -142,11 +173,10 @@ public class DynamicExecuter {
 
     public void enableExceptionRequest(@NotNull VirtualMachine vm) {
         ExceptionRequest exceptionRequest = vm.eventRequestManager().createExceptionRequest(null, true, true);
-//        exceptionRequest.addClassFilter(debugClass);
         exceptionRequest.enable();
     }
 
-    public void setBreakPoints(@NotNull VirtualMachine vm, @NotNull ClassPrepareEvent event) throws AbsentInformationException, NoSuchMethodException {
+    public void setBreakPoints(@NotNull VirtualMachine vm, @NotNull ClassPrepareEvent event) throws AbsentInformationException, IndexOutOfBoundsException {
         ClassType classType = (ClassType) event.referenceType();
         Method methods = classType.methodsByName("main").get(0);
         List<Location> locations = methods.allLineLocations();
@@ -169,8 +199,8 @@ public class DynamicExecuter {
             AbsentInformationException {
         StackFrame stackFrame = event.thread().frame(0);
         if(stackFrame.location().toString().contains(debugClass)) {
-            Map<LocalVariable, Value> visibleVariables = stackFrame
-                    .getValues(stackFrame.visibleVariables());
+//            Map<LocalVariable, Value> visibleVariables = stackFrame
+//                    .getValues(stackFrame.visibleVariables());
 //            System.out.println("Variables at " + stackFrame.location().toString() +  " > ");
             addToLogofLines(stackFrame.location().lineNumber());
 //            logOfLines.add(stackFrame.location().lineNumber());
@@ -187,29 +217,6 @@ public class DynamicExecuter {
         stepRequest.enable();
     }
 
-    /*    public void InitiateDDG(int size){
-            //initiate ReachableStmt
-
-            for (int i = 0; i < size; i++) {
-                *//* ReachableStmt[i] = {} *//*
-     *//* 遍历 静态依赖图 *//*
-            GraphNode<?> GN = cfg.getRootNode().get(); // 行号i to 结点GN
-//            Class<GraphNode<?>> graphNodeClass = null;
-            Set<Integer> nl = new HashSet<>();
-//            bfs 遍历结点GN
-            List<Node> childs = GN.getAstNode().getChildNodes();
-            LinkedList<Node> queue = new LinkedList<>(childs);
-
-            while(!queue.isEmpty()){
-                Node n = queue.peek();
-                queue.remove();
-                queue.addAll(n.getChildNodes()); //未去重
-                nl.add(0); //未填入具体id
-            }
-
-            ReachableStmt.add(nl);
-        }
-    }*/
     /*public Set<Integer> getLines(@NotNull GraphNode<?> GN) {
         Set<Integer> lns = new HashSet<>();
 
@@ -324,11 +331,10 @@ public class DynamicExecuter {
 
     public void buildingDDG(CDG _cdg) throws NoSuchElementException {
 
-        System.out.println(logOfLines);
+//        System.out.println(logOfLines);
 
         for(int i : logOfLines){
 //                        DDG
-//            ReachableStmt /staic /const
             SlicerCriterion slicerCriterion = new SlicerCriterion(null, i, _cdg);
             Set<GraphNode<?>> graphNodes = slicerCriterion.findNodeByLineNumber(_cdg);
 
@@ -338,26 +344,23 @@ public class DynamicExecuter {
 
                 Set<String> Use = GN.getUsedVariables();
                 for(String v : Use){
-                    System.out.println(i + " Used Variable: " + v);
+//                    System.out.println(i + " Used Variable: " + v);
                     if (DefnNode.containsKey(v)) {
                         Def.add(DefnNode.get(v));
-                        System.out.println(DefnNode.get(v).getGN().getAstNode().getBegin().get().line);
+//                        System.out.println(DefnNode.get(v).getGN().getAstNode().getBegin().get().line);
 //                        System.out.println("add reachable: " + DefnNode.get(v).getReachableStmt());
-//                        if (DefnNode.containsKey(v))
-//                            Reach.addAll(DefnNode.get(v).getReachableStmt());
+
                     }
                 }
 
                 for(Edge inEdge : _cdg.incomingEdgesOf(GN)){
                     GraphNode<?> p = _cdg.getEdgeSource(inEdge);
-                    System.out.println( i + " Controled by: " + p.getAstNode().getBegin().get().line + ",type: " + p.getAstNode().getClass());
+//                    System.out.println( i + " Controled by: " + p.getAstNode().getBegin().get().line + ",type: " + p.getAstNode().getClass());
                     if(p.getAstNode() instanceof BreakStmt || p.getAstNode() instanceof ContinueStmt)
                         continue;
                     if(PrednNode.containsKey(p)){
                         Pred.add(PrednNode.get(p));
 //                        System.out.println("add reachable: " + PrednNode.get(NodeId).getReachableStmt());
-//                        if (PrednNode.containsKey(NodeId))
-//                            Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
                     }
                 }
 
@@ -379,15 +382,12 @@ public class DynamicExecuter {
                         if (GNToDN.containsKey(w)) {
                             GNToDN.get(w).get(GNToDN.get(w).size()-1).getPred().add(newDn);
                         }
-//                        Integer LoopId = w.getAstNode().getBegin().get().line;
-//                        if(CurrentNode.containsKey(LoopId))
-//                            CurrentNode.get(LoopId).get(CurrentNode.get(LoopId).size() - 1).getReachableStmt().add(i);
                     }
                 }
 
                 if( !GN.getDefinedVariables().isEmpty() ){
 //                    System.out.println(i + " Updating DefnNode: ");
-//                    update DefnNode
+//                    更新DefnNode
                     Set<String> definedVar = GN.getDefinedVariables();
                     for(String s : definedVar){
                         DefnNode.put(s, GNToDN.get(GN).get(GNToDN.get(GN).size() - 1));
@@ -396,7 +396,7 @@ public class DynamicExecuter {
                 }
 
                 if( !_cdg.outgoingEdgesOf(GN).isEmpty() /* GN is control Node */) {
-//                    update PrednNode
+//                    更新PrednNode
                     PrednNode.put(GN, GNToDN.get(GN).get(GNToDN.get(GN).size() - 1));
                 }
 
