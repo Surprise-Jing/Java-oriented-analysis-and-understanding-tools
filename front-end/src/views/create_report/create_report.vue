@@ -103,6 +103,7 @@ import JSZip from'jszip'
 import FileSaver from'file-saver'
 import { saveAs } from 'file-saver';
 import { getFile } from '@/api/file'
+import {AstPNG, CfgPNG, CgPNG, PdgPNG} from '@/api/create_report'
 import jsPDF from 'jspdf'
 import { blob } from 'd3'
 
@@ -229,6 +230,7 @@ export default {
        this.getPdfFromHtml(dom,'test')
 	    }, 1000);
 
+
       
     },
 
@@ -292,58 +294,6 @@ export default {
                 this.refresh = true
             })
       },
-      get_img(){
-        //ast
-        
-          axios({
-          method: 'get',
-          url,
-          responseType: 'arraybuffer' 
-        })
-          .then(function (response) {
-            that.ast = 'data:image/jpeg;base64,' + that.arrayBufferToBase64(response.data)
-          }),
-
-          //cfg
-          axios({
-          method: 'get',
-          url,
-          responseType: 'arraybuffer' 
-        })
-          .then(function (response) {
-            that.ast = 'data:image/jpeg;base64,' + that.arrayBufferToBase64(response.data)
-          }),
-
-          //pdg
-          axios({
-          method: 'get',
-          url,
-          responseType: 'arraybuffer' 
-        })
-          .then(function (response) {
-            that.pdg = 'data:image/jpeg;base64,' + that.arrayBufferToBase64(response.data)
-          }),
-
-          //cg
-        axios({
-          method: 'get',
-          url,
-          responseType: 'arraybuffer' 
-        })
-          .then(function (response) {
-            that.cg = 'data:image/jpeg;base64,' + that.arrayBufferToBase64(response.data)
-          })
-      },
-      arrayBufferToBase64 (buffer) {
-        var binary = ''
-        var bytes = new Uint8Array(buffer)
-        var len = bytes.byteLength
-        for (var i = 0; i < len; i++) {
-          binary += String.fromCharCode(bytes[i])
-        }
-        return window.btoa(binary)
-      },
-
   },
   
     
