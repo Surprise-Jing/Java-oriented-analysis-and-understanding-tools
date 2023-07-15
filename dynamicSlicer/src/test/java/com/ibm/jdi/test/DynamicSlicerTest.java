@@ -1,8 +1,10 @@
 package com.ibm.jdi.test;
 
+import com.github.javaparser.ast.Node;
 import com.ibm.jdi.DynamicSlicer;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.dependencegraph.CDG;
+import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.GraphsUtil;
 import org.junit.jupiter.api.Test;
 
@@ -13,15 +15,16 @@ import java.util.Set;
 class DynamicSlicerTest {
     String absolutePath = new File("").getAbsolutePath();
     String filePath = Paths.get(absolutePath,"data","test","src").toString();
-    String fileName = "Test6.java";
+    String fileName = "Test4.java";
     String wholePath = Paths.get(filePath,fileName).toString();
     @Test
     void programExecute() throws Exception {
-        Graphs graphs = new Graphs(wholePath);
-
-        CDG cdg = graphs.getCDG(GraphsUtil.findMethodByLineNumber(graphs.getCu(),17));
+//        Graphs graphs = new Graphs(wholePath);
+        int lineNumber = 29;
+        String input = "3";
+//        CDG cdg = graphs.getCDG(GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber));
 //        System.out.println(cdg.toString());
-        Set<Integer> result = new DynamicSlicer(filePath + "\\" + fileName).slice("",17).getSlicedLines();
+        String result = new DynamicSlicer(filePath + "\\" + fileName).slice(input ,lineNumber).getSlicedCode();
         System.out.println("\n" + result);
     }
 }

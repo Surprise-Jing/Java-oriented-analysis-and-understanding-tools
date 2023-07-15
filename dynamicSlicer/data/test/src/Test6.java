@@ -2,7 +2,7 @@ import java.util.Scanner;
 public class Test6 {
     public static void main(String[]args) {
         int sum = 0;
-        int prod = 1;
+        int prod = -1;
 
         if(prod > 0) {
             sum = prod;

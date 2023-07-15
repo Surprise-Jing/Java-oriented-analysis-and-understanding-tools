@@ -1,5 +1,6 @@
 package com.ibm.jdi;
 
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.LabeledStmt;
@@ -10,6 +11,7 @@ import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
 import com.nju.boot.util.GraphsUtil;
 import io.swagger.models.auth.In;
 
@@ -19,7 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DynamicSlicer {
-    Set<Integer> result;
+    Set<Node> result;
     Graphs graphs;
     String path;
     String fileName;
@@ -36,7 +38,7 @@ public class DynamicSlicer {
         graphs = new Graphs(filePath);
     }
 
-    public Set<Integer> programExecute(String path, String fileName, String className, String input, Integer line, CDG cdg) throws Exception {
+    public Set<Node> programExecute(String path, String fileName, String className, String input, Integer line, CDG cdg) throws Exception {
         DynamicExecuter dynamicExecuter = new DynamicExecuter();
 
         Map<Integer, Integer> labels = new HashMap<>();
@@ -61,8 +63,6 @@ public class DynamicSlicer {
             return null;
         result = dynamicExecuter.dynamicSlice(line);
 
-        System.out.println(getSlicedCode());
-
         return result;
         //return dynamicExecuter.dynamicSlice(line);
     }
@@ -72,12 +72,15 @@ public class DynamicSlicer {
         result = programExecute(path, fileName, className, input, line, cdg);
         return this;
     }
-    public Set<Integer> getSlicedLines(){
+    public Set<Node> getSlicedLines(){
         return result;
     }
     public String getSlicedCode() throws IOException {
 //        String fileStr = graphs.getCu().toString();
-        StringBuilder fileStrBuilder = new StringBuilder();
+        SelectivePrettyPrinter selectivePrettyPrinter = new SelectivePrettyPrinter(result);
+        return selectivePrettyPrinter.print(graphs.getCu());
+
+/*        StringBuilder fileStrBuilder = new StringBuilder();
         File file = new File(path + "\\" + fileName);
         BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 
@@ -94,9 +97,9 @@ public class DynamicSlicer {
 
 
         //test
-/*        for(String l : lines) {
+*//*        for(String l : lines) {
             System.out.println(l);
-        }*/
+        }*//*
 
         StringBuilder resultStr = new StringBuilder();
         for(int i = 0;i<lines.size();i++){
@@ -105,6 +108,6 @@ public class DynamicSlicer {
             }
 
         }
-        return resultStr.toString();
+        return resultStr.toString();*/
     }
 }
