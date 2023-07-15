@@ -29,7 +29,7 @@ public class SlicerController {
 
     @GetMapping("/dataflow")
     @ApiOperation(value = "基于数据流方程的切片")
-    public Object DataFlowEquationSlicing(String id, int lineNumber, String variable) throws Exception{
+    public Map<String, String> DataFlowEquationSlicing(String id, int lineNumber, String variable) throws Exception{
         if(lineNumber == 0 || variable.equals("")) {
             throw new Exception("切片参数不齐全");
         }

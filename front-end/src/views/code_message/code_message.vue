@@ -14,12 +14,12 @@
 
       <div class="choose_func" >
             选择函数:
-        <el-select v-model="selectFunc.id" @change="getfunc(selectFunc.id)" placeholder="请选择">
+        <el-select v-model="selectFunc.name" placeholder="请选择">
           <el-option
           v-for="item in funcData"
                     :key="item.id" 
-                    :label="item.funcName"
-                    :value="item.id">
+                    :label="item.methodName"
+                    :value="item.methodName">
           </el-option>
         </el-select>
         <el-button @click="btn_ok" class="file_btn">确定</el-button>
@@ -45,6 +45,7 @@
 import { methods } from 'vue2-ace-editor'
 import {getFile} from "@/api/file"
 import {getMethod} from "@/api/graph"
+import {getMetrics,getLinesMethod} from "@/api/metrics"
 export default{
     data(){
       return{
@@ -55,7 +56,7 @@ export default{
                 id:''
             },
             selectFunc:{
-                id:''
+                name:''
             },
 
         rowAnalyse: '',
@@ -68,23 +69,40 @@ export default{
 
       }
     },
+    created(){
+        this.getFileMethod()
+    },
 
 
     methods:{
-        getmethod(val){
-            getMethod(val).then(res => {
-                if(res.success){
-                    this.funcData = res.data
-                    console.log(this.funcData)
-                }
-                else{
-                    this.$message({
-                    type:'warning',
-                    message: res.msg
-                });
-                }
-            })
-        },
+    getFileMethod(){
+        getFile(localStorage.getItem("uid")).then(res => {
+        if(res.success){
+          this.fileData = res.data
+          console.log(this.fileData)
+        }
+        else{
+          this.$message({
+            type:'warning',
+            message: res.msg
+          });
+        }
+      })},
+    getmethod(val){
+        getMethod(val).then(res => {
+            if(res.success){
+                this.funcData = res.data
+                this.selectFunc.name = ''
+            }
+            else{
+                this.$message({
+                type:'warning',
+                message: res.msg
+            });
+            }
+        })
+    },
+
 
         drawLine () {
             this.rowAnalyse = this.$echarts.init(document.getElementById('rowChart'))
@@ -135,7 +153,7 @@ export default{
             })
 
             let max_num=5
-            console.log(max_num)
+            //console.log(max_num)
             let callChart = this.$echarts.init(document.getElementById('callChart'))
             let dataMax = [
                 { name: '调用函数次数', max: max_num },
@@ -187,32 +205,41 @@ export default{
 
         },
         btn_ok(){
-            //开始分析
-            this.rowData[0].value=3;//'源代码行数'
-            this.rowData[1].value=5;//'注释行数'
-            this.rowData[2].value=7;//'空行数'
-            //this.callData
+            const funcName = {id:1, methodName: this.selectFunc.name}
 
-
+            getMetrics(this.selectFile.id, funcName).then(res =>{
+                if(res.success){
+                    this.callData = [res.data.calling,
+                                res.data.called,
+                            res.data.cyclomatic,
+                            res.data.maxdepth, 
+                            res.data.param]
+                    //console.log(this.callData)
+                }
+                else{
+                this.$message({
+                    type:'warning',
+                    message: res.msg
+                });
+            }})
+            
+            getLinesMethod(this.selectFile.id, funcName).then(res =>{
+                if(res.success){
+                    this.rowData[0].value=res.data.linesOfCode;//'源代码行数'
+                    this.rowData[1].value=res.data.linesOfComment;//'注释行数'
+                    this.rowData[2].value=res.data.linesOfBlanks;//'空行数'
+                    //console.log(this.rowData[0].value)
+                }
+                else{
+                this.$message({
+                    type:'warning',
+                    message: res.msg
+                })}
+            })
             this.drawLine()
         }
-        
-    },
-    mounted(){
-        getFile(localStorage.getItem("uid")).then(res => {
-        if(res.success){
-          this.fileData = res.data
-          console.log(this.fileData)
-        }
-        else{
-          this.$message({
-            type:'warning',
-            message: res.msg
-          });
-        }
-      })
-    }
-}
+    }}
+
 </script>
 
 

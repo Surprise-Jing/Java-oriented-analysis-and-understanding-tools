@@ -1,6 +1,7 @@
 package com.nju.boot.controller;
 
 import com.nju.boot.entity.dto.LinesDto;
+import com.nju.boot.entity.dto.MethodDto;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.metrics.CodeMetrics;
@@ -10,12 +11,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/metrics")
@@ -25,13 +25,31 @@ public class MetricsController {
     @Resource
     private FilesMapper filesMapper;
 
-    @GetMapping("/cyc")
-    @ApiOperation(value = "计算函数的圈复杂度")
-    public int CyclomaticComplexity(String id, String method){
+    @PostMapping("")
+    @ApiOperation(value = "统计函数的所有基本度量信息")
+    public Map<String, Integer> getMetrics(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+        String func = methodDto.getMethodName();
+        //System.out.println(func);
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
-        return codeMetrics.getCyclomaticComplexity(method);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("cyclomatic", codeMetrics.getCyclomaticComplexity(func));
+        map.put("maxdepth", codeMetrics.getMaxDepthOfInheritance());
+        map.put("calling", codeMetrics.getTimesCalling(func));
+        map.put("called", codeMetrics.getTimesCalled(func));
+        map.put("param", codeMetrics.getNumOfParameters(func));
+        return map;
+    }
+
+    @PostMapping("/cyc")
+    @ApiOperation(value = "计算函数的圈复杂度")
+    public int CyclomaticComplexity(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+        String func = methodDto.getMethodName();
+        String fileName = filesMapper.selectById(id).getName();
+        String path = PathUtils.FILEPATH + "/" + fileName;
+        CodeMetrics codeMetrics = new CodeMetrics(path);
+        return codeMetrics.getCyclomaticComplexity(func);
     }
 
     @GetMapping("/depth")
@@ -43,42 +61,47 @@ public class MetricsController {
         return codeMetrics.getMaxDepthOfInheritance();
     }
 
-    @GetMapping("/calling")
+    @PostMapping("/calling")
     @ApiOperation(value = "计算函数的调用次数")
-    public int TimesCalling(String id, String method){
+    public int TimesCalling(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+        String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
-        return codeMetrics.getTimesCalling(method);
+        return codeMetrics.getTimesCalling(func);
     }
 
-    @GetMapping("/called")
+    @PostMapping("/called")
     @ApiOperation(value = "计算函数的被调用次数")
-    public int TimesCalled(String id, String method){
+    public int TimesCalled(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+        String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
-        return codeMetrics.getTimesCalled(method);
+        return codeMetrics.getTimesCalled(func);
     }
 
-    @GetMapping("/param")
+    @PostMapping("/param")
     @ApiOperation(value = "计算函数的入参个数")
-    public int NumOfParameters(String id, String method){
+    public int NumOfParameters(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+        String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
-        return codeMetrics.getNumOfParameters(method);
+        return codeMetrics.getNumOfParameters(func);
     }
 
-    @GetMapping("/methodlines")
+    @PostMapping("/methodlines")
     @ApiOperation(value = "统计文件中函数的行数信息")
-    public LinesDto LinesMethod(String id, String method){
+    public LinesDto LinesMethod(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+        String func = methodDto.getMethodName();
+        System.out.println(func);
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
-        int linesOfCode = codeMetrics.getLinesCodeOfMethod(method);
-        int linesOfComment = codeMetrics.getLinesCommentOfMethod(method);
-        int linesOfBlanks = codeMetrics.getLinesBlankOfMethod(method);
+        int linesOfCode = codeMetrics.getLinesCodeOfMethod(func);
+        int linesOfComment = codeMetrics.getLinesCommentOfMethod(func);
+        int linesOfBlanks = codeMetrics.getLinesBlankOfMethod(func);
         int linesOfAll = linesOfBlanks + linesOfComment + linesOfCode;
         return new LinesDto(linesOfCode, linesOfComment, linesOfBlanks, linesOfAll);
     }

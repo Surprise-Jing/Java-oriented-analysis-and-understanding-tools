@@ -1,6 +1,6 @@
 server:
   port: 8888
-  address: 172.24.60.149
+  address: 172.27.158.191
 spring:
   mvc:
     pathmatch:
@@ -32,7 +32,4 @@ mybatis-plus:
       id-type: ASSIGN_UUID
       #schema: classpath:/sql/schema.sql
   type-aliases-package: com.nju.boot.entity
-files:
-  upload:
-    path: D:/Java-oriented-analysis-and-understanding-tools/backend/file
 

@@ -3,6 +3,8 @@ package com.ibm.jdi;
 import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.LabeledStmt;
 import com.github.javaparser.ast.stmt.SwitchEntry;
+import com.github.javaparser.utils.LineSeparator;
+import com.github.javaparser.utils.Utils;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.Graphs;
@@ -11,6 +13,9 @@ import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.GraphsUtil;
 import io.swagger.models.auth.In;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -69,13 +74,22 @@ public class DynamicSlicer {
     public Set<Integer> getSlicedLines(){
         return result;
     }
-    public String getSlicedCode() {
+    public String getSlicedCode() throws IOException {
         String fileStr = graphs.getCu().toString();
         List<String> lines = fileStr.lines().collect(Collectors.toList());
+        System.out.println(lines);
         String resultStr = new String();
+        List<String> results = new ArrayList<>();
+        StringWriter stringWriter =new StringWriter();
+        BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
         for(int i = 0;i<lines.size();i++){
-            if(result.contains(i+1))resultStr+=lines.get(i)+'\n';
+            if(result.contains(i+1)){
+                bufferedWriter.write(lines.get(i));
+                bufferedWriter.newLine();
+            }
         }
-        return resultStr;
+        bufferedWriter.flush();
+
+        return stringWriter.toString();
     }
 }

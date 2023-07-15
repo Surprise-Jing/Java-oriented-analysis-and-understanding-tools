@@ -12,6 +12,7 @@ import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.handler.DisableBaseResponse;
 import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.mapper.UserfileMapper;
+import com.nju.boot.metrics.CodeMetrics;
 import com.nju.boot.service.IFilesService;
 import com.nju.boot.service.IUserfileService;
 import com.nju.boot.service.impl.FilesServiceImpl;
@@ -62,7 +63,7 @@ public class FilesController {
     @PostMapping("")
     @ApiOperation(value = "上传文件")
     public Files uploadFile(String uid, MultipartFile file) throws Exception {
-        System.out.println(uid);
+        //System.out.println(uid);
         if(file == null) throw new Exception("请求参数缺失");
         if(file.isEmpty()){
             throw new Exception("上传失败，请选择文件");
@@ -71,8 +72,10 @@ public class FilesController {
         if(!uploadParentFile.exists()){
             uploadParentFile.mkdirs();
         }
+        //System.out.println(PathUtils.FILEPATH);
 
         String md5 = SecureUtil.md5(file.getInputStream());
+        System.out.println(md5);
         String url;
         Files files = iFilesService.getFileByMd5(md5);
         if(files != null){
@@ -94,8 +97,13 @@ public class FilesController {
             files = new Files(uuId, originalFilename, type, md5, url, DateTimeUtils.getNowTimeString(), false, true);
             iFilesService.save(files);
         }
+        for(Userfile userfile: iUserfileService.selectUserFileByUid(uid)){
+            if(userfile.getFid().equals(files.getId())){
+                return files;
+            }
+        }
         Userfile userfile = new Userfile(UUID.randomUUID().toString(), uid, files.getId());
-        iUserfileService.save(userfile);
+        iUserfileService.saveOrUpdate(userfile);
         return files;
     }
 

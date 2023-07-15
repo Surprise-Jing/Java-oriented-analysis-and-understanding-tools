@@ -1,5 +1,6 @@
 package com.nju.boot.controller;
 
+import com.nju.boot.entity.dto.MethodDto;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.util.GraphsUtil;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -42,11 +45,17 @@ public class GraphController {
 
     @GetMapping("/method")
     @ApiOperation(value = "获得文件的所有方法")
-    public Set<String> getMethod(@RequestParam("id") String id){
+    public List<MethodDto> getMethod(@RequestParam("id") String id){
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         Graphs graphs = new Graphs(path);
-        return graphs.getQualifiedSignatures();
+        List<String> method = graphs.getQualifiedSignatures().stream().toList();
+        List<MethodDto> methodDtos = new LinkedList<>();
+        int methodId = 1;
+        for(String m: method){
+            methodDtos.add(new MethodDto(methodId++, m));
+        }
+        return methodDtos;
     }
 
     @GetMapping("/cfg")
