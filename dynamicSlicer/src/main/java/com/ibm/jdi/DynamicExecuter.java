@@ -1,6 +1,7 @@
 package com.ibm.jdi;
 
 import com.github.javaparser.Range;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.*;
 import com.nju.boot.edges.Edge;
@@ -56,7 +57,7 @@ public class DynamicExecuter {
         return launchingConnector.launch(arguments);
     }
 
-    public void getAllcaseLocations(@NotNull VirtualMachine vm) throws AbsentInformationException {
+/*    public void getAllcaseLocations(@NotNull VirtualMachine vm) throws AbsentInformationException {
         List<ReferenceType> classes = vm.classesByName(debugClass);
         ReferenceType targetClass = classes.get(0);
 
@@ -71,7 +72,7 @@ public class DynamicExecuter {
         for (Location location : locations) {
             System.out.println("Case标签位置：" + location.lineNumber());
         }
-    }
+    }*/
 
     public boolean executeFile(String path, String fileName, String className, String input) throws Exception {
         this.setDebugClass(className);
@@ -100,7 +101,7 @@ public class DynamicExecuter {
                         this.setBreakPoints(vm, (ClassPrepareEvent)event);
                     }
                     if (event instanceof BreakpointEvent) {
-                        this.getAllcaseLocations(vm);
+//                        this.getAllcaseLocations(vm);
                         this.enableStepRequest(vm, (BreakpointEvent)event);
                     }
                     if (event instanceof StepEvent) {
@@ -149,6 +150,9 @@ public class DynamicExecuter {
         Method methods = classType.methodsByName("main").get(0);
         List<Location> locations = methods.allLineLocations();
         Location mainEntryLocation = locations.get(0);
+
+//        addToLogofLines(mainEntryLocation.lineNumber());
+
         BreakpointRequest bpReq = vm.eventRequestManager().createBreakpointRequest(mainEntryLocation);
         bpReq.enable();
     }
@@ -293,6 +297,9 @@ public class DynamicExecuter {
             Range bodyRange = ((IfStmt) GN.getAstNode()).getThenStmt().getRange().get();
             lns.add(bodyRange.begin.line);
             lns.add(bodyRange.end.line);
+        } else if (GN.getAstNode() instanceof MethodDeclaration) {
+            lns.add(GN.getAstNode().getBegin().get().line);
+            lns.add(GN.getAstNode().getEnd().get().line);
         } else {
             Range range = GN.getAstNode().getRange().get();
 
@@ -339,7 +346,7 @@ public class DynamicExecuter {
                 for(Edge inEdge : _cdg.incomingEdgesOf(GN)){
                     GraphNode<?> p = _cdg.getEdgeSource(inEdge);
                     Integer NodeId = p.getAstNode().getBegin().get().line;
-                    System.out.println( i + " Controled by: " + NodeId);
+//                    System.out.println( i + " Controled by: " + NodeId + ",type: " + p.getAstNode().getClass());
                     if(PrednNode.containsKey(NodeId)){
                         Pred.add(PrednNode.get(NodeId));
 //                        System.out.println("add reachable: " + PrednNode.get(NodeId).getReachableStmt());
