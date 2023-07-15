@@ -1,0 +1,41 @@
+Index: front-end/package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\r\n  \"name\": \"vue-admin-template\",\r\n  \"version\": \"4.4.0\",\r\n  \"description\": \"A vue admin template with Element UI & axios & iconfont & permission control & lint\",\r\n  \"author\": \"Pan <panfree23@gmail.com>\",\r\n  \"scripts\": {\r\n    \"dev\": \"vue-cli-service serve\",\r\n    \"build:prod\": \"vue-cli-service build\",\r\n    \"build:stage\": \"vue-cli-service build --mode staging\",\r\n    \"preview\": \"node build/index.js --preview\",\r\n    \"svgo\": \"svgo -f src/icons/svg --config=src/icons/svgo.yml\",\r\n    \"lint\": \"eslint --ext .js,.vue src\",\r\n    \"test:unit\": \"jest --clearCache && vue-cli-service test:unit\",\r\n    \"test:ci\": \"npm run lint && npm run test:unit\"\r\n  },\r\n  \"dependencies\": {\r\n    \"@highlightjs/vue-plugin\": \"^2.1.0\",\r\n    \"axios\": \"^0.18.1\",\r\n    \"core-js\": \"3.6.5\",\r\n    \"d3\": \"^7.8.5\",\r\n    \"element-ui\": \"2.13.2\",\r\n    \"file-saver\": \"^2.0.5\",\r\n    \"highlight.js\": \"^11.8.0\",\r\n    \"html2canvas\": \"^1.4.1\",\r\n    \"jquery\": \"^3.7.0\",\r\n    \"js-cookie\": \"2.2.0\",\r\n    \"jspdf\": \"^2.5.1\",\r\n    \"jszip\": \"^3.10.1\",\r\n    \"normalize.css\": \"7.0.0\",\r\n    \"nprogress\": \"0.2.0\",\r\n    \"path-to-regexp\": \"2.4.0\",\r\n    \"vue\": \"2.6.10\",\r\n    \"vue-axios\": \"^3.5.2\",\r\n    \"vue-highlightjs\": \"^1.3.3\",\r\n    \"vue-router\": \"3.0.6\",\r\n    \"vuex\": \"3.1.0\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"@vue/cli-plugin-babel\": \"4.4.4\",\r\n    \"@vue/cli-plugin-eslint\": \"4.4.4\",\r\n    \"@vue/cli-plugin-unit-jest\": \"4.4.4\",\r\n    \"@vue/cli-service\": \"4.4.4\",\r\n    \"@vue/test-utils\": \"1.0.0-beta.29\",\r\n    \"autoprefixer\": \"9.5.1\",\r\n    \"babel-eslint\": \"10.1.0\",\r\n    \"babel-jest\": \"23.6.0\",\r\n    \"babel-plugin-dynamic-import-node\": \"2.3.3\",\r\n    \"chalk\": \"2.4.2\",\r\n    \"connect\": \"3.6.6\",\r\n    \"eslint\": \"6.7.2\",\r\n    \"eslint-plugin-vue\": \"6.2.2\",\r\n    \"html-webpack-plugin\": \"3.2.0\",\r\n    \"less\": \"^4.1.3\",\r\n    \"less-loader\": \"^6.2.0\",\r\n    \"mockjs\": \"1.0.1-beta3\",\r\n    \"runjs\": \"4.3.2\",\r\n    \"sass\": \"1.26.8\",\r\n    \"sass-loader\": \"8.0.2\",\r\n    \"script-ext-html-webpack-plugin\": \"2.1.3\",\r\n    \"serve-static\": \"1.13.2\",\r\n    \"svg-sprite-loader\": \"4.1.3\",\r\n    \"svgo\": \"1.2.2\",\r\n    \"vue-template-compiler\": \"2.6.10\"\r\n  },\r\n  \"browserslist\": [\r\n    \"> 1%\",\r\n    \"last 2 versions\"\r\n  ],\r\n  \"engines\": {\r\n    \"node\": \">=8.9\",\r\n    \"npm\": \">= 3.0.0\"\r\n  },\r\n  \"license\": \"MIT\",\r\n  \"main\": \".eslintrc.js\",\r\n  \"directories\": {\r\n    \"test\": \"tests\"\r\n  },\r\n  \"keywords\": []\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/front-end/package.json b/front-end/package.json
+--- a/front-end/package.json	(revision 92f6c31797dbc86ec55cc828082d6b4707ec9ed7)
++++ b/front-end/package.json	(date 1689304179938)
+@@ -14,10 +14,13 @@
+     "test:ci": "npm run lint && npm run test:unit"
+   },
+   "dependencies": {
+-    "@highlightjs/vue-plugin": "^2.1.0",
++    "@highlightjs/vue-plugin": "^1.0.2",
++    "@viz-js/viz": "^3.0.1",
+     "axios": "^0.18.1",
+     "core-js": "3.6.5",
+     "d3": "^7.8.5",
++    "d3-graphviz": "^5.0.2",
++    "dagre-d3": "^0.6.4",
+     "element-ui": "2.13.2",
+     "file-saver": "^2.0.5",
+     "highlight.js": "^11.8.0",
+@@ -29,10 +32,15 @@
+     "normalize.css": "7.0.0",
+     "nprogress": "0.2.0",
+     "path-to-regexp": "2.4.0",
++    "vis": "^4.21.0-EOL",
++    "vis-network": "^9.1.6",
++    "viz": "^3.0.1",
++    "viz.js": "^2.1.2",
+     "vue": "2.6.10",
+     "vue-axios": "^3.5.2",
+     "vue-highlightjs": "^1.3.3",
+     "vue-router": "3.0.6",
++    "vue2-ace-editor": "^0.0.15",
+     "vuex": "3.1.0"
+   },
+   "devDependencies": {

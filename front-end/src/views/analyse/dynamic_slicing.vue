@@ -2,51 +2,127 @@
   <div class="slice_container">
     <div  class="file_selector">
         <!--只需要双向绑定代码块即可-->
-      <CodeEdit v-model="content" />
-      <el-button @click="getCode">获取代码</el-button>
-    <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
-      <el-option
-      v-for="item in fileData"
-                :key="item.id" 
-                :label="item.fileName"
-                :value="item.id">
-      </el-option>
-    </el-select>
+        <span style="position: fixed;left:15%;top:16%;font-size: large;color: gray;">源代码:</span> 
+        <span style="position: fixed;left:55%;top:16%;font-size: large;color: gray;">切片结果:</span>
+      <CodeEdit v-model="content1" class="show_code"/>
+      <CodeEdit2 v-model="content2" class="show_slicecode"/>
+      <el-button @click="tipsbtn" style="position: fixed;left:1400px;">{{tip_text}}</el-button>
+      <div v-if="tip" class="tiparea">
+        <div style="height: 15px;"></div>
+        <h1>使用方法:</h1>
+        <br>
+        第一：<br>
+        第二:<br>
+
+      </div>
+      <div class="input_x">
+        请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
+        <br>
+        请输入变量:<el-input class="getvar" v-model="variable"></el-input>
+        <el-button @click="input_ok">确定</el-button>
+      </div>
+      <div class="choose_file" >
+            选择文件:
+        <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
+          <el-option
+          v-for="item in fileData"
+                    :key="item.id" 
+                    :label="item.fileName"
+                    :value="item.id">
+          </el-option>
+        </el-select>
+        <br>
+      </div>
+      
+      
     </div>
   </div>
 </template>
 
 <script>
 import {getFile, getFileContext} from "@/api/file"
+import {DataFlowSlicer, PDGSlicer} from "@/api/slicer"
 import CodeEdit from "@/components/CodeEdit";
+import CodeEdit2 from "@/components/CodeEdit2";
 export default {
-  components: {CodeEdit},
+  components: {CodeEdit,CodeEdit2},
   data() {
     return {
-      content: '', // 代码块
+      tip_text:'打开tips',
+    tip:false,
+     content1:'',
+     content2:'',
+      variable:'',
+      rowNumber:'',
+     // content: '', // 代码块
       fileData:[],
       selectFile:{
         id:''
       },
+      selectMethod:[{
+        id:'1', methodName : "基于数据流方程的切片" 
+      },
+    {
+      id:'2', methodName: '基于程序依赖图的切片'
+    }]
     }
   },
   methods: {
     // 获取代码
-    getCode() {
-      console.log(this.content)
-    },
+    input_ok() {
+    
+      if(this.getMethod.id == 1){
+        DataFlowSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
+          if(res.success){
+            this.content2 = res.data;
+            //console.log(this.code);
+           // this.$forceUpdate()
+          }
+          else{
+            this.$message({
+            type:'warning',
+            message: res.msg
+          });
+          }})
+        }
+      else{
+        PDGSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
+          if(res.success){
+            this.content2 = res.data.result;
+            //console.log(this.code);
+           // this.$forceUpdate()
+          }
+          else{
+            this.$message({
+            type:'warning',
+            message: res.msg
+          });
+          }})
+        }
+      },
+      //console.log(this.content)
     getfilecontext(val){
       getFileContext(val).then(res => {
           if(res.success){
-            this.content = res.data.content;
-            console.log(this.code);
-            this.$forceUpdate()
+            this.content1 = res.data.content;
+            //console.log(this.code);
+           // this.$forceUpdate()
           }
           else{
-            this.code = '程序加载有误，请重新选择文件'
+            this.content1 = '程序加载有误，请重新选择文件'
           }});
+    },
+    getMethod(val){
+      //val=2;
+    },
+    tipsbtn(){
+      if(this.tip)this.tip_text='打开tips'
+      else this.tip_text='关闭tips'
+      this.tip=!this.tip
+      
     }
   },
+    
   mounted() {
       getFile(localStorage.getItem("uid")).then(res => {
         if(res.success){
@@ -70,9 +146,61 @@ export default {
 .slice_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image.png');
+  //background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
+.choose_file{
+  position: fixed;
+  left:25%;
+  top:7%;
+  color:black;
+  opacity: 0.9;
+}
+.input_x{
+  position: fixed;
+  left:65%;
+  top:7%;
+  color:black;
+  opacity: 0.9;
+}
+.getvar{
+  width:150px;
+}
+.getrow{
+  width:150px;
+}
+
+.show_code{
+    left:55%;
+  top:20%;
+  font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
+
+  }
+
+  .show_slicecode{
+    left:55%;
+  top:20%;
+    font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
+  }
+  .tiparea{
+    position: fixed;
+    width:600px;
+    height:400px;
+    border-color: black;
+    border-width: 3px;
+    background-color: white;
+    left:500px;
+    top:200px;
+    border-radius: 5%;
+
+  }
+ 
 </style>
 

@@ -21,46 +21,8 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 
-
-  //import VueHighlightJS from 'vue-highlightjs'
-//  import 'highlight.js/styles/atom-one-dark.css'
-  //Vue.use(VueHighlightJS)
-
-
- //import Highlight from './utils/highlight'
-// Vue.use(Highlight)
-
-
-//const app=new App()
-// app.directive('highlight', function (el) {
-//   const blocks = el.querySelectorAll('pre code');
-//   blocks.forEach((block) => {
-//     hljs.highlightBlock(block);
-//     // 从这开始是设置行号
-//     block.innerHTML = `<ol><li>${block.innerHTML.replace(
-//       /\n/g,
-//       `</li><li class="line">`
-//     )}</li></ol>`;
-//   });
-// });
-// app.use(hljs.vuePlugin) 
-
-// import hljs from 'highlight.js'
-// //import 'highlight.js/styles/googlecode.css'
-// Vue.directive('highlight',function (el) {
-//   let blocks = el.querySelectorAll('pre code');
-//   setTimeout(() =>{
-//       blocks.forEach((block)=>{
-//       hljs.highlightBlock(block)
-//       block.innerHTML = `<ol><li>${block.innerHTML.replace(
-//         /'\n'/g,
-//         `</li><li class="line">`
-//       )}</li></ol>`;
-//       })
-//   }, 200)
-// })
-
-
+import * as echarts from 'echarts'
+Vue.prototype.$echarts=echarts
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

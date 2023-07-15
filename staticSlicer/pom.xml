@@ -6,6 +6,7 @@
 
     <artifactId>staticSlicer</artifactId>
     <name>staticSlicer</name>
+    <version>0.0.1-SNAPSHOT</version>
     <description>静态程序切片模块</description>
 
     <parent>

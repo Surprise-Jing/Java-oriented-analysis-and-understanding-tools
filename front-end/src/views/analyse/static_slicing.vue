@@ -2,16 +2,27 @@
   <div class="slice_container">
     <div  class="file_selector">
         <!--只需要双向绑定代码块即可-->
+        <span style="position: fixed;left:15%;top:16%;font-size: large;color: gray;">源代码:</span> 
+        <span style="position: fixed;left:55%;top:16%;font-size: large;color: gray;">切片结果:</span>
       <CodeEdit v-model="content1" class="show_code"/>
       <CodeEdit2 v-model="content2" class="show_slicecode"/>
+      <el-button @click="tipsbtn" style="position: fixed;left:1400px;">{{tip_text}}</el-button>
+      <div v-if="tip" class="tiparea">
+        <div style="height: 15px;"></div>
+        <h1>使用方法:</h1>
+        <br>
+        第一：<br>
+        第二:<br>
+
+      </div>
       <div class="input_x">
         请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
-        <p></p>
+        <br>
         请输入变量:<el-input class="getvar" v-model="variable"></el-input>
         <el-button @click="input_ok">确定</el-button>
       </div>
       <div class="choose_file" >
-            选择文件：
+            选择文件:
         <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
           <el-option
           v-for="item in fileData"
@@ -20,8 +31,7 @@
                     :value="item.id">
           </el-option>
         </el-select>
-      </div>
-      <div class="choose_method">
+        <br>
         选择方法:
         <el-select v-model="selectMethod.id" @change="getMethod(selectMethod.id)" placeholder="请选择">
           <el-option
@@ -32,6 +42,7 @@
           </el-option>
         </el-select>
       </div>
+      
       
     </div>
   </div>
@@ -46,6 +57,8 @@ export default {
   components: {CodeEdit,CodeEdit2},
   data() {
     return {
+      tip_text:'打开tips',
+    tip:false,
      content1:'',
      content2:'',
       variable:'',
@@ -84,7 +97,7 @@ export default {
       else{
         PDGSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
           if(res.success){
-            this.content2 = res.data;
+            this.content2 = res.data.result;
             //console.log(this.code);
            // this.$forceUpdate()
           }
@@ -110,6 +123,12 @@ export default {
     },
     getMethod(val){
       //val=2;
+    },
+    tipsbtn(){
+      if(this.tip)this.tip_text='打开tips'
+      else this.tip_text='关闭tips'
+      this.tip=!this.tip
+      
     }
   },
     
@@ -136,27 +155,29 @@ export default {
 .slice_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image.png');
+  //background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
 .choose_file{
-position: fixed;
-left:15%;
-top:15%;
-color:darkgray;
+  position: fixed;
+  left:25%;
+  top:7%;
+  color:black;
+  opacity: 0.9;
 }
 .input_x{
   position: fixed;
-  left:50%;
-  top:5%;
-  color:darkgray;
+  left:65%;
+  top:7%;
+  color:black;
+  opacity: 0.9;
 }
 .getvar{
-  width:200px;
+  width:150px;
 }
 .getrow{
-  width:200px;
+  width:150px;
 }
 
 .show_code{
@@ -166,7 +187,7 @@ color:darkgray;
   position:fixed;
   background-color:rgb(40, 44, 52);
   color:darkgray;
-  
+
   }
 
   .show_slicecode{
@@ -177,5 +198,18 @@ color:darkgray;
   background-color:rgb(40, 44, 52);
   color:darkgray;
   }
+  .tiparea{
+    position: fixed;
+    width:600px;
+    height:400px;
+    border-color: black;
+    border-width: 3px;
+    background-color: white;
+    left:500px;
+    top:200px;
+    border-radius: 5%;
+
+  }
+ 
 </style>
 
