@@ -5,17 +5,25 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.nju.boot.edges.ControlFlowEdge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.printer.CFGPrinter;
+import com.nju.boot.graphs.printer.GraphPrinter;
 import com.nju.boot.nodes.GraphNode;
 
 import org.checkerframework.checker.units.qual.C;
 
+import java.io.FileWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 
 public class CFG extends Graph<CallableDeclaration<?>> {
     protected boolean built = false;
 
     public CFG(){
         super();
+    }
+
+    @Override
+    protected void writeAsDot(Writer writer) {
+        new CFGPrinter(this,writer, GraphPrinter.Format.DOT).print();
     }
 
     public void addControlFlowEdge(GraphNode<?> from, GraphNode<?> to, ControlFlowEdge edge){
@@ -49,10 +57,15 @@ public class CFG extends Graph<CallableDeclaration<?>> {
         return reversedCFG;
     }
 
+    Writer writer = new StringWriter();
+
+    public void setWriter(Writer writer) {
+        this.writer = writer;
+    }
     @Override
     public String toString() {
-        StringWriter stringWriter = new StringWriter();
-        new CFGPrinter(this,stringWriter).print();
-        return stringWriter.toString();
+
+        new CFGPrinter(this,writer).print();
+        return writer.toString();
     }
 }

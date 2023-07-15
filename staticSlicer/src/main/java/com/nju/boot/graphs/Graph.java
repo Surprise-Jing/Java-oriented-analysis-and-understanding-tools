@@ -2,13 +2,18 @@ package com.nju.boot.graphs;
 
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.nju.boot.edges.Edge;
+import com.nju.boot.graphs.printer.GraphPrinter;
 import com.nju.boot.nodes.GraphNode;
 import com.github.javaparser.ast.Node;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DirectedPseudograph;
 import org.jgrapht.nio.dot.DOTExporter;
 
+import java.io.*;
 import java.util.Optional;
+import java.util.WeakHashMap;
 
 public abstract class Graph<RootN extends Node> extends DirectedPseudograph<GraphNode<?>, Edge> {
 
@@ -67,6 +72,16 @@ public abstract class Graph<RootN extends Node> extends DirectedPseudograph<Grap
     public Optional<GraphNode<?>> getExitNode(){
         return Optional.ofNullable(exit);
     }
-
+    protected abstract void writeAsDot(Writer writer);
+    public void save2FileAsPNG(File outFile) throws IOException {
+        StringWriter stringWriter = new StringWriter();
+        writeAsDot(stringWriter);
+        String srcDot = stringWriter.toString();
+        Graphviz.fromString(srcDot).render(Format.PNG).toFile(outFile);
+    }
+    public void save2FileAsPNG(String filePath) throws IOException {
+        File file = new File(filePath);
+        save2FileAsPNG(file);
+    }
 
 }

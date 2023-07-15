@@ -1,0 +1,1 @@
+{"creator":"JGraphT JSON Exporter","version":"1","nodes":[{"id":"1","label":"SwitchTest.func01(int)"},{"id":"2","label":"SwitchTest.func02(int)"},{"id":"3","label":"java.io.PrintStream.println(java.lang.String)"},{"id":"4","label":"java.io.PrintStream.println(int)"}],"edges":[{"source":"1","target":"3"},{"source":"2","target":"3"},{"source":"2","target":"4"}]}

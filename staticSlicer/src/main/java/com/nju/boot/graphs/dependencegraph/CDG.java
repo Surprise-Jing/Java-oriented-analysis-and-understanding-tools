@@ -3,9 +3,11 @@ package com.nju.boot.graphs.dependencegraph;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.printer.CDGPrinter;
+import com.nju.boot.graphs.printer.GraphPrinter;
 import org.checkerframework.checker.units.qual.A;
 
 import java.io.StringWriter;
+import java.io.Writer;
 
 public class CDG extends DependenceGraph{
 
@@ -30,5 +32,10 @@ public class CDG extends DependenceGraph{
         StringWriter stringWriter = new StringWriter();
         new CDGPrinter(this,stringWriter).print();
         return stringWriter.toString();
+    }
+
+    @Override
+    protected void writeAsDot(Writer fileWriter) {
+        new CDGPrinter(this,fileWriter, GraphPrinter.Format.DOT).print();
     }
 }

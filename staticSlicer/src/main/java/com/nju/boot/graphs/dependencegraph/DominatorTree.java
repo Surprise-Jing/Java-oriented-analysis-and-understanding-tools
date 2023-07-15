@@ -5,11 +5,14 @@ import com.nju.boot.edges.DummyEdge;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.graphs.printer.DominatorTreePrinter;
+import com.nju.boot.graphs.printer.GraphPrinter;
 import com.nju.boot.nodes.GraphNode;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
 
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -141,4 +144,8 @@ public class DominatorTree extends Graph<MethodDeclaration> {
     }
 
 
+    @Override
+    protected void writeAsDot(Writer writer) {
+        new DominatorTreePrinter(this,writer, GraphPrinter.Format.DOT).print();
+    }
 }

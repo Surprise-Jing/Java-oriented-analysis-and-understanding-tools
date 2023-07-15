@@ -8,11 +8,13 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.cfg.CFG;
+import com.nju.boot.graphs.printer.GraphPrinter;
 import com.nju.boot.graphs.printer.PDGPrinter;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.util.PDGMarker;
 
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -92,4 +94,8 @@ public class PDG extends DependenceGraph {
     }
 
 
+    @Override
+    protected void writeAsDot(Writer writer) {
+        new PDGPrinter(this,writer, GraphPrinter.Format.DOT).print();
+    }
 }

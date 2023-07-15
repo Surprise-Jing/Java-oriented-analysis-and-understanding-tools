@@ -1,41 +1,54 @@
 <template>
     <div>
-      <a-card title="代码编辑器">
+      <!-- <a-card title="代码编辑器" > -->
         <!--主题select选择框-->
-        <a-select slot="extra" style="width: 120px" :default-value="aceConfig.selectTheme" @change="handleThemeChange">
+        <!-- <a-select slot="extra" style="width: 120px" :default-value="aceConfig.selectTheme" @change="handleThemeChange">
           <a-select-option v-for="theme in aceConfig.themes" :key="theme">
-            {{theme}}
+            {{theme}} 
           </a-select-option>
-        </a-select>
+        </a-select> -->
         <!--语言select选择框-->
-        <a-select slot="extra" style="width: 120px; margin-left: 10px" :default-value="aceConfig.selectLang" @change="handleLangChange">
+        <!-- <a-select slot="extra" style="width: 120px; margin-left: 10px" :default-value="aceConfig.selectLang" @change="handleLangChange">
           <a-select-option v-for="lang in aceConfig.langs" :key="lang">
             {{lang}}
           </a-select-option>
-        </a-select>
+        </a-select> -->
         <!--编辑器设置按钮-->  
-        <a-button slot="extra" type="link" @click="showSettingModal" >
-          <a-icon  key="setting" type="setting" style="font-size: 15px"/>
-        </a-button>
+        <!-- <a-button slot="extra" type="link" @click="showSettingModal" >
+          <a-icon  key="setting" type="setting" style="font-size: 15px "/> -->
+        <!-- </a-button> -->
         <!--editor插件-->  
         <!--其中的@input中的方法就是子组件值改变时调用的方法，该方法会给父组件传入改变值-->
-        <editor
+        <editor class="show_code" 
             :value="content"
             @input="handleInput"
             @init="editorInit"
             :lang="aceConfig.selectLang"
             :theme="aceConfig.selectTheme"
             :options="aceConfig.options"
-            width="100%"
-            height="400px"/>
-      </a-card>
+           
+            width="35%"
+            height="600px"
+            />
+            <!-- <editor class="show_slicecode" 
+            :value="content"
+            @input="handleInput"
+            @init="editorInit"
+            :lang="aceConfig.selectLang"
+            :theme="aceConfig.selectTheme"
+            :options="aceConfig.options"
+          
+            width="35%"
+            height="600px"
+            /> -->
+      <!-- </a-card> -->
       <!--编辑器设置模态窗口（未开发完成，可以自行拓展）-->
-      <a-modal v-model="visible" width="500px" title="编辑器设置(功能暂未开发)" @ok="handleOk">
+      <!-- <a-modal v-model="visible" width="500px" title="编辑器设置(功能暂未开发)" @ok="handleOk">
         <a-row type="flex">
           <a-col flex="330px">
-            <span class="settingTitle" >Tab 长度</span>
+          
             <br/>
-            <span class="settingDescription">选择你想要的 Tab 长度，默认设置为4个空格</span>
+          
           </a-col>
           <a-col flex="80px">
             <a-select style="width: 120px;" :default-value="aceConfig.options.tabSize" @change="handleTabChange" disabled>
@@ -46,10 +59,10 @@
           </a-col>
         </a-row>
         <a-row type="flex" style="margin-top: 50px">
-          <a-col flex="330px">
-            <span class="settingTitle">字体设置</span>
+          <a-col flex="330px" >
+           
             <br/>
-            <span class="settingDescription">调整适合你的字体大小</span>
+           
           </a-col>
           <a-col flex="80px">
             <a-select style="width: 120px;" :default-value="aceConfig.options.fontSize" @change="handleFontChange" disabled>
@@ -59,7 +72,7 @@
             </a-select>
           </a-col>
         </a-row>
-      </a-modal>
+      </a-modal> -->
     </div>
   </template>
   
@@ -99,13 +112,12 @@
         visible: false, // 模态窗口显示控制
         aceConfig: { // 代码块配置
           langs, // 语言
-          themes, // 主题
           tabs, // tab空格
           fontSizes,
           options, // 编辑器属性设置
-          selectTheme: 'xcode', // 默认选择的主题
+          selectTheme: 'cobalt', // 默认选择的主题
           selectLang: 'c_cpp', // 默认选择的语言
-          readOnly: false, // 是否只读
+        
         },
       }
     },
@@ -164,12 +176,24 @@
   </script>
   
   <style scoped>
-  .settingTitle{
-    font-size: larger;
+  .show_code{
+  
+  left:15%;
+  top:20%;
+  font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
   }
-  .settingDescription{
-    font-size: small;
-    color: #a8a8af
+  .show_slicecode{
+    left:55%;
+  top:20%;
+    font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
   }
+  
+  
   </style>
   

@@ -1,14 +1,27 @@
 <template>
   <div class="report_container">
+
+    <el-progress type="circle" :width="400" :percentage="percentage" :color="colors" :stroke-width="20"
+     class="show_board"></el-progress>
+      <div class="per_board">
+        <el-button-group>
+          <el-button  @click="decrease">减少</el-button>
+          <el-button  @click="increase">增加</el-button>
+        </el-button-group>
+      </div>
+
+
       生成report
       <p></p>
-      <button @click="getReport">获取report</button>
+      <el-button @click="getReport" class="get_button">获取report</el-button>
       <div id="dom" style="padding: 1600px 50px 50px 50px;overflow: visible;width: 1000px;" >
       需要生成的内容
       <img src="../../assets/bg-image.png" width="500px">
       <br>
       <img src="../../assets/bg-image.png" width="500px">
       </div>
+
+     
   </div>
 
 </template>
@@ -27,6 +40,14 @@ export default {
   data(){
     return {
        pdfSave: '',
+       percentage: 10,
+        colors: [
+          {color: '#f56c6c', percentage: 20},
+          {color: '#e6a23c', percentage: 40},
+          {color: '#5cb87a', percentage: 60},
+          {color: '#1989fa', percentage: 80},
+          {color: '#6f7ad3', percentage: 100}
+        ]
       }
        
 
@@ -89,48 +110,18 @@ export default {
         })
       })
     },
-
-      downLoadAll() {
-        this.getPDF();
-        console.log(this.pdfSave)
-        
-        const data = [this.pdfSave]; //todo 
-        const zip = new JSZip();
-
-
-        const cache = {};
-        const promises = [];
-
-        data.forEach(item => {
-        const promise = data => {
-          // 下载文件, 并存成ArrayBuffer对象
-          const file_name = item.name // 获取文件名
-          zip.file(file_name, data.data, { binary: true }) // 逐个添加文件
-          cache[file_name] = data.data
+    increase() {
+        this.percentage += 10;
+        if (this.percentage > 100) {
+          this.percentage = 100;
         }
-        promises.push(promise)
-      })
-
-
-
-      //   data.forEach(item => {
-      //   const promise = getFile(item).then(data => {
-      //     // 下载文件, 并存成ArrayBuffer对象
-      //     const arr_name = item.split('-')
-      //     const file_name = arr_name[arr_name.length - 1] // 获取文件名
-      //     zip.file(file_name, data.data, { binary: true }) // 逐个添加文件
-      //     cache[file_name] = data.data
-      //   })
-      //   promises.push(promise)
-      // })
-
-        Promise.all(promises).then(() => {
-          zip.generateAsync({ type: "blob" }).then(content => {
-            // 生成二进制流
-            FileSaver.saveAs(content, "测试.zip"); // 利用file-saver保存文件  自定义文件名
-          });
-        });
       },
+      decrease() {
+        this.percentage -= 10;
+        if (this.percentage < 0) {
+          this.percentage = 0;
+        }
+      }
   },
   
     
@@ -146,6 +137,17 @@ export default {
   background-size:100%;
   position: fixed;
 }
+.per_board{
+  padding-left:39%;
 
-
+}
+.show_board{
+  left:30%;
+  stroke-width:200px;
+  
+}
+.get_button{
+  position: relative;
+  left:40%;
+}
 </style>
