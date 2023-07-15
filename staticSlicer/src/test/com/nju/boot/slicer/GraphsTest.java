@@ -1,6 +1,8 @@
 package com.nju.boot.slicer;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.printer.XmlPrinter;
+import com.github.javaparser.printer.YamlPrinter;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.callgraph.CallGraph;
@@ -9,9 +11,18 @@ import com.nju.boot.graphs.dependencegraph.DominatorTree;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.graphs.printer.*;
 import com.nju.boot.metrics.CodeMetrics;
+import com.nju.boot.slicer.exceptions.FileUnparsableException;
+import com.nju.boot.util.JsonDataModifier;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import springfox.documentation.spring.web.json.Json;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -26,7 +37,7 @@ class GraphsTest {
     /**
      * 测试指定目录下的所有java文件并输出结果
      */
-    public void testFiles(String directory) throws IOException {
+    public void testFiles(String directory,boolean printPNG) throws IOException {
         Path srcDirectoryPath = Paths.get(absolutePath, relativePath, "src", directory);
         File srcDirectory = srcDirectoryPath.toFile();
         if (!srcDirectory.exists()) {
@@ -58,7 +69,7 @@ class GraphsTest {
             new CallGraphPrinter(callGraph,
                     new FileWriter(dotFile))
                     .print();
-            Graphviz.fromFile(dotFile).render(Format.PNG).toFile(pngFile);
+            if(printPNG)Graphviz.fromFile(dotFile).render(Format.PNG).toFile(pngFile);
 
             //导出cfg和pdg的结果
             Set<String> mSigs = graphs.getQualifiedSignatures();
@@ -67,6 +78,27 @@ class GraphsTest {
                 CFG cfg = graphs.getCFG(mSig);
                 PDG pdg = graphs.getPDG(mSig);
                 ACFG acfg = pdg.getAcfg();
+                CompilationUnit cu = graphs.getCu();
+                try {
+                    JSONObject jsonObject = XML.toJSONObject(new XmlPrinter(true).output(cu));
+                    JSONArray jsonArray = jsonObject.names();
+                    JsonDataModifier jsonDataModifier = new JsonDataModifier(new XmlPrinter(true).output(cu));
+                    jsonDataModifier.modify();
+                    String result = jsonDataModifier.getResult().toString();
+                    FileWriter jsonWriter = new FileWriter(Paths.get(outputDirPath.toString(),"tree.json").toString());
+                    jsonWriter.write(result.toString());
+                    jsonWriter.flush();
+                    System.out.println("a");
+                    JSONObject modifiedTree = new JSONObject();
+                    String root = jsonObject.names().get(0).toString();
+                    for( int i =0;i< jsonObject.getJSONArray(root).length();i++){
+
+                    }
+                } catch (JSONException e) {
+                    System.out.println("error");
+                }
+
+
 
                 String cfgDirPath = Paths.get(outputDirPath.toString(), "cfg").toString();
                 Path cfgDotDirPath = Paths.get(cfgDirPath, "dot");
@@ -83,7 +115,7 @@ class GraphsTest {
                 //导出cfg
 
                 new CFGPrinter(cfg, cfgWriter).print();
-                Graphviz.fromFile(cfgDotPath.toFile()).render(Format.PNG).toFile(cfgPngPath.toFile());
+                if(printPNG)Graphviz.fromFile(cfgDotPath.toFile()).render(Format.PNG).toFile(cfgPngPath.toFile());
 
 
                 String pdgDirPath = Paths.get(outputDirPath.toString(), "pdg").toString();
@@ -100,7 +132,7 @@ class GraphsTest {
 
 
                 new PDGPrinter(pdg, pdgWriter).print();
-                Graphviz.fromFile(pdgDotPath.toFile()).render(Format.PNG).toFile(pdgPngPath.toFile());
+                if(printPNG)Graphviz.fromFile(pdgDotPath.toFile()).render(Format.PNG).toFile(pdgPngPath.toFile());
 
 
 
@@ -108,22 +140,30 @@ class GraphsTest {
    }
     }
 
-
+    Boolean printPNG =false;
     @Test
     public void ifTests() throws IOException {
-        testFiles("if");
+        testFiles("if",printPNG);
     }
 
     @Test
     public void sequenceTests() throws IOException {
-        testFiles("sequence");
+        testFiles("sequence",printPNG);
     }
     @Test
     public void whileTests() throws IOException {
-        testFiles("while");
+        testFiles("while",printPNG);
     }
-    //@Test
+    @Test
+    public void switchTests()throws  IOException{
+        testFiles("switch",printPNG);
+    }
+    @Test
     public void testSpecific() throws IOException{
-        testFiles("specific");
+        testFiles("specific",printPNG);
+    }
+    @Test
+    public void testWrongFile(){
+        Assertions.assertThrows(FileUnparsableException.class,()->testFiles("error",printPNG));
     }
 }

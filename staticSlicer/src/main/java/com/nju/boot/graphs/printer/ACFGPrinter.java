@@ -14,13 +14,14 @@ public class ACFGPrinter extends CFGPrinter{
     public ACFGPrinter(ACFG cfg, Writer writer) {
         super(cfg, writer);
     }
-    protected void setUpDotExporter(){
-        dotExporter.setEdgeAttributeProvider(e->{
+    @Override
+    protected void setUpExporter(){
+        exporter.setEdgeAttributeProvider(e->{
             Map<String, Attribute> map = new HashMap<>();
             if(e instanceof DummyEdge)
                 map.put("style",DefaultAttribute.createAttribute("dashed"));
             return map;
         });
-        super.setUpDotExporter();
+
     }
 }

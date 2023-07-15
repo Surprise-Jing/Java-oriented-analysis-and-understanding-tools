@@ -12,24 +12,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DominatorTreePrinter extends GraphPrinter{
-    DominatorTree dominatorTree;
-    Writer writer;
-    DOTExporter<GraphNode<?>, Edge>dotExporter= new DOTExporter<>(v->String.valueOf(v.getId()));
 
     public DominatorTreePrinter(DominatorTree dominatorTree, Writer writer) {
-        this.dominatorTree = dominatorTree;
-        this.writer = writer;
-        dotExporter.setVertexAttributeProvider(v->{
+        super(dominatorTree,writer);
+    }
+
+    @Override
+    protected void setUpExporter() {
+        exporter.setVertexAttributeProvider(v->{
             Map<String,Attribute>map = new HashMap<>();
             map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
             return map;
         });
-
     }
 
-
-    @Override
-    public void print() {
-        dotExporter.exportGraph(dominatorTree,writer);
-    }
 }
