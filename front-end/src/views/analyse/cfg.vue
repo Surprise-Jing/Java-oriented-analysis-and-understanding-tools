@@ -24,9 +24,6 @@
       </el-select>
       <el-button @click="btn_ok" class="file_btn">确定</el-button>
     </div>
-    <div class="downloadPng" >
-        <el-button @click="downloadCfg">下载图片</el-button>
-    </div>
   <div class="graph">
       <svg class="canvas">
           <g></g>
@@ -41,7 +38,6 @@ import {getMethod} from "@/api/graph"
 import {getCFG} from "@/api/graph";
 import dagreD3 from "dagre-d3";
 import * as d3 from "d3";
-import saveSvgAsPng from "save-svg-as-png";
 
   export default {
       data() {
@@ -103,7 +99,7 @@ import saveSvgAsPng from "save-svg-as-png";
                   //节点标签
                   label: item.label,
                   //节点形状
-                  shape: item => ('shape' in item) ? item.shape : "ellipse",
+                  shape: "ellipse",
                   //节点样式
                   style: "fill:#E1FFFF;stroke:#000",
 
@@ -132,14 +128,6 @@ import saveSvgAsPng from "save-svg-as-png";
               var render = new dagreD3.render();
               render(inner, g);      
           },
-          downloadCfg() {
-            if(!this.draw)
-                console.log("error");
-            else {
-                let el = document.getElementsByTagName("svg")[0];
-	            saveSvgAsPng.saveSvgAsPng(el, "cfg.png");
-            }
-    },
 
       btn_ok(){
           const funcName = {id:1, methodName: this.selectFunc.name}
