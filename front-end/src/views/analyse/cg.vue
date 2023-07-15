@@ -1,169 +1,166 @@
 <template>
-    <div class = "cgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
-    <svg class="graph" width="1200" height="1200">
-      <g class="container"></g>
-    </svg>
+  <div class="box">
+      <div class="choose_file" >
+          选择文件:
+      <el-select v-model="selectFile.id" @change="getmethod(selectFile.id)" placeholder="请选择">
+        <el-option
+        v-for="item in fileData"
+                  :key="item.id" 
+                  :label="item.fileName"
+                  :value="item.id">
+        </el-option>
+      </el-select>
     </div>
-
+      <el-button @click="btn_ok" class="file_btn">确定</el-button>
+  <div class="graph">
+      <svg class="canvas">
+          <g></g>
+      </svg>
+  </div>
+  </div>
 </template>
 
 <script>
-import Vis from "vis";
-import vis from "vis-network";
-export default {
-  data() {
-    return {
-      dialogVisible: false,
-      nodes: [],
-      edges: [],
-      container: null,
-      inputData : 'digraph G { 0 [ label="ENTER main" ]; 1 [ label="EXIT main" ];2 [ label="int n = 0;" ];3 [ label="int i = 1;" ];4 [ label="int sum = 0;" ];5 [ label="int product = 1;" ];6 [ shape="diamond" label="i < n" ];7 [ label="sum = sum + i;" ];8 [ label="product = product * i;" ];9 [ label="i = i + 1;" ];10 [ label="System.out.println(sum);" ];11 [ label="System.out.println(product);" ];0 -> 2;2 -> 3;3 -> 4;4 -> 5;5 -> 6;6 -> 7;7 -> 8;8 -> 9;9 -> 6;6 -> 10;10 -> 11;11 -> 1}',
-      nodesArray: [],
-      edgesArray: [],
-      options: {},
-      data: {}
-    };
-  },
-  methods: {
-    getfileid(val){
-        console.log(val)
-        },
-    init() {
-      let _this = this;
-      //var parserdData = vis.network.convertDot(_this.inputData);
-      var parserdData = vis.parseDOTNetwork(_this.inputData);
+import {getFile} from "@/api/file"
+import {getCG} from "@/api/graph";
+import dagreD3 from "dagre-d3";
+import * as d3 from "d3";
 
-      _this.data = parserdData;
-      // _this.nodes = new Vis.DataSet(parserdData.nodes);
-      // _this.edges = new Vis.DataSet(parserdData.edges);
+  export default {
+      data() {
+          return {
+              fileData:[],
+              selectFile:{
+                  id:''
+              },
+              list: {}
+          };
+      },
+      created(){
+          this.getFileMethod();
+      },
+      mounted() {
+          this.initGraph();
 
-      // console.log(_this.nodes);
-      // console.log(_this.edges);
-
-      _this.container = document.getElementById("image");
-      // _this.data = vis.parseDOTNetwork(_this.inputData);
-      // console.log(_this.data);
-
-      _this.options = {
-        autoResize: true, //网络将自动检测其容器的大小调整，并相应地重绘自身
-
-        // 设置节点样式
-        nodes: {
-          shape: "circle",
-          size: 50,
-          font: {
-            //字体配置
-            size: 30
+      },
+      methods: {
+      getFileMethod(){
+          getFile(localStorage.getItem("uid")).then(res => {
+              if(res.success){
+                  this.fileData = res.data
+                  //console.log(this.fileData)
+              }
+              else{
+                  this.$message({
+                  type:'warning',
+                  message: res.msg
+                  });
+              }
+              })},
+          getmethod(val){
+              getMethod(val).then(res => {
+                  if(res.success){
+                      this.funcData = res.data
+                      this.selectFunc.name = ''
+                  }
+                  else{
+                      this.$message({
+                      type:'warning',
+                      message: res.msg
+                  });
+                  }
+              })
           },
-          color: {
-            border: "#000",
-            background: "#fff",
-            highlight: {
-              //节点选中时状态颜色
-              border: "#2B7CE9",
-              background: "#D2E5FF"
-            },
-            hover: {
-              //节点鼠标滑过时状态颜色
-              border: "#2B7CE9",
-              background: "#D2E5FF"
-            }
-          },
-          borderWidth: 1, //节点边框宽度，单位为px
-          borderWidthSelected: 2 //节点被选中时边框的宽度，单位为px
-        },
-        // 边线配置
-        edges: {
-          width: 1,
-          length: 50,
-          color: {
-            color: "#848484",
-            highlight: "#848484",
-            hover: "#848484",
-            inherit: "from",
-            opacity: 1.0
-          },
-          shadow: false,
-          smooth: {
-            //设置两个节点之前的连线的状态
-            enabled: false //默认是true，设置为false之后，两个节点之前的连线始终为直线，不会出现贝塞尔曲线
-          },
-          arrows: { to: true } //箭头指向to
-        },
-        layout: {
-          hierarchical: {
-      levelSeparation: 150,
-      nodeSpacing: 100,
-      direction: 'UD',        // UD, DU, LR, RL
-      sortMethod: 'directed',  // hubsize, directed
-      shakeTowards: 'leaves'  // roots, leaves
-    }
-        },
-        //计算节点之前斥力，进行自动排列的属性
-        physics: {
-          enabled: false,
-        },
-        //用于所有用户与网络的交互。处理鼠标和触摸事件以及导航按钮和弹出窗口
-        interaction: {
-          hover: true,
-          dragNodes: true, //是否能拖动节点
-          dragView: true, //是否能拖动画布
-          hover: true, //鼠标移过后加粗该节点和连接线
-          multiselect: true, //按 ctrl 多选
-          selectable: true, //是否可以点击选择
-          selectConnectedEdges: true, //选择节点后是否显示连接线
-          hoverConnectedEdges: true, //鼠标滑动节点后是否显示连接线
-          zoomView: true //是否能缩放画布
-        },
-        //操作模块:包括 添加、删除、获取选中点、设置选中点、拖拽系列、点击等等
-        manipulation: {
-          enabled: false, //该属性表示可以编辑，出现编辑操作按钮
-          addNode: true,
-          addEdge: true,
-          // editNode: undefined,
-          editEdge: true,
-          deleteNode: true,
-          deleteEdge: true
-        }
-      };
+          initGraph() {
+              var g = new dagreD3.graphlib.Graph().setGraph({rankdir: 'UD'});
+              // 添加节点
+              let that = this;
+              that.list.nodes.forEach(item => {
+                  g.setNode(item.id, {
+                  //节点标签
+                  label: item.label,
+                  //节点形状
+                  shape: "ellipse",
+                  //节点样式
+                  style: "fill:#fff;stroke:#000",
 
-      _this.network = new Vis.Network(
-        _this.container,
-        _this.data,
-        _this.options
-      );
-    },
+                  labelStyle: "fill:#000;font-weight:bold"
+                  })
+              });
+              this.list.edges.forEach(item => {
+                  g.setEdge(item.source, item.target, {
+                  //边标签
+                  label: item.label,
+                  //边样式
+                  style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                  })
+              })
+              //绘制图形
+              var svg = d3.select(".box").select(".graph").select("svg");
+              var inner = svg.select("g");
+              //缩放
+              var zoom = d3.zoom().on("zoom", function () {
+                  inner.attr("transform", d3.zoomTransform(svg.node()));
+              });
+              svg.call(zoom);
 
-    resetAllNodes() {
-      let _this = this;
-      _this.nodes.clear();
-      _this.edges.clear();
-      _this.nodes.add(_this.nodesArray);
-      _this.edges.add(_this.edgesArray);
-      // _this.data = {
-      //   nodes: _this.nodes,
-      //   edges: _this.edges
-      // };
-      //   network是一种用于将包含点和线的网络和网络之间的可视化展示
-      _this.network = new Vis.Network(
-        _this.container,
-        _this.data,
-        _this.options
-      );
-    },
-    resetAllNodesStabilize() {
-      let _this = this;
-      _this.resetAllNodes();
-      _this.network.stabilize();
-    }
-  },
+              var render = new dagreD3.render();
+              render(inner, g);      
+          },
 
-  mounted() {
-    this.init()
+      btn_ok(){
+          getCG(this.selectFile.id).then(res =>{
+              if(res.success){
+                  this.list = JSON.parse(res.data.result);
+                  console.log(this.list)
+              }
+              else{
+              this.$message({
+                  type:'warning',
+                  message: res.msg
+              });
+          }})
+
+          this.initGraph()
+      }
   }
-};
+}
 </script>
 
-<style>
+<style lang="less">
+  svg {
+      width: 1250px;
+      height: 650px;
+      font-size: 14px;
+  }
+
+  .node rect {
+      stroke: #606266;
+      fill: #fff;
+  }
+
+  .edgePath path {
+      stroke: #606266;
+      fill: #333;
+      stroke-width: 1.5px;
+  }
+  .box {
+      width:1350px;
+      height:800px;
+      background-color:rgb(255, 255, 255);
+      position: relative;
+}
+  .graph {
+      width: 1250px;
+      height: 650px;
+      border: solid;
+      background-color: rgb(255, 255, 255);
+      position: absolute;
+      left:0px;
+      right: 0px;
+      top:0px;
+      bottom: 0px;
+      margin: auto;
+  }
 
 </style>
