@@ -102,7 +102,7 @@ import JsPDF from 'jspdf'
 import JSZip from'jszip'
 import FileSaver from'file-saver'
 import { saveAs } from 'file-saver';
-import { getFile } from '@/api/create_report'
+import { getFile } from '@/api/file'
 import jsPDF from 'jspdf'
 import { blob } from 'd3'
 
@@ -149,15 +149,26 @@ export default {
        
 
   },
+  created(){
+        this.getFileMethod()
+    },
+
   methods: {
+    getFileMethod(){
+        getFile(localStorage.getItem("uid")).then(res => {
+        if(res.success){
+          this.fileData = res.data
+          //console.log(this.fileData)
+        }
+        else{
+          this.$message({
+            type:'warning',
+            message: res.msg
+          });
+        }}
+      )},
     getfilecontext(val){
-          getFileContext(val).then(res => {
-          if(res.success){
-            this.content1 = res.data.content;
-          }
-          else{
-            this.content1 = '程序加载有误，请重新选择文件'
-          }});
+      // do nothing
         },
     getPdfFromHtml(ele) {
             html2Canvas(ele,{
@@ -239,6 +250,11 @@ export default {
       },
 
       getData(){
+        
+
+
+
+        //代码度量
         this.rowData.push({
           totalraw:'20',
           coderow:'12',

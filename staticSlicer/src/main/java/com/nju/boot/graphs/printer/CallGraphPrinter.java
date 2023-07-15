@@ -12,24 +12,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CallGraphPrinter extends GraphPrinter{
-    CallGraph callGraph;
 
-    DOTExporter<GraphNode<?>, Edge> dotExporter = new DOTExporter<>(v->String.valueOf(v.getId()));
     public CallGraphPrinter(CallGraph callGraph, Writer writer) {
-        this.callGraph = callGraph;
-        this.writer = writer;
-        setUpDotExporter();
+        super(callGraph,writer);
     }
-    public void setUpDotExporter(){
-        dotExporter.setVertexAttributeProvider(v->{
+
+    @Override
+    protected void setUpExporter() {
+        exporter.setVertexAttributeProvider(v->{
             Map<String, Attribute> map = new HashMap<>();
             map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
             return map;
         });
-    }
-
-    @Override
-    public void print() {
-        dotExporter.exportGraph(callGraph,writer);
     }
 }

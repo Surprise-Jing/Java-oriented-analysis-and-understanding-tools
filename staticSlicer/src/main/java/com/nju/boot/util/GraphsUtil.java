@@ -8,10 +8,11 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.printer.XmlPrinter;
 import com.nju.boot.graphs.Graphs;
+import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
-import io.swagger.models.auth.In;
+import com.nju.boot.slicer.exceptions.MethodNotFoundException;
+import com.nju.boot.slicer.exceptions.VariableNotFoundException;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,9 +32,7 @@ public class GraphsUtil {
         }
         return null;
     }
-    public static Set<GraphNode<?>> findNodesByLineNumber(Graphs graphs, int lineNumber){
-        return null;
-    }
+
 
     public static CallableDeclaration<?> findMethodBySignature(Graphs graphs, String signature){
 
@@ -52,6 +51,29 @@ public class GraphsUtil {
     public static Set<Integer> getLinesCoveredByNodes(Set<Node>nodes){
         Set<Integer>result = new HashSet<>();
         nodes.stream().map(GraphsUtil::getLinesCoveredByNode).forEach(result::addAll);
+        return result;
+    }
+    public static GraphNode<?> getNodeBy(Graphs graphs,int lineNumber,String variable){
+        CallableDeclaration<?>targetMethod = findMethodByLineNumber(graphs.getCu(),lineNumber);
+        if(targetMethod == null)
+            throw new MethodNotFoundException();
+        CFG cfg = graphs.getCFG(targetMethod);
+        GraphNode<?>result = null;
+        for(GraphNode<?>graphNode:cfg.vertexSet()){
+
+            int lineBegin = graphNode.getAstNode().getBegin().get().line,
+                    lineEnd = graphNode.getAstNode().getEnd().get().line;
+            if(lineBegin<=lineNumber&&lineEnd>=lineEnd){
+                if (graphNode.getUsedVariables().contains(variable)
+                        ||graphNode.getDefinedVariables().contains(variable)) {
+                    result = graphNode;
+                    break;
+                }
+            }
+        }
+        if(result == null){
+            throw new VariableNotFoundException();
+        }
         return result;
     }
 }

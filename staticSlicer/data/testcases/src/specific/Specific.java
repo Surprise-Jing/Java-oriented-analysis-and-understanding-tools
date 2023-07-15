@@ -1,12 +1,26 @@
 public class WhileIf {
-    public void function(){
-        int i = 1;
+    public int va = 0;
+    public int vb = 1;
+    public static void main(String[]args){
         int sum = 0;
-        while(i<11){
+        int prod = 1;
+
+        int i = 0;
+        while(i<10){
+            i=i+1;
+            if(prod > 100/i){
+                i = i - 1;
+                break;
+            }
             sum = sum+i;
-            i = i+1;
+            sum = prod;
+            prod = prod*i;
+
         }
-        System.out.println(sum);
         System.out.println(i);
+        System.out.println(sum);
+        System.out.println(prod);
+
     }
+
 }

@@ -29,7 +29,6 @@ public class SlicerTest {
         JavaParser javaParser = new JavaParser();
         File file = new File(fileName);
         Optional<CompilationUnit> cu = javaParser.parse(file).getResult();
-
         Optional<MethodDeclaration> optionalMethodDeclaration = cu.get().findFirst(MethodDeclaration.class);
         if(!optionalMethodDeclaration.isPresent()){
             throw new RuntimeException("No method could be found");

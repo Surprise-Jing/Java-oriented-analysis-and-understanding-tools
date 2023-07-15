@@ -2,51 +2,81 @@
   <div class="slice_container">
     <div  class="file_selector">
         <!--只需要双向绑定代码块即可-->
-      <CodeEdit v-model="content" />
-      <el-button @click="getCode">获取代码</el-button>
-    <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
-      <el-option
-      v-for="item in fileData"
-                :key="item.id" 
-                :label="item.fileName"
-                :value="item.id">
-      </el-option>
-    </el-select>
+      <CodeEdit v-model="content1" class="show_code"/>
+      <CodeEdit2 v-model="content2" class="show_slicecode"/>
+      <div class="input_x">
+        请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
+        <p></p>
+        请输入程序输入值:<el-input class="getvar" v-model="variable"></el-input>
+        <el-button @click="input_ok">确定</el-button>
+      </div>
+      <div class="choose_file" >
+            选择文件：
+        <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
+          <el-option
+          v-for="item in fileData"
+                    :key="item.id" 
+                    :label="item.fileName"
+                    :value="item.id">
+          </el-option>
+        </el-select>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import {getFile, getFileContext} from "@/api/file"
+import {DynamicSlicer} from "@/api/slicer"
 import CodeEdit from "@/components/CodeEdit";
+import CodeEdit2 from "@/components/CodeEdit2";
 export default {
-  components: {CodeEdit},
+  components: {CodeEdit,CodeEdit2},
   data() {
     return {
-      content: '', // 代码块
+     content1:'',
+     content2:'',
+      variable:'',
+      rowNumber:'',
+     // content: '', // 代码块
       fileData:[],
       selectFile:{
         id:''
-      },
-    }
-  },
+      }
+  }
+},
   methods: {
     // 获取代码
-    getCode() {
-      console.log(this.content)
+    input_ok() {
+      DynamicSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
+        if(res.success){
+            this.content2 = res.data.result;
+          }
+          else{
+            this.$message({
+            type:'warning',
+            message: res.msg
+          });
+      }
+    });
     },
+      //console.log(this.content)
     getfilecontext(val){
       getFileContext(val).then(res => {
           if(res.success){
-            this.content = res.data.content;
-            console.log(this.code);
-            this.$forceUpdate()
+            this.content1 = res.data.content;
+            //console.log(this.code);
+           // this.$forceUpdate()
           }
           else{
-            this.code = '程序加载有误，请重新选择文件'
+            this.content1 = '程序加载有误，请重新选择文件'
           }});
+    },
+    getMethod(val){
+      //val=2;
     }
   },
+    
   mounted() {
       getFile(localStorage.getItem("uid")).then(res => {
         if(res.success){
@@ -70,9 +100,46 @@ export default {
 .slice_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image.png');
+  //background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
+.choose_file{
+position: fixed;
+left:15%;
+top:15%;
+color:darkgray;
+}
+.input_x{
+  position: fixed;
+  left:50%;
+  top:5%;
+  color:darkgray;
+}
+.getvar{
+  width:200px;
+}
+.getrow{
+  width:200px;
+}
+
+.show_code{
+    left:55%;
+  top:20%;
+  font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
+  
+  }
+
+  .show_slicecode{
+    left:55%;
+  top:20%;
+    font-size: 100%;
+  position:fixed;
+  background-color:rgb(40, 44, 52);
+  color:darkgray;
+  }
 </style>
 

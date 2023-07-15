@@ -29,7 +29,7 @@ class CodeMetricsTest {
         Graphs graphs = new Graphs(lineOfCodeTestPath);
         CodeMetrics codeMetrics = new CodeMetrics(graphs);
         List<Integer>lOCs =  graphs.getQualifiedSignatures().stream()
-                .map(codeMetrics::getLineOfMethod).collect(Collectors.toList());
+                .map(codeMetrics::getLinesCodeOfMethod).collect(Collectors.toList());
         assert lOCs.equals(Arrays.asList(new Integer[]{10}));
 
     }

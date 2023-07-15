@@ -84,7 +84,7 @@ export default {
       else{
         PDGSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
           if(res.success){
-            this.content2 = res.data;
+            this.content2 = res.data.result;
             //console.log(this.code);
            // this.$forceUpdate()
           }

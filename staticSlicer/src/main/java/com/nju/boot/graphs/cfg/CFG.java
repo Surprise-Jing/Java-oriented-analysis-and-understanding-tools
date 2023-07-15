@@ -10,6 +10,7 @@ import com.nju.boot.nodes.GraphNode;
 import org.checkerframework.checker.units.qual.C;
 
 import java.io.StringWriter;
+import java.io.Writer;
 
 public class CFG extends Graph<CallableDeclaration<?>> {
     protected boolean built = false;
@@ -49,10 +50,16 @@ public class CFG extends Graph<CallableDeclaration<?>> {
         return reversedCFG;
     }
 
+    Writer writer = new StringWriter();
+
+    public void setWriter(Writer writer) {
+        this.writer = writer;
+    }
     @Override
     public String toString() {
-        StringWriter stringWriter = new StringWriter();
-        new CFGPrinter(this,stringWriter).print();
-        return stringWriter.toString();
+
+        new CFGPrinter(this,writer).print();
+        return writer.toString();
     }
+
 }
