@@ -1,6 +1,6 @@
 <template>
   <div class="report_container">
-
+    <div style="height: 30px;"></div>
     <div class="choose_file" >
             选择文件:
         <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
@@ -26,7 +26,7 @@
       </div>
 
 
-      生成report
+
       <p></p>
      
       <div id="dom" style="padding: 1600px 50px 50px 50px;overflow: visible;width: 1000px;" >
@@ -299,7 +299,7 @@ export default {
 .report_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image.png');
+  //background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
@@ -316,8 +316,7 @@ export default {
 .choose_file{
   position: relative;
   left:30%;
-  top:10%;
-color:white;
-opacity: 0.75;
+color:black;
+font-size: large;
 }
 </style>

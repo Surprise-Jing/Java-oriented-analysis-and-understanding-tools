@@ -182,8 +182,10 @@ export default {
   white-space: pre-wrap;
   position: relative;
   left: 30%;
-  background-color: darkgray;
-  border-radius: 5%;
-  overflow: scroll;
+  background-color:darkgrey;
+  //border-radius: 5%;
+  font-size: large;
+  overflow:scroll;
+
 }
 </style>

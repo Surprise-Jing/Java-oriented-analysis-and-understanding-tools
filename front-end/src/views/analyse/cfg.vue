@@ -1,29 +1,29 @@
 <template>
   <div class="box">
-      <div class="choose_file" >
+        <div class="choose_file" >
           选择文件:
-      <el-select v-model="selectFile.id" @change="getmethod(selectFile.id)" placeholder="请选择">
-        <el-option
-        v-for="item in fileData"
-                  :key="item.id" 
-                  :label="item.fileName"
-                  :value="item.id">
-        </el-option>
-      </el-select>
-    </div>
+            <el-select v-model="selectFile.id" @change="getmethod(selectFile.id)" placeholder="请选择">
+                <el-option
+                v-for="item in fileData"
+                        :key="item.id" 
+                        :label="item.fileName"
+                        :value="item.id">
+                </el-option>
+            </el-select>
+                <span > &nbsp; 选择函数:</span> 
+            <el-select v-model="selectFunc.name" placeholder="请选择">
+                <el-option
+                v-for="item in funcData"
+                        :key="item.id" 
+                        :label="item.methodName"
+                        :value="item.methodName">
+                </el-option>
+            </el-select>
+            <el-button @click="btn_ok" class="file_btn">确定</el-button>
 
-    <div class="choose_func" >
-          选择函数:
-      <el-select v-model="selectFunc.name" placeholder="请选择">
-        <el-option
-        v-for="item in funcData"
-                  :key="item.id" 
-                  :label="item.methodName"
-                  :value="item.methodName">
-        </el-option>
-      </el-select>
-      <el-button @click="btn_ok" class="file_btn">确定</el-button>
-    </div>
+        </div>
+
+
   <div class="graph">
       <svg class="canvas">
           <g></g>
@@ -163,22 +163,19 @@ import * as d3 from "d3";
       stroke-width: 1.5px;
   }
   .box {
-      width:1350px;
-      height:800px;
-      background-color:rgb(255, 255, 255);
-      position: relative;
+      position: fixed;
 }
   .graph {
-      width: 1250px;
-      height: 650px;
+      width: 1000px;
+      height: 600px;
       border: solid;
+      border-color: gray;
       background-color: rgb(255, 255, 255);
-      position: absolute;
-      left:0px;
-      right: 0px;
-      top:0px;
-      bottom: 0px;
+      position: relative;
+      left:100px;
+      top: 20px;
       margin: auto;
+      overflow: scroll;
   }
 
 </style>

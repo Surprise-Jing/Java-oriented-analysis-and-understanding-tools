@@ -10,13 +10,14 @@
                       :value="item.id">
             </el-option>
           </el-select>
-          </div>
-      <div class = "ast" style="border: none; padding: 20px; width: 600px; height: 600px">
-        <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
-        collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
-        <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
-          <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
       </div>
+        <div style="height: 3px;background-color: gray;"></div>
+        <div class = "ast" >
+          <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
+          collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
+          <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
+            <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
+        </div>
   </div>
   </template>
   
@@ -137,6 +138,18 @@
     z-index: 999;    
     text-align: left;    
     font-size: 12px;
+  }
+  .ast{
+   
+  
+    width: 1000px;
+    height: 600px;
+    left:20%;
+    
+   
+  }
+  .pdgGraph{
+   overflow: scroll;
   }
   </style>
   
