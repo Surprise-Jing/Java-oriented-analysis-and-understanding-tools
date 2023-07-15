@@ -10,10 +10,8 @@
                   :value="item.id">
         </el-option>
       </el-select>
-    </div>
 
-    <div class="choose_func" >
-          选择函数:
+      选择函数:
       <el-select v-model="selectFunc.name" placeholder="请选择">
         <el-option
         v-for="item in funcData"
@@ -24,6 +22,7 @@
       </el-select>
       <el-button @click="btn_ok" class="file_btn">确定</el-button>
     </div>
+
   <div class="graph">
       <svg class="canvas">
           <g></g>
@@ -138,9 +137,10 @@ import * as d3 from "d3";
                   message: res.msg
               });
           }})
-
-          this.initGraph()
-      }
+          setTimeout(() => {
+            this.initGraph()
+          }, 1000);
+        }
   }
 }
 </script>
@@ -169,16 +169,16 @@ import * as d3 from "d3";
       position: relative;
 }
   .graph {
-      width: 1250px;
-      height: 650px;
+    width: 1000px;
+      height: 600px;
       border: solid;
+      border-color: gray;
       background-color: rgb(255, 255, 255);
-      position: absolute;
-      left:0px;
-      right: 0px;
-      top:0px;
-      bottom: 0px;
+      position: relative;
+      left:100px;
+      top: 20px;
       margin: auto;
+      overflow: scroll;
   }
 
 </style>

@@ -10,24 +10,14 @@
                       :value="item.id">
             </el-option>
           </el-select>
-          <div style="margin-left:30px;">
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <el-switch v-model="horizontal" :width="50" active-text="横排" inactive-text="竖排" style="margin-top:8px;"/>
-          </el-col>
-          <el-col :span="5">
-            <el-switch v-model="expandAll" :width="50" active-text="全部展开"
-                       inactive-text="全部折叠" style="margin:8px;" @change="expandChange"/>
-          </el-col>
-          </el-row>
-          </div>
-      <div class = "ast" style="border: none; padding: 20px; width: 600px; height: 600px">
-        <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
-        collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
-        <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
-          <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
       </div>
-  </div>
+        <div style="height: 3px;background-color: gray;"></div>
+        <div class = "ast" >
+          <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
+          collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
+          <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
+            <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
+        </div>
   </div>
   </template>
   
@@ -50,17 +40,6 @@
           },
           BasicSwich:false,	
           BasicInfo:{id:null,label:null},
-          "treeData": {
-            labelClassName: "bg-color-orange",
-            basicInfo: { id: null, label: "---null" },
-            basicSwitch: false,
-            data:{},
-        horizontal: true, //横版 竖版
-        collapsable: false,
-        expandAll: true, //是否全部展开
-        labelClassName: '白色', // 默认颜色
-        scrollTreeStyle: 'width:100%;',
-        },
           testData:{}
         }
       },
@@ -95,51 +74,43 @@
             })}
           })
         },
-        renderContent(h, data) {
-        return data.label;
+  
+        collapse(list) {   
+          var _this = this;    
+          list.forEach(
+            function(child) {        
+              if (child.expand) {          
+                child.expand = false;        
+              }        
+              child.children && _this.collapse(child.children);	
+            });},
+        onExpand(e,data) {    
+          if ("expand" in data) {       
+            data.expand = !data.expand;    	
+            if (!data.expand && data.children) {       		
+              this.collapse(data.children);    	
+            }    
+          } 
+          else {        
+            this.$set(data, "expand", true);    
+          }},
+        renderLabelClass (node) {
+          return 'label-class-blue'
         },
-        onExpand(data) {
-        if ("expand" in data) {
-            data.expand = !data.expand;
-            if (!data.expand && data.children) {
-            this.collapse(data.children);
-            }
-        } else {
-            this.$set(data, "expand", true);
+        renderCurrentClass (node) {
+          return 'label-bg-blue'
+        },
+        onMouseout(e, data) {    
+          this.BasicSwich = false
+        },
+        onMouseover(e, data) {    
+          this.BasicInfo = data;    
+          this.BasicSwich = true;    
+          var floating = document.getElementsByClassName('floating')[0];    
+          floating.style.left = e.clientX +'px';    
+          floating.style.top = e.clientY+'px';
         }
-        },
-        onNodeClick(e, data) {
-        alert(data.label);
-        },
-        collapse(list) {
-        var _this = this;
-        list.forEach(function(child) {
-            if (child.expand) {
-            child.expand = false;
-            }
-            child.children && _this.collapse(child.children);
-        });
-        },
-        expandChange() {
-        this.toggleExpand(this.data, this.expandAll);
-        },
-        toggleExpand(data, val) {
-        var _this = this;
-        if (Array.isArray(data)) {
-            data.forEach(function(item) {
-            _this.$set(item, "expand", val);
-            if (item.children) {
-                _this.toggleExpand(item.children, val);
-            }
-            });
-        } else {
-            this.$set(data, "expand", val);
-            if (data.children) {
-            _this.toggleExpand(data.children, val);
-            }
-        }
-        }
-  }
+      }
     }
   </script>
   <style>
@@ -167,6 +138,18 @@
     z-index: 999;    
     text-align: left;    
     font-size: 12px;
+  }
+  .ast{
+   
+  
+    width: 1000px;
+    height: 600px;
+    left:20%;
+    
+   
+  }
+  .pdgGraph{
+   overflow: scroll;
   }
   </style>
   
