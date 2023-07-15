@@ -6,9 +6,11 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 
 import com.nju.boot.graphs.printer.CallGraphPrinter;
+import com.nju.boot.graphs.printer.GraphPrinter;
 import com.nju.boot.nodes.GraphNode;
 
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
 public class CallGraph extends Graph<CallableDeclaration<?>> {
@@ -42,5 +44,10 @@ public class CallGraph extends Graph<CallableDeclaration<?>> {
         CallGraphPrinter callGraphPrinter = new CallGraphPrinter(this,stringWriter);
         callGraphPrinter.print();
         return stringWriter.toString();
+    }
+
+    @Override
+    protected void writeAsDot(Writer writer) {
+        new CallGraphPrinter(this,writer, GraphPrinter.Format.DOT).print();
     }
 }
