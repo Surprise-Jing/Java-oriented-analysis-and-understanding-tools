@@ -75,7 +75,7 @@ public class GraphsUtil {
 
             int lineBegin = graphNode.getAstNode().getBegin().get().line,
                     lineEnd = graphNode.getAstNode().getEnd().get().line;
-            if(lineBegin<=lineNumber&&lineEnd>=lineEnd){
+            if(lineBegin<=lineNumber&&lineEnd>=lineNumber){
                 if (graphNode.getUsedVariables().contains(variable)
                         ||graphNode.getDefinedVariables().contains(variable)) {
                     result = graphNode;
