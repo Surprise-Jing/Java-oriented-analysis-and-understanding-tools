@@ -82,7 +82,7 @@ public class PDGSlicerTest {
 //        testSlice("specific","Specific.java",5,"i");
 //        testSlice("specific","Specific.java",4,"sum");
 //        testSlice("specific","Specific.java",3,"i");
-        testSlice("specific","Specific.java",20,"prod");
+        testSlice("specific","Specific.java",18,"sum");
 
     }
 }

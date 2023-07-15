@@ -6,8 +6,8 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
 import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.BaseExporter;
 import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.dot.DOTExporter;
 
 import java.io.Writer;
 import java.util.HashMap;
@@ -18,8 +18,12 @@ public class PDGPrinter extends GraphPrinter{
     public PDGPrinter(PDG pdg,Writer writer) {
         super(pdg,writer);
     }
+    public PDGPrinter(PDG pdg,Writer writer,Format format) {
+        super(pdg,writer,format);
+    }
+
     @Override
-    protected void setUpExporter(){
+    protected void setUpExporter(BaseExporter<GraphNode<?>, Edge> exporter) {
         exporter.setVertexAttributeProvider(
                 v->{
                     Map<String, Attribute> map = new HashMap<>();
@@ -39,8 +43,6 @@ public class PDGPrinter extends GraphPrinter{
             return map;
         });
     }
-
-
 
 
 }
