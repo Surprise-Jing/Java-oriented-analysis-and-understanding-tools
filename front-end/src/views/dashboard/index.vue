@@ -4,21 +4,27 @@
     <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"  class="data_table">
       <el-table-column prop="id" label="文件id" width="280" v-if="false">
     </el-table-column>
-    <el-table-column prop="fileName" label="文件名称" width="180">
+    <el-table-column prop="fileName" label="文件名称" width="280">
 
     </el-table-column>
     <el-table-column prop="uploadTime" label="上传时间" width="280">
     </el-table-column>
     <el-table-column prop="operation" label="操作">
       <template slot-scope="scope">
-        <el-button  type="info"  @click="download_file(scope.row.id)">下载</el-button>
+        <el-button  type="info"  @click="download_file(scope.row.id)" >下载</el-button>
+
         <el-button type="info" @click="delete_file(scope.row.id)">删除</el-button>
+        <el-button type="info" @click="see_file(scope.row.id)">预览</el-button>
         <!-- <el-button :type="scope.row.status?'danger':'primary'" @click="changeStatus(scope.$index)" </el-button> -->
 
       </template>
     </el-table-column>
   </el-table>
-
+        <div class="code_area" v-if="able_see">
+          <div style="height: 15px;"></div>
+          <el-button @click="close_code" style="float:right;">关闭</el-button>
+          {{code_msg}}
+        </div>
   <div class="block" >
             <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -45,7 +51,9 @@ export default {
       tableData : [],
         currentPage: 1, // 当前页码
         total: 20, // 总条数
-        pageSize: 5 // 每页的数据条数
+        pageSize: 5 ,// 每页的数据条数
+        code_msg:'',
+        able_see:false
       }
   },
   methods: {
@@ -94,7 +102,32 @@ export default {
             });
           }
         })
-      }
+      },
+      see_file(val){
+        getFileContext(val).then(res => {
+          if(res.success){
+            this.code_msg=res.data.content
+           // this.code_msg=this.preText(this.code_msg)
+           
+            //FileSaver.saveAs(blob, res.data.fileName)
+          }
+          else{
+              this.$message({
+              type:'warning',
+              message: res.msg
+            });
+          }
+        })
+        this.able_see=true
+      },
+      close_code(){
+        this.able_see=false
+      },
+      preText (pretext) {
+        return pretext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
+      },
+
+      
 
   },
   mounted() {
@@ -117,7 +150,7 @@ export default {
 .dashboard_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image.png');
+  //background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
@@ -125,8 +158,8 @@ export default {
 .data_table{
 
   //height: 300px;
-  width: 700px;
-  border: dashed 1px gray;
+  width: 900px;
+  border: solid 1px gray;
   margin-bottom: 10px;
   color: #777;
   position: absolute;
@@ -134,7 +167,7 @@ export default {
   top:40%;
   transform: translate(-50%,-50%);
   background-color:gray;
-
+  font-size: large;
 }
 .block{
   position: absolute;
@@ -143,5 +176,14 @@ export default {
   transform: translate(-50%,-50%);
   //background-color:gray;
 }
-
+.code_area{
+  height: 500px;
+  width:500px;
+  white-space: pre-wrap;
+  position: relative;
+  left: 30%;
+  background-color: darkgray;
+  border-radius: 5%;
+  overflow: scroll;
+}
 </style>

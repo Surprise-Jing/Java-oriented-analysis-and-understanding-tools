@@ -4,6 +4,15 @@
         <!--只需要双向绑定代码块即可-->
       <CodeEdit v-model="content1" class="show_code"/>
       <CodeEdit2 v-model="content2" class="show_slicecode"/>
+      <el-button @click="tipsbtn">{{tip_text}}</el-button>
+      <div v-if="tip" class="tiparea">
+        <div style="height: 15px;"></div>
+        <h1>使用方法:</h1>
+        <br>
+        第一：<br>
+        第二:<br>
+
+      </div>
       <div class="input_x">
         请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
         <p></p>
@@ -46,6 +55,8 @@ export default {
   components: {CodeEdit,CodeEdit2},
   data() {
     return {
+      tip_text:'打开tips',
+    tip:false,
      content1:'',
      content2:'',
       variable:'',
@@ -110,6 +121,12 @@ export default {
     },
     getMethod(val){
       //val=2;
+    },
+    tipsbtn(){
+      if(this.tip)this.tip_text='打开tips'
+      else this.tip_text='关闭tips'
+      this.tip=!this.tip
+      
     }
   },
     
@@ -136,7 +153,7 @@ export default {
 .slice_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image.png');
+  //background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
@@ -176,6 +193,18 @@ color:darkgray;
   position:fixed;
   background-color:rgb(40, 44, 52);
   color:darkgray;
+  }
+  .tiparea{
+    position: fixed;
+    width:600px;
+    height:400px;
+    border-color: black;
+    border-width: 3px;
+    background-color: white;
+    left:500px;
+    top:200px;
+    border-radius: 5%;
+
   }
 </style>
 

@@ -27,7 +27,7 @@
 
 
       <div class="display_area">
-
+            <div style="height: 100px;"></div>
        
             <div id="rowChart" style="width:600px;height:278px;float:left;" ></div>
             <div style="height: 400px;"></div>
@@ -151,8 +151,12 @@ export default{
             ]
             })
 
-            let max_num=5
-            //console.log(max_num)
+            let max_num=0
+            for (let i = 0; i < 5; i++) {
+            max_num = Math.max(max_num,this.callData[i]);
+            }
+
+            console.log(max_num)
             let callChart = this.$echarts.init(document.getElementById('callChart'))
             let dataMax = [
                 { name: '调用函数次数', max: max_num },
@@ -189,9 +193,11 @@ export default{
                     },
                     areaStyle: {}, //每个雷达图形成一个阴影的面积
                     data:[{
-                        // value:[1,2,3,4,5]
+                         //value:[1,2,3,4,5]
                         value:this.callData
-                    }]
+                    }],
+                    
+                   
                 },
                 ],
             }
@@ -213,7 +219,7 @@ export default{
                             res.data.cyclomatic,
                             res.data.maxdepth, 
                             res.data.param]
-                    //console.log(this.callData)
+                    console.log(this.callData)
                 }
                 else{
                 this.$message({
@@ -235,7 +241,10 @@ export default{
                     message: res.msg
                 })}
             })
-            this.drawLine()
+            setTimeout(() => {
+                this.drawLine()
+            }, 1000);
+            
         }
     }}
 
@@ -259,15 +268,17 @@ export default{
 position: fixed;
 left:15%;
 top:15%;
-color:white;
-opacity: 0.75;
+color:black;
+font-style:oblique;
+//opacity: 0.75;
 }
 .choose_func{
 position: fixed;
 left:15%;
 top:22%;
-color:white;
-opacity: 0.75;
+color:black;
+font-style: oblique;
+//opacity: 0.75;
 }
 .display_area{
     width:700px;
@@ -275,9 +286,11 @@ opacity: 0.75;
     position: fixed;
     left:40%;
     top:15%;
-    background-color:white;
-    opacity: 0.9;
+    background-color:lightgray;
+    
+    //opacity: 0.5;
     overflow-y: scroll;
+    border-radius: 5%;
 }
 .file_btn{
 

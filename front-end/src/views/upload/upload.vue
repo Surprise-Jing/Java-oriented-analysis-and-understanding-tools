@@ -16,8 +16,7 @@
       <input type="file" id="fileInput" @change="chooseUploadFile" style="display: none;">
      
       <button class="uploadbtn" @click="uploadOk">提交</button>
-     
-     
+      <button class="cleanbtn" @click="cleanFile">清空</button>
     </div>
   </div>
   </div>
@@ -31,7 +30,7 @@ import { uploadFile } from '@/api/file'
 
 export default {
   data () {
-    return {
+    return {  
       fileName: '',
       batchFile: '',
       MAX_FILE_SIZE: 10 * 1000 * 1000
@@ -93,7 +92,12 @@ export default {
               });
             }
           })
+    },
+    cleanFile(){
+      this.fileName='';
+      this.batchFile='';
     }
+   
   }
 
 }
@@ -140,7 +144,7 @@ export default {
     }
     .uploadbtn{
       position: absolute;
-      left:45%;
+      left:40%;
       top:60%;
       height: 50px;
       width:70px;
@@ -149,6 +153,16 @@ export default {
       background-color: darkslategray;
       border-color: black;
     }
-    
+    .cleanbtn{
+      position: absolute;
+      left:50%;
+      top:60%;
+      height: 50px;
+      width:70px;
+      transform: translate(-50%,-50%);
+      color:darkgray;
+      background-color: darkslategray;
+      border-color: black;
+    }
 
 </style>
