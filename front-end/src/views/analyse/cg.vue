@@ -121,8 +121,10 @@ import * as d3 from "d3";
                   message: res.msg
               });
           }})
-
-          this.initGraph()
+          setTimeout(() => {
+            this.initGraph()
+          }, 1000);
+          
       }
   }
 }
