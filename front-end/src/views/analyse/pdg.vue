@@ -97,7 +97,7 @@ import * as d3 from "d3";
                   //节点标签
                   label: item.label,
                   //节点形状
-                  shape: "ellipse",
+                  shape: "ellipse", //function(item) {return item.shape? item.shape :"ellipse"},
                   //节点样式
                   style: "fill:#fff;stroke:#000",
 
@@ -107,9 +107,9 @@ import * as d3 from "d3";
               this.list.edges.forEach(item => {
                   g.setEdge(item.source, item.target, {
                   //边标签
-                  label: item.label,
+                  label: item.label,//function(item) {return item.label? item.label : ""},
                   //边样式
-                  style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                  style: "fill:#fff;stroke:#333;stroke-width:1.5px",
                   })
               })
               //绘制图形
