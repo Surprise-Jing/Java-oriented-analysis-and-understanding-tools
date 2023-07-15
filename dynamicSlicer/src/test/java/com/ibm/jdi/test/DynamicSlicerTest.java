@@ -15,12 +15,12 @@ import java.util.Set;
 class DynamicSlicerTest {
     String absolutePath = new File("").getAbsolutePath();
     String filePath = Paths.get(absolutePath,"data","test","src").toString();
-    String fileName = "Test4.java";
+    String fileName = "Test8.java";
     String wholePath = Paths.get(filePath,fileName).toString();
     @Test
     void programExecute() throws Exception {
 //        Graphs graphs = new Graphs(wholePath);
-        int lineNumber = 29;
+        int lineNumber = 14;
         String input = "3";
 //        CDG cdg = graphs.getCDG(GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber));
 //        System.out.println(cdg.toString());

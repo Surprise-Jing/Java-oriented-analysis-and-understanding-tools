@@ -81,6 +81,13 @@ public class DynamicExecuter {
         this.setDebugClass(className);
         this.setLogOfLines();
         VirtualMachine vm = null;
+
+        // 设置执行时间限制为3秒
+        int timeoutSeconds = 60;
+        Timer timer = new Timer();
+
+        // 在这里执行你的JDI代码
+
         try {
             vm = this.connectAndLaunchVM(path, fileName);
 
@@ -93,6 +100,15 @@ public class DynamicExecuter {
 
             this.enableClassPrepareRequest(vm);
             this.enableExceptionRequest(vm);
+
+            VirtualMachine finalVm = vm;
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    finalVm.exit(0); // 终止程序执行
+                    throw new FileTimeLimitExceedException();
+                }
+            }, timeoutSeconds * 1000);
 
             EventSet eventSet;
             while ((eventSet = vm.eventQueue().remove()) != null) {
@@ -111,9 +127,9 @@ public class DynamicExecuter {
                         this.updatingLog((StepEvent) event);
                     }
                     if (event instanceof ExceptionEvent) {
-                        System.out.println("Exception catched.");
+//                        System.out.println("Exception catched.");
                         vm.exit(0);
-                        return false;
+                        throw new FileRunningException();
                     }
                     vm.resume();
                 }
@@ -124,7 +140,10 @@ public class DynamicExecuter {
             e.printStackTrace();
         }
         finally {
-            InputStreamReader reader = new InputStreamReader(vm.process().getInputStream());
+            InputStreamReader reader = null;
+            if (vm != null) {
+                reader = new InputStreamReader(vm.process().getInputStream());
+            }
             OutputStreamWriter writer = new OutputStreamWriter(System.out);
             char[] buf = new char[512];
             reader.read(buf);
@@ -132,7 +151,13 @@ public class DynamicExecuter {
             writer.flush();
         }
 
-        vm.process().destroy();
+        if (vm != null) {
+            vm.process().destroy();
+        }
+
+        // 取消计时器
+        timer.cancel();
+
         return true;
     }
 
@@ -148,7 +173,7 @@ public class DynamicExecuter {
         exceptionRequest.enable();
     }
 
-    public void setBreakPoints(@NotNull VirtualMachine vm, @NotNull ClassPrepareEvent event) throws AbsentInformationException, NoSuchMethodException {
+    public void setBreakPoints(@NotNull VirtualMachine vm, @NotNull ClassPrepareEvent event) throws AbsentInformationException {
         ClassType classType = (ClassType) event.referenceType();
         Method methods = classType.methodsByName("main").get(0);
         List<Location> locations = methods.allLineLocations();
@@ -326,7 +351,7 @@ public class DynamicExecuter {
 
     public void buildingDDG(CDG _cdg) throws NoSuchElementException {
 
-        System.out.println(logOfLines);
+//        System.out.println(logOfLines);
 
         for(int i : logOfLines){
 //                        DDG
@@ -340,10 +365,10 @@ public class DynamicExecuter {
 
                 Set<String> Use = GN.getUsedVariables();
                 for(String v : Use){
-                    System.out.println(i + " Used Variable: " + v);
+//                    System.out.println(i + " Used Variable: " + v);
                     if (DefnNode.containsKey(v)) {
                         Def.add(DefnNode.get(v));
-                        System.out.println(DefnNode.get(v).getGN().getAstNode().getBegin().get().line);
+//                        System.out.println(DefnNode.get(v).getGN().getAstNode().getBegin().get().line);
 //                        System.out.println("add reachable: " + DefnNode.get(v).getReachableStmt());
 //                        if (DefnNode.containsKey(v))
 //                            Reach.addAll(DefnNode.get(v).getReachableStmt());
@@ -352,7 +377,7 @@ public class DynamicExecuter {
 
                 for(Edge inEdge : _cdg.incomingEdgesOf(GN)){
                     GraphNode<?> p = _cdg.getEdgeSource(inEdge);
-                    System.out.println( i + " Controled by: " + p.getAstNode().getBegin().get().line + ",type: " + p.getAstNode().getClass());
+//                    System.out.println( i + " Controled by: " + p.getAstNode().getBegin().get().line + ",type: " + p.getAstNode().getClass());
                     if(p.getAstNode() instanceof BreakStmt || p.getAstNode() instanceof ContinueStmt)
                         continue;
                     if(PrednNode.containsKey(p)){
