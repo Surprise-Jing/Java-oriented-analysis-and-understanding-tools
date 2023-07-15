@@ -16,10 +16,7 @@ import com.nju.boot.slicer.exceptions.VariableNotFoundException;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -57,6 +54,7 @@ public class GraphsUtil {
         File outFile = new File(outFilePath);
         astNodeToPNGOutput(compilationUnit,outFile);
     }
+
     public static Set<Integer> getLinesCoveredByNode(Node node){
         int start = node.getRange().get().begin.line;
         int end = node.getRange().get().end.line;
