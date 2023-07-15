@@ -1,49 +1,49 @@
 package com.ibm.jdi;
 
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.LabeledStmt;
+import com.github.javaparser.ast.stmt.LocalClassDeclarationStmt;
 import com.github.javaparser.ast.stmt.SwitchEntry;
-import com.github.javaparser.utils.LineSeparator;
-import com.github.javaparser.utils.Utils;
 import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
 import com.nju.boot.util.GraphsUtil;
 import io.swagger.models.auth.In;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class DynamicSlicer {
-    Set<Integer> result;
+    Set<Node> result;
     Graphs graphs;
     String path;
     String fileName;
     String className;
 
-    public DynamicSlicer(String filePath, String nameOfFile) {
+    public DynamicSlicer(String filePath) {
         System.out.println(filePath);
         path = Paths.get(filePath).getParent().toString();
         System.out.println(path);
         fileName = Paths.get(filePath).getFileName().toString();
         System.out.println(fileName);
-        className = nameOfFile;
+        className = fileName.substring(0, fileName.lastIndexOf('.'));
         System.out.println(className);
         graphs = new Graphs(filePath);
     }
 
-    public Set<Integer> programExecute(String path, String fileName, String className, String input, Integer line, CDG cdg) throws Exception {
+    public Set<Node> programExecute(String path, String fileName, String className, String input, Integer line, CDG cdg) throws Exception {
         DynamicExecuter dynamicExecuter = new DynamicExecuter();
 
         Map<Integer, Integer> labels = new HashMap<>();
         for(GraphNode<?> GN : cdg.vertexSet()) {
-            if(GN.getAstNode() instanceof LabeledStmt || GN.getAstNode() instanceof SwitchEntry || GN.getAstNode() instanceof ForStmt) {
+            if(GN.getAstNode() instanceof LabeledStmt || GN.getAstNode() instanceof SwitchEntry || GN.getAstNode() instanceof ForStmt || GN.getAstNode() instanceof MethodDeclaration) {
                 Integer label = GN.getAstNode().getBegin().get().line;
                 int closest = Integer.MAX_VALUE;
                 for (Edge edge : cdg.outgoingEdgesOf(GN)) {
@@ -54,7 +54,7 @@ public class DynamicSlicer {
                 }
             }
         }
-//        System.out.println(labels);
+//        System.out.println("labels: " + labels);
         dynamicExecuter.setLinesOfLabels(labels);
         boolean bld = dynamicExecuter.executeFile(path, fileName, className, input);
         if (bld)
@@ -62,6 +62,7 @@ public class DynamicSlicer {
         else
             return null;
         result = dynamicExecuter.dynamicSlice(line);
+
         return result;
         //return dynamicExecuter.dynamicSlice(line);
     }
@@ -71,25 +72,42 @@ public class DynamicSlicer {
         result = programExecute(path, fileName, className, input, line, cdg);
         return this;
     }
-    public Set<Integer> getSlicedLines(){
+    public Set<Node> getSlicedLines(){
         return result;
     }
     public String getSlicedCode() throws IOException {
-        String fileStr = graphs.getCu().toString();
-        List<String> lines = fileStr.lines().collect(Collectors.toList());
-        System.out.println(lines);
-        String resultStr = new String();
-        List<String> results = new ArrayList<>();
-        StringWriter stringWriter =new StringWriter();
-        BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
+//        String fileStr = graphs.getCu().toString();
+        SelectivePrettyPrinter selectivePrettyPrinter = new SelectivePrettyPrinter(result);
+        return selectivePrettyPrinter.print(graphs.getCu());
+
+/*        StringBuilder fileStrBuilder = new StringBuilder();
+        File file = new File(path + "\\" + fileName);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+        List<String> lines = new ArrayList<>();
+
+        String s = null;
+        while ((s = bufferedReader.readLine()) != null) {
+//            fileStrBuilder.append(System.lineSeparator()).append(s);
+            lines.add(s);
+        }
+        bufferedReader.close();
+
+//        String fileStr = fileStrBuilder.toString();
+
+
+        //test
+*//*        for(String l : lines) {
+            System.out.println(l);
+        }*//*
+
+        StringBuilder resultStr = new StringBuilder();
         for(int i = 0;i<lines.size();i++){
             if(result.contains(i+1)){
-                bufferedWriter.write(lines.get(i));
-                bufferedWriter.newLine();
+                resultStr.append(System.lineSeparator()).append(lines.get(i));
             }
-        }
-        bufferedWriter.flush();
 
-        return stringWriter.toString();
+        }
+        return resultStr.toString();*/
     }
 }

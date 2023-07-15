@@ -8,7 +8,7 @@ public class Test1{
         int i = 0;
        while(i<10){
            i=i+1;
-            if(prod > i){
+            if(prod > 100/i){
                 i = i - 1;
                 break;
             }

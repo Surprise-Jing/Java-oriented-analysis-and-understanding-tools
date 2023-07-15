@@ -1,6 +1,8 @@
 package com.ibm.jdi;
 
 import com.github.javaparser.Range;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.*;
 import com.nju.boot.edges.Edge;
@@ -33,9 +35,11 @@ public class DynamicExecuter {
 
     private Map<String, DynamicNode> DefnNode = new HashMap<>();
 
-    private Map<Integer, DynamicNode> PrednNode = new HashMap<>();
+    private Map<GraphNode<?>, DynamicNode> PrednNode = new HashMap<>();
 
     private Map<Integer, List<DynamicNode>> CurrentNode = new HashMap<>();
+
+    private Map<GraphNode<?>, List<DynamicNode>> GNToDN = new HashMap<>();
 
     private void setLogOfLines(){
         logOfLines = new ArrayList<Integer>();
@@ -54,7 +58,7 @@ public class DynamicExecuter {
         return launchingConnector.launch(arguments);
     }
 
-    public void getAllcaseLocations(@NotNull VirtualMachine vm) throws AbsentInformationException {
+/*    public void getAllcaseLocations(@NotNull VirtualMachine vm) throws AbsentInformationException {
         List<ReferenceType> classes = vm.classesByName(debugClass);
         ReferenceType targetClass = classes.get(0);
 
@@ -69,7 +73,7 @@ public class DynamicExecuter {
         for (Location location : locations) {
             System.out.println("Case标签位置：" + location.lineNumber());
         }
-    }
+    }*/
 
     public boolean executeFile(String path, String fileName, String className, String input) throws Exception {
         this.setDebugClass(className);
@@ -98,7 +102,7 @@ public class DynamicExecuter {
                         this.setBreakPoints(vm, (ClassPrepareEvent)event);
                     }
                     if (event instanceof BreakpointEvent) {
-                        this.getAllcaseLocations(vm);
+//                        this.getAllcaseLocations(vm);
                         this.enableStepRequest(vm, (BreakpointEvent)event);
                     }
                     if (event instanceof StepEvent) {
@@ -147,6 +151,9 @@ public class DynamicExecuter {
         Method methods = classType.methodsByName("main").get(0);
         List<Location> locations = methods.allLineLocations();
         Location mainEntryLocation = locations.get(0);
+
+//        addToLogofLines(mainEntryLocation.lineNumber());
+
         BreakpointRequest bpReq = vm.eventRequestManager().createBreakpointRequest(mainEntryLocation);
         bpReq.enable();
     }
@@ -203,7 +210,7 @@ public class DynamicExecuter {
             ReachableStmt.add(nl);
         }
     }*/
-    public Set<Integer> getLines(@NotNull GraphNode<?> GN) {
+    /*public Set<Integer> getLines(@NotNull GraphNode<?> GN) {
         Set<Integer> lns = new HashSet<>();
 
         if (GN.getAstNode() instanceof WhileStmt) {
@@ -270,7 +277,7 @@ public class DynamicExecuter {
 
             lns.add(GN.getAstNode().getBegin().get().line);
             lns.add(GN.getAstNode().getEnd().get().line);
-        /*} else if (GN.getAstNode() instanceof DoStmt) {
+        *//*} else if (GN.getAstNode() instanceof DoStmt) {
             Range bodyRange = ((DoStmt) GN.getAstNode()).getBody().getRange().get();
 
             lns.add(bodyRange.begin.line);
@@ -281,7 +288,7 @@ public class DynamicExecuter {
             for (int j = consitionRange.begin.line; j <= consitionRange.begin.line; j++) {
                 lns.add(j);
             }
-*/
+*//*
         } else if (GN.getAstNode() instanceof IfStmt) {
             Range consitionRange = ((IfStmt) GN.getAstNode()).getCondition().getRange().get();
             for (int j = consitionRange.begin.line; j <= consitionRange.begin.line; j++) {
@@ -291,6 +298,18 @@ public class DynamicExecuter {
             Range bodyRange = ((IfStmt) GN.getAstNode()).getThenStmt().getRange().get();
             lns.add(bodyRange.begin.line);
             lns.add(bodyRange.end.line);
+
+            if(((IfStmt) GN.getAstNode()).getElseStmt().isPresent()) {
+                Range elsebodyRange = ((IfStmt) GN.getAstNode()).getElseStmt().get().getRange().get();
+//                System.out.println(((IfStmt) GN.getAstNode()).getElseStmt().get().getParentNode());
+                lns.add(elsebodyRange.begin.line);
+                lns.add(elsebodyRange.end.line);
+            }
+
+
+        } else if (GN.getAstNode() instanceof MethodDeclaration) {
+            lns.add(GN.getAstNode().getBegin().get().line);
+            lns.add(GN.getAstNode().getEnd().get().line);
         } else {
             Range range = GN.getAstNode().getRange().get();
 
@@ -301,7 +320,7 @@ public class DynamicExecuter {
         }
 
         return lns;
-    }
+    }*/
 
     public void buildingDDG(CDG _cdg) throws NoSuchElementException {
 
@@ -316,129 +335,79 @@ public class DynamicExecuter {
             for(GraphNode<?> GN : graphNodes /* 行号i to 结点GN */){
                 Set<DynamicNode> Def = new HashSet<>();
                 Set<DynamicNode> Pred = new HashSet<>();
-                Set<Integer> lns = getLines(GN);
-//                Range range = GN.getAstNode().getRange().get();
-//                for (int j = range.begin.line; j <= range.begin.line; j++) {
-//                    lns.add(j);
-//                }
-                Set<Integer> Reach = new HashSet<>(lns);
 
                 Set<String> Use = GN.getUsedVariables();
                 for(String v : Use){
-//                    System.out.println("Used Variable: " + v);
+                    System.out.println(i + " Used Variable: " + v);
                     if (DefnNode.containsKey(v)) {
                         Def.add(DefnNode.get(v));
-//                    System.out.println("add reachable: " + DefnNode.get(v).getReachableStmt());
-                        if (DefnNode.containsKey(v))
-                            Reach.addAll(DefnNode.get(v).getReachableStmt());
+                        System.out.println(DefnNode.get(v).getGN().getAstNode().getBegin().get().line);
+//                        System.out.println("add reachable: " + DefnNode.get(v).getReachableStmt());
+//                        if (DefnNode.containsKey(v))
+//                            Reach.addAll(DefnNode.get(v).getReachableStmt());
                     }
                 }
 
                 for(Edge inEdge : _cdg.incomingEdgesOf(GN)){
                     GraphNode<?> p = _cdg.getEdgeSource(inEdge);
-                    Integer NodeId = p.getAstNode().getBegin().get().line;
-                    System.out.println( i + " Controled by: " + NodeId);
-                    if(PrednNode.containsKey(NodeId)){
-                        Pred.add(PrednNode.get(NodeId));
+                    System.out.println( i + " Controled by: " + p.getAstNode().getBegin().get().line + ",type: " + p.getAstNode().getClass());
+                    if(p.getAstNode() instanceof BreakStmt || p.getAstNode() instanceof ContinueStmt)
+                        continue;
+                    if(PrednNode.containsKey(p)){
+                        Pred.add(PrednNode.get(p));
 //                        System.out.println("add reachable: " + PrednNode.get(NodeId).getReachableStmt());
-                        if (PrednNode.containsKey(NodeId))
-                            Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
+//                        if (PrednNode.containsKey(NodeId))
+//                            Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
                     }
                 }
+
+                int version = 0;
+                if(GNToDN.containsKey(GN)) {
+                    version = GNToDN.get(GN).size();
+                }
+                DynamicNode newDn = new DynamicNode(Def, Pred, GN, version);
+
+                CurrentNode.putIfAbsent(i, new ArrayList<>());
+                CurrentNode.get(i).add(newDn);
+
+                GNToDN.putIfAbsent(GN, new ArrayList<>());
+                GNToDN.get(GN).add(newDn);
 
                 if(GN.getAstNode() instanceof BreakStmt || GN.getAstNode() instanceof ContinueStmt){
                     for(Edge outEdge : _cdg.outgoingEdgesOf(GN)){
                         GraphNode<?> w = _cdg.getEdgeTarget(outEdge);
-                        Integer LoopId = w.getAstNode().getBegin().get().line;
-                        if(CurrentNode.containsKey(LoopId))
-                            CurrentNode.get(LoopId).get(CurrentNode.get(LoopId).size() - 1).getReachableStmt().add(i);
+                        if (GNToDN.containsKey(w)) {
+                            GNToDN.get(w).get(GNToDN.get(w).size()-1).getPred().add(newDn);
+                        }
+//                        Integer LoopId = w.getAstNode().getBegin().get().line;
+//                        if(CurrentNode.containsKey(LoopId))
+//                            CurrentNode.get(LoopId).get(CurrentNode.get(LoopId).size() - 1).getReachableStmt().add(i);
                     }
                 }
 
-                /*Set<Edge> edges = new HashSet<>(_cdg.incomingEdgesOf(GN));
-                Set<GraphNode<?>> visited = new HashSet<>();
-                visited.add(GN);
-
-                while(!edges.isEmpty()){
-                    Set<Edge> visitEdge = new HashSet<>(edges);
-                    edges.clear();
-                    for(Edge inEdge:visitEdge){
-                        GraphNode<?> p = _cdg.getEdgeSource(inEdge);
-                        Integer NodeId = p.getAstNode().getBegin().get().line;
-//                        System.out.println("Node ID: " + NodeId);
-
-                        if(PrednNode.containsKey(NodeId)){
-                            Pred.add(PrednNode.get(NodeId));
-                            Reach.addAll(PrednNode.get(NodeId).getReachableStmt());
-                        }
-
-                        for(Edge nextEdge: _cdg.incomingEdgesOf(p)){
-                            GraphNode<?> nextP = _cdg.getEdgeSource(nextEdge);
-                            if(!visited.contains(nextP)){
-                                edges.add(nextEdge);
-                                visited.add(nextP);
-                            }
-                        }
+                if( !GN.getDefinedVariables().isEmpty() ){
+//                    System.out.println(i + " Updating DefnNode: ");
+//                    update DefnNode
+                    Set<String> definedVar = GN.getDefinedVariables();
+                    for(String s : definedVar){
+                        DefnNode.put(s, GNToDN.get(GN).get(GNToDN.get(GN).size() - 1));
+//                            System.out.println(s + " Update DefnNode : " + DefnNode.get(s).getLineNumber());
                     }
-                }*/
-//                System.out.println("Line " + i + ":" + Reach);
-
-                if( CurrentNode.containsKey(i)/*S[i] was Executed*/ && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).sameDef(Def) && CurrentNode.get(i).get(CurrentNode.get(i).size() - 1).samePred(Pred) ){
-//                still Node n
                 }
-                else {
-//                new Node n'
-                    DynamicNode newDn = new DynamicNode(lns, Def, Pred, Reach);
-//                Dealing Loop Control
-                    List<DynamicNode> childNodes = new ArrayList<>();
-                    childNodes.addAll(Def);
-                    childNodes.addAll(Pred);
 
-                    boolean unite = false;
-                    for(DynamicNode DN : childNodes){
-                        if(DN.getReachableStmt().containsAll(Reach)){
-//                    Unite n' and v
-//                            System.out.println("unite " + i + " and " + DN.getLineNumber());
-                            CurrentNode.putIfAbsent(i, new ArrayList<>());
-                            CurrentNode.get(i).add(DN);
-                            unite = true;
-                            break;
-                        }
-                    }
-
-                    if(!unite){
-                        CurrentNode.putIfAbsent(i, new ArrayList<>());
-                        CurrentNode.get(i).add(newDn);
-                    }
-
-                    /*ddg.addVertex(GN);
-                    for(DynamicNode dynamicNode : Def){
-//                        ddg.addControlDependencyEdge(GN, dynamicNode);
-                    }*/
-
-                    if( !GN.getDefinedVariables().isEmpty() ){
-//                update DefnNode
-                        Set<String> definedVar = GN.getDefinedVariables();
-                        for(String s : definedVar){
-                            DefnNode.put(s, CurrentNode.get(i).get(CurrentNode.get(i).size() - 1));
-                        }
-                    }
-
-                    if( !_cdg.outgoingEdgesOf(GN).isEmpty() /* GN is control Node */) {
-//                update PrednNode
-                        PrednNode.put(i, CurrentNode.get(i).get(CurrentNode.get(i).size() - 1));
-                    }
-
-//                    System.out.println("PrednNode: " + PrednNode);
+                if( !_cdg.outgoingEdgesOf(GN).isEmpty() /* GN is control Node */) {
+//                    update PrednNode
+                    PrednNode.put(GN, GNToDN.get(GN).get(GNToDN.get(GN).size() - 1));
                 }
+
             }
 
         }
     }
 
-    public Set<Integer> dynamicSlice(int lineNumber){
+    public Set<Node> dynamicSlice(int lineNumber){
 
-        Set<Integer> ret = new HashSet<>();
+        Set<Node> ret = new HashSet<>();
 
         Set<DynamicNode> queue = new HashSet<>();
         if(CurrentNode.containsKey(lineNumber))
@@ -449,8 +418,8 @@ public class DynamicExecuter {
             visited.addAll(current);
             queue.clear();
             for(DynamicNode dn : current){
-                ret.addAll(dn.getReachableStmt());
-//                System.out.println("sentence " + dn.getLineNumber() + " add " + dn.getReachableStmt());
+                ret.add(dn.getGN().getAstNode());
+//                System.out.println("sentence " + dn.getGN().getAstNode().getBegin().get().line);
                 for(DynamicNode dnn : dn.getDef()){
                     if(!visited.contains(dnn)){
                         queue.add(dnn);

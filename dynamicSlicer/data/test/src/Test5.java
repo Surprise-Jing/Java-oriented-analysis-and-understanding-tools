@@ -4,7 +4,7 @@ public class Test5 {
         int sum = 0;
         int prod = 1;
 
-        for( ; ; prod++){
+        for( ; ; ){
             sum = sum;
 
             prod = prod;
