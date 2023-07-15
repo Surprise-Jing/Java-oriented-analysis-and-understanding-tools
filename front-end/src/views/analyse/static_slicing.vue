@@ -6,7 +6,7 @@
         <span style="position: fixed;left:55%;top:16%;font-size: large;color: gray;">切片结果:</span>
       <CodeEdit v-model="content1" class="show_code"/>
       <CodeEdit2 v-model="content2" class="show_slicecode"/>
-      <el-button @click="tipsbtn" style="position: fixed;left:1400px;">{{tip_text}}</el-button>
+      <el-button @click="tipsbtn" style="position: fixed;left:1300px;">{{tip_text}}</el-button>
       <div v-if="tip" class="tiparea">
         <div style="height: 15px;"></div>
         <h1>使用方法:</h1>
@@ -83,7 +83,7 @@ export default {
       if(this.getMethod.id == 1){
         DataFlowSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
           if(res.success){
-            this.content2 = res.data;
+            this.content2 = res.data.result;
             //console.log(this.code);
            // this.$forceUpdate()
           }

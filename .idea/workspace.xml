@@ -5,12 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/SaveController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_10_12_42__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_10_12_42__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_10_12_42__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_10_12_42__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_10_12_43__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_10_12_43__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_10_13_20__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_10_13_20__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_12_16_36__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_12_16_36__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_12_16_36__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_12_16_36__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_12_16_36__Changes_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_12_16_36__Changes_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_14_11_06__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_14_11_06__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_14_11_09__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_14_11_09__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_10_12_43__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_10_12_43__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_10_13_20__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_10_13_20__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_12_16_37__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_12_16_37__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023_7_10_13_19__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023_7_10_13_19__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/GraphController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/GraphController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/ast.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/ast.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/cfg.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/cfg.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/cg.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/cg.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/pdg.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/pdg.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/SlicerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/SlicerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/dynamic_slicing.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/dynamic_slicing.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/static_slicing.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/static_slicing.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/Graph.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +151,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="603b80da-ea32-4c66-8f51-0a1edb9e811b" name="Changes" comment="" />
+      <changelist id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="" />
       <created>1689347269081</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />

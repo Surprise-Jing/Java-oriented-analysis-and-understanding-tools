@@ -77,11 +77,17 @@ public abstract class Graph<RootN extends Node> extends DirectedPseudograph<Grap
         StringWriter stringWriter = new StringWriter();
         writeAsDot(stringWriter);
         String srcDot = stringWriter.toString();
-        Graphviz.fromString(srcDot).render(Format.PNG).toFile(outFile);
+        Graphviz.fromString(srcDot).render(Format.PNG).toOutputStream(new FileOutputStream(outFile));
     }
     public void save2FileAsPNG(String filePath) throws IOException {
         File file = new File(filePath);
         save2FileAsPNG(file);
+    }
+    public void save2FileAsPNG(OutputStream outputStream) throws IOException {
+        StringWriter stringWriter = new StringWriter();
+        writeAsDot(stringWriter);
+        String srcDot = stringWriter.toString();
+        Graphviz.fromString(srcDot).render(Format.PNG).toOutputStream(outputStream);
     }
 
 }

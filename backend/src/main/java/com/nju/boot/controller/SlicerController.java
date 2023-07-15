@@ -60,8 +60,7 @@ public class SlicerController {
     public Map<String, String> DynamicSlicing(String id, int lineNumber, String input) throws Exception{
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
-        String className = fileName.substring(0, fileName.indexOf("."));
-        DynamicSlicer dynamicSlicer = new DynamicSlicer(path, className);
+        DynamicSlicer dynamicSlicer = new DynamicSlicer(path);
         Map<String, String> res = new HashMap<>();
         res.put("result", dynamicSlicer.slice(input, lineNumber).getSlicedCode());
         return res;
