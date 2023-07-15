@@ -2,15 +2,11 @@ package com.nju.boot.controller;
 
 import com.nju.boot.entity.dto.LinesDto;
 import com.nju.boot.entity.dto.MethodDto;
-import com.nju.boot.graphs.Graphs;
 import com.nju.boot.mapper.FilesMapper;
 import com.nju.boot.metrics.CodeMetrics;
-import com.nju.boot.util.GraphsUtil;
 import com.nju.boot.utils.PathUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.checkerframework.checker.units.qual.C;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,7 +27,7 @@ public class MetricsController {
         String func = methodDto.getMethodName();
         //System.out.println(func);
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
         Map<String, Integer> map = new HashMap<>();
         map.put("cyclomatic", codeMetrics.getCyclomaticComplexity(func));
@@ -47,7 +43,7 @@ public class MetricsController {
     public int CyclomaticComplexity(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
         String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
         return codeMetrics.getCyclomaticComplexity(func);
     }
@@ -56,7 +52,7 @@ public class MetricsController {
     @ApiOperation(value = "计算所有类的最大继承深度")
     public int MaxDepthOfInheritance(String id){
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
         return codeMetrics.getMaxDepthOfInheritance();
     }
@@ -66,7 +62,7 @@ public class MetricsController {
     public int TimesCalling(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
         String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
         return codeMetrics.getTimesCalling(func);
     }
@@ -76,7 +72,7 @@ public class MetricsController {
     public int TimesCalled(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
         String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
         return codeMetrics.getTimesCalled(func);
     }
@@ -86,7 +82,7 @@ public class MetricsController {
     public int NumOfParameters(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
         String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
         return codeMetrics.getNumOfParameters(func);
     }
@@ -97,7 +93,7 @@ public class MetricsController {
         String func = methodDto.getMethodName();
         System.out.println(func);
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
         int linesOfCode = codeMetrics.getLinesCodeOfMethod(func);
         int linesOfComment = codeMetrics.getLinesCommentOfMethod(func);
@@ -110,7 +106,7 @@ public class MetricsController {
     @ApiOperation(value = "统计文件的行数信息")
     public LinesDto Lines(String id){
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
         int linesOfCode = codeMetrics.getLinesCode();
         int linesOfComment = codeMetrics.getLinesComment();

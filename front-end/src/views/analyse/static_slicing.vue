@@ -2,11 +2,14 @@
   <div class="slice_container">
     <div  class="file_selector">
         <!--只需要双向绑定代码块即可-->
-        <span style="position: fixed;left:15%;top:16%;font-size: large;color: gray;">源代码:</span> 
+          <span style="position: fixed;left:15%;top:16%;font-size: large;color: gray;">源代码:</span>
         <span style="position: fixed;left:55%;top:16%;font-size: large;color: gray;">切片结果:</span>
-      <CodeEdit v-model="content1" class="show_code"/>
-      <CodeEdit2 v-model="content2" class="show_slicecode"/>
-      <el-button @click="tipsbtn" style="position: fixed;left:1400px;">{{tip_text}}</el-button>
+      <div style="position: fixed;">
+        <CodeEdit v-model="content1" class="show_code"/>
+        <CodeEdit2 v-model="content2" class="show_slicecode"/>
+      </div>
+
+      <el-button @click="tipsbtn" style="position: fixed;left:1300px;">{{tip_text}}</el-button>
       <div v-if="tip" class="tiparea">
         <div style="height: 15px;"></div>
         <h1>使用方法:</h1>
@@ -26,7 +29,7 @@
         <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
           <el-option
           v-for="item in fileData"
-                    :key="item.id" 
+                    :key="item.id"
                     :label="item.fileName"
                     :value="item.id">
           </el-option>
@@ -36,14 +39,14 @@
         <el-select v-model="selectMethod.id" @change="getMethod(selectMethod.id)" placeholder="请选择">
           <el-option
           v-for="item in selectMethod"
-                    :key="item.id" 
+                    :key="item.id"
                     :label="item.methodName"
                     :value="item.id">
           </el-option>
         </el-select>
       </div>
-      
-      
+
+
     </div>
   </div>
 </template>
@@ -69,7 +72,7 @@ export default {
         id:''
       },
       selectMethod:[{
-        id:'1', methodName : "基于数据流方程的切片" 
+        id:'1', methodName : "基于数据流方程的切片"
       },
     {
       id:'2', methodName: '基于程序依赖图的切片'
@@ -79,11 +82,11 @@ export default {
   methods: {
     // 获取代码
     input_ok() {
-    
+
       if(this.getMethod.id == 1){
         DataFlowSlicer(this.selectFile.id, this.rowNumber, this.variable).then(res => {
           if(res.success){
-            this.content2 = res.data;
+            this.content2 = res.data.result;
             //console.log(this.code);
            // this.$forceUpdate()
           }
@@ -128,10 +131,10 @@ export default {
       if(this.tip)this.tip_text='打开tips'
       else this.tip_text='关闭tips'
       this.tip=!this.tip
-      
+
     }
   },
-    
+
   mounted() {
       getFile(localStorage.getItem("uid")).then(res => {
         if(res.success){
@@ -180,24 +183,6 @@ export default {
   width:150px;
 }
 
-.show_code{
-    left:55%;
-  top:20%;
-  font-size: 100%;
-  position:fixed;
-  background-color:rgb(40, 44, 52);
-  color:darkgray;
-
-  }
-
-  .show_slicecode{
-    left:55%;
-  top:20%;
-    font-size: 100%;
-  position:fixed;
-  background-color:rgb(40, 44, 52);
-  color:darkgray;
-  }
   .tiparea{
     position: fixed;
     width:600px;
@@ -210,6 +195,6 @@ export default {
     border-radius: 5%;
 
   }
- 
+
 </style>
 

@@ -1,21 +1,14 @@
 package com.nju.boot.controller;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.IdcardUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.kitfox.svg.Use;
 import com.nju.boot.entity.Files;
 import com.nju.boot.entity.Userfile;
 import com.nju.boot.entity.dto.FileDto;
-import com.nju.boot.graphs.cfg.CFG;
-import com.nju.boot.handler.DisableBaseResponse;
 import com.nju.boot.mapper.FilesMapper;
-import com.nju.boot.mapper.UserfileMapper;
-import com.nju.boot.metrics.CodeMetrics;
 import com.nju.boot.service.IFilesService;
 import com.nju.boot.service.IUserfileService;
-import com.nju.boot.service.impl.FilesServiceImpl;
 import com.nju.boot.utils.DateTimeUtils;
 import com.nju.boot.utils.PathUtils;
 import io.swagger.annotations.Api;
@@ -23,13 +16,10 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -68,11 +58,11 @@ public class FilesController {
         if(file.isEmpty()){
             throw new Exception("上传失败，请选择文件");
         }
-        File uploadParentFile = new File(PathUtils.FILEPATH);
+        File uploadParentFile = new File(PathUtils.FILE_SRC_PATH);
         if(!uploadParentFile.exists()){
             uploadParentFile.mkdirs();
         }
-        //System.out.println(PathUtils.FILEPATH);
+        //System.out.println(PathUtils.FILE_SRC_PATH);
 
         String md5 = SecureUtil.md5(file.getInputStream());
         System.out.println(md5);
@@ -91,7 +81,7 @@ public class FilesController {
             String originalFilename = file.getOriginalFilename();
             String type = FileUtil.extName(originalFilename);
             String fileUUID = uuId + StrUtil.DOT + type;
-            File uploadFile = new File(PathUtils.FILEPATH + "/" + originalFilename);
+            File uploadFile = new File(PathUtils.FILE_SRC_PATH + "/" + originalFilename);
             file.transferTo(uploadFile);
             url = "http://" + serverAddress + ":" + serverPort + "/file?id=" + fileUUID;
             files = new Files(uuId, originalFilename, type, md5, url, DateTimeUtils.getNowTimeString(), false, true);
@@ -115,7 +105,7 @@ public class FilesController {
             return map;
         }
         String fileName = filesMapper.selectById(id).getName();
-        String path = PathUtils.FILEPATH + "/" + fileName;
+        String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         File file = new File(path);
         Files files = iFilesService.getById(id);
         map.put("fileName", files.getName());

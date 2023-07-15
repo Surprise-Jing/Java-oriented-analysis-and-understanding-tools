@@ -19,7 +19,8 @@
         <!-- </a-button> -->
         <!--editor插件-->  
         <!--其中的@input中的方法就是子组件值改变时调用的方法，该方法会给父组件传入改变值-->
-        <editor class="show_code" 
+        
+          <editor class="show_code" 
             :value="content"
             @input="handleInput"
             @init="editorInit"
@@ -30,49 +31,7 @@
             width="35%"
             height="600px"
             />
-            <!-- <editor class="show_slicecode" 
-            :value="content"
-            @input="handleInput"
-            @init="editorInit"
-            :lang="aceConfig.selectLang"
-            :theme="aceConfig.selectTheme"
-            :options="aceConfig.options"
-          
-            width="35%"
-            height="600px"
-            /> -->
-      <!-- </a-card> -->
-      <!--编辑器设置模态窗口（未开发完成，可以自行拓展）-->
-      <!-- <a-modal v-model="visible" width="500px" title="编辑器设置(功能暂未开发)" @ok="handleOk">
-        <a-row type="flex">
-          <a-col flex="330px">
-          
-            <br/>
-          
-          </a-col>
-          <a-col flex="80px">
-            <a-select style="width: 120px;" :default-value="aceConfig.options.tabSize" @change="handleTabChange" disabled>
-              <a-select-option v-for="tab in aceConfig.tabs" :key="tab">
-                {{tab}}个空格
-              </a-select-option>
-            </a-select>
-          </a-col>
-        </a-row>
-        <a-row type="flex" style="margin-top: 50px">
-          <a-col flex="330px" >
-           
-            <br/>
-           
-          </a-col>
-          <a-col flex="80px">
-            <a-select style="width: 120px;" :default-value="aceConfig.options.fontSize" @change="handleFontChange" disabled>
-              <a-select-option v-for="font in aceConfig.fontSizes" :key="font">
-                {{font}}px
-              </a-select-option>
-            </a-select>
-          </a-col>
-        </a-row>
-      </a-modal> -->
+        
     </div>
   </template>
   

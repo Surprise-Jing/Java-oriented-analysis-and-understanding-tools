@@ -1,29 +1,29 @@
 <template>
   <div class="box">
-        <div class="choose_file" >
+      <div class="choose_file" >
           选择文件:
-            <el-select v-model="selectFile.id" @change="getmethod(selectFile.id)" placeholder="请选择">
-                <el-option
-                v-for="item in fileData"
-                        :key="item.id" 
-                        :label="item.fileName"
-                        :value="item.id">
-                </el-option>
-            </el-select>
-                <span > &nbsp; 选择函数:</span> 
-            <el-select v-model="selectFunc.name" placeholder="请选择">
-                <el-option
-                v-for="item in funcData"
-                        :key="item.id" 
-                        :label="item.methodName"
-                        :value="item.methodName">
-                </el-option>
-            </el-select>
-            <el-button @click="btn_ok" class="file_btn">确定</el-button>
+      <el-select v-model="selectFile.id" @change="getmethod(selectFile.id)" placeholder="请选择">
+        <el-option
+        v-for="item in fileData"
+                  :key="item.id" 
+                  :label="item.fileName"
+                  :value="item.id">
+        </el-option>
+      </el-select>
+    </div>
 
-        </div>
-
-
+    <div class="choose_func" >
+          选择函数:
+      <el-select v-model="selectFunc.name" placeholder="请选择">
+        <el-option
+        v-for="item in funcData"
+                  :key="item.id" 
+                  :label="item.methodName"
+                  :value="item.methodName">
+        </el-option>
+      </el-select>
+      <el-button @click="btn_ok" class="file_btn">确定</el-button>
+    </div>
   <div class="graph">
       <svg class="canvas">
           <g></g>
@@ -50,7 +50,8 @@ import * as d3 from "d3";
               selectFunc:{
                   name:''
               },
-              list: {}
+              list: {},
+              draw: false
           };
       },
       created(){
@@ -93,13 +94,14 @@ import * as d3 from "d3";
               // 添加节点
               let that = this;
               that.list.nodes.forEach(item => {
+                  
                   g.setNode(item.id, {
                   //节点标签
                   label: item.label,
                   //节点形状
                   shape: "ellipse",
                   //节点样式
-                  style: "fill:#fff;stroke:#000",
+                  style: "fill:#E1FFFF;stroke:#000",
 
                   labelStyle: "fill:#000;font-weight:bold"
                   })
@@ -109,12 +111,14 @@ import * as d3 from "d3";
                   //边标签
                   label: item.label,
                   //边样式
-                  style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                  style: "fill:	#483D8B;stroke:#333;stroke-width:1.5px"
                   })
               })
               //绘制图形
               var svg = d3.select(".box").select(".graph").select("svg");
               var inner = svg.select("g");
+              this.draw = true;
+
               //缩放
               var zoom = d3.zoom().on("zoom", function () {
                   inner.attr("transform", d3.zoomTransform(svg.node()));
@@ -138,10 +142,12 @@ import * as d3 from "d3";
                   message: res.msg
               });
           }})
-
-          this.initGraph()
+            setTimeout(() => {
+                this.initGraph()
+            }, 1000);
+          
       }
-  }
+    }
 }
 </script>
 
@@ -152,10 +158,11 @@ import * as d3 from "d3";
       font-size: 14px;
   }
 
-  .node rect {
+  .node ellipse {
       stroke: #606266;
       fill: #fff;
   }
+  
 
   .edgePath path {
       stroke: #606266;
@@ -163,19 +170,20 @@ import * as d3 from "d3";
       stroke-width: 1.5px;
   }
   .box {
-      position: fixed;
+      width:1350px;
+      height:800px;
+      position: relative;
 }
   .graph {
-      width: 1000px;
-      height: 600px;
+      width: 1250px;
+      height: 650px;
       border: solid;
-      border-color: gray;
-      background-color: rgb(255, 255, 255);
-      position: relative;
-      left:100px;
-      top: 20px;
+      position: absolute;
+      left:0px;
+      right: 0px;
+      top:0px;
+      bottom: 0px;
       margin: auto;
-      overflow: scroll;
   }
 
 </style>
