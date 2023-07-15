@@ -15,43 +15,131 @@
         data() {
             return {
                 list: {
-                    nodeInfos: [
-                        {
-                            id: "node1",
-                            label: "节点1",
-                        },
-                        {
-                            id: "node2",
-                            label: "节点2",
-                        },
-                        {
-                            id: "node3",
-                            label: "节点3",
-                        },
-                        {
-                            id: "node4",
-                            label: "节点4",
-                        },
-                    ],
-                    edges: [
-                        {
-                            source: "node1",
-                            target: "node2",
-                        },
-                        {
-                            source: "node2",
-                            target: "node3",
-                        },
-                        {
-                            source: "node4",
-                            target: "node2",
-                        },
-                        {
-                            source: "node3",
-                            target: "node4",
-                        }
-                    ]
-                }
+                    // nodeInfos: [
+                    //     {
+                    //         id: "node1",
+                    //         label: "节点1",
+                    //     },
+                    //     {
+                    //         id: "node2",
+                    //         label: "节点2",
+                    //     },
+                    //     {
+                    //         id: "node3",
+                    //         label: "节点3",
+                    //     },
+                    //     {
+                    //         id: "node4",
+                    //         label: "节点4",
+                    //     },
+                    // ],
+                    // edges: [
+                    //     {
+                    //         source: "node1",
+                    //         target: "node2",
+                    //     },
+                    //     {
+                    //         source: "node2",
+                    //         target: "node3",
+                    //     },
+                    //     {
+                    //         source: "node4",
+                    //         target: "node2",
+                    //     },
+                    //     {
+                    //         source: "node3",
+                    //         target: "node4",
+                    //     }
+                    // ]
+  "nodeInfos": [
+    {
+      "id": "0",
+      "label": "ENTER func01"
+    },
+    {
+      "id": "1",
+      "label": "EXIT func01"
+    },
+    {
+      "id": "2",
+      "label": "switch (a)"
+    },
+    {
+      "id": "3",
+      "label": "case 1"
+    },
+    {
+      "id": "4",
+      "label": "System.out.println(\"1\");"
+    },
+    {
+      "id": "5",
+      "label": "case 2"
+    },
+    {
+      "id": "6",
+      "label": "System.out.println(\"2\");"
+    },
+    {
+      "id": "7",
+      "label": "default"
+    },
+    {
+      "id": "8",
+      "label": "System.out.println(\"default\");"
+    },
+    {
+      "id": "9",
+      "label": "System.out.println(\"endSwitch\");"
+    }
+  ],
+  "edges": [
+    {
+      "source": "0",
+      "target": "2"
+    },
+    {
+      "source": "2",
+      "target": "3"
+    },
+    {
+      "source": "3",
+      "target": "4"
+    },
+    {
+      "source": "4",
+      "target": "5"
+    },
+    {
+      "source": "2",
+      "target": "5"
+    },
+    {
+      "source": "5",
+      "target": "6"
+    },
+    {
+      "source": "6",
+      "target": "7"
+    },
+    {
+      "source": "2",
+      "target": "7"
+    },
+    {
+      "source": "7",
+      "target": "8"
+    },
+    {
+      "source": "8",
+      "target": "9"
+    },
+    {
+      "source": "9",
+      "target": "1"
+    }
+  ]
+}
             };
         },
         mounted() {

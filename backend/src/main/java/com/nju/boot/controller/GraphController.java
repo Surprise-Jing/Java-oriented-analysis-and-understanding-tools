@@ -58,29 +58,31 @@ public class GraphController {
         return methodDtos;
     }
 
-    @GetMapping("/cfg")
+    @PostMapping("/cfg")
     @ApiOperation(value = "获得控制流程图CFG")
-    public String getCFG(String id, String method){
+    public String getCFG(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+        String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         Graphs graphs = new Graphs(path);
-        if(method == null){
+        if(func == null){
             Set<String> methods = graphs.getQualifiedSignatures();
-            method = methods.stream().toList().get(0);
+            func = methods.stream().toList().get(0);
         }
-        return graphs.getCFG(GraphsUtil.findMethodBySignature(graphs, method)).toString();
+        return graphs.getCFG(GraphsUtil.findMethodBySignature(graphs, func)).toString();
     }
 
-    @GetMapping("/pdg")
+    @PostMapping("/pdg")
     @ApiOperation(value = "获得程序依赖图PDG")
-    public String getPDG(String id, String method){
+    public String getPDG(@RequestParam("id") String id, @RequestBody MethodDto methodDto){
+        String func = methodDto.getMethodName();
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILEPATH + "/" + fileName;
         Graphs graphs = new Graphs(path);
-        if(method == null){
+        if(func == null){
             Set<String> methods = graphs.getQualifiedSignatures();
-            method = methods.stream().toList().get(0);
+            func = methods.stream().toList().get(0);
         }
-        return graphs.getPDG(GraphsUtil.findMethodBySignature(graphs, method)).toString();
+        return graphs.getPDG(GraphsUtil.findMethodBySignature(graphs, func)).toString();
     }
 }

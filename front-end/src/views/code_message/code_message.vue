@@ -42,7 +42,6 @@
 
 
 <script>
-import { methods } from 'vue2-ace-editor'
 import {getFile} from "@/api/file"
 import {getMethod} from "@/api/graph"
 import {getMetrics,getLinesMethod} from "@/api/metrics"
@@ -79,7 +78,7 @@ export default{
         getFile(localStorage.getItem("uid")).then(res => {
         if(res.success){
           this.fileData = res.data
-          console.log(this.fileData)
+          //console.log(this.fileData)
         }
         else{
           this.$message({

@@ -1,9 +1,22 @@
 <template>
-    <div class = "pdgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
+  <div class = "pdgGraph">
+    <div class="choose_file" >
+            选择文件:
+        <el-select v-model="selectFile.id" @change="getAst(selectFile.id)" placeholder="请选择">
+          <el-option
+          v-for="item in fileData"
+                    :key="item.id" 
+                    :label="item.fileName"
+                    :value="item.id">
+          </el-option>
+        </el-select>
+        </div>
+    <div class = "ast" style="border: none; padding: 20px; width: 600px; height: 600px">
       <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
       collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
       <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
         <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
+    </div>
 </div>
 </template>
 
@@ -11,6 +24,8 @@
 
 <script>
 import orgtree from "../../components/orgtree";
+import {getFile} from "@/api/file";
+import {getAST} from "@/api/graph";
 
   export default {
     components:{
@@ -18,35 +33,47 @@ import orgtree from "../../components/orgtree";
     },
     data () {
       return {
+        fileData:[],
+        selectFile:{
+            id:''
+        },
         BasicSwich:false,	
         BasicInfo:{id:null,label:null},
-        // testData: {
-        //   label: 'xxx科技有有限公司',
-        //   children: [{
-        //     label: '产品研发部',
-        //     children: [{
-        //       label: '研发-前端',
-        //     }, {
-        //       label: '研发-后端',
-        //     }, {
-        //       label: 'UI 设计',
-        //     }]
-        //   }, {
-        //     label: '销售部',
-        //     children: [{
-        //         label: '销售一部',
-        //       },{
-        //         label: '销售二部',
-        //       }
-        //     ]
-        //   },{
-        //     label: '财务部'
-        //   }]
-        // }
-      testData:{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"va"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"label":"VariableDeclarator"}],"label":"0"},{"children":[{"children":[{"children":[{"label":"PrimitiveType"}],"label":"0"},{"children":[{"label":"INT"}],"label":"1"}],"label":"type"}],"label":"1"}],"label":"type"},{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"0"}],"label":"value"}],"label":"initializer"}],"label":"variable"}],"label":"variables"},{"children":[{"label":"FieldDeclaration"}],"label":"type"},{"children":[{"children":[{"children":[{"label":"Modifier"}],"label":"type"},{"children":[{"label":"PUBLIC"}],"label":"keyword"}],"label":"modifier"}],"label":"modifiers"}],"label":"0"},{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"vb"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"label":"VariableDeclarator"}],"label":"0"},{"children":[{"children":[{"children":[{"label":"PrimitiveType"}],"label":"0"},{"children":[{"label":"INT"}],"label":"1"}],"label":"type"}],"label":"1"}],"label":"type"},{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"1"}],"label":"value"}],"label":"initializer"}],"label":"variable"}],"label":"variables"},{"children":[{"label":"FieldDeclaration"}],"label":"type"},{"children":[{"children":[{"children":[{"label":"Modifier"}],"label":"type"},{"children":[{"label":"PUBLIC"}],"label":"keyword"}],"label":"modifier"}],"label":"modifiers"}],"label":"1"},{"children":[{"children":[{"children":[{"label":"main"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"label":"MethodDeclaration"}],"label":"0"},{"children":[{"children":[{"label":"VoidType"}],"label":"type"}],"label":"1"}],"label":"type"},{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"sum"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"label":"VariableDeclarator"}],"label":"0"},{"children":[{"children":[{"children":[{"label":"PrimitiveType"}],"label":"0"},{"children":[{"label":"INT"}],"label":"1"}],"label":"type"}],"label":"1"}],"label":"type"},{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"0"}],"label":"value"}],"label":"initializer"}],"label":"variable"}],"label":"variables"},{"children":[{"label":"VariableDeclarationExpr"}],"label":"type"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"0"},{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"prod"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"label":"VariableDeclarator"}],"label":"0"},{"children":[{"children":[{"children":[{"label":"PrimitiveType"}],"label":"0"},{"children":[{"label":"INT"}],"label":"1"}],"label":"type"}],"label":"1"}],"label":"type"},{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"1"}],"label":"value"}],"label":"initializer"}],"label":"variable"}],"label":"variables"},{"children":[{"label":"VariableDeclarationExpr"}],"label":"type"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"1"},{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"label":"VariableDeclarator"}],"label":"0"},{"children":[{"children":[{"children":[{"label":"PrimitiveType"}],"label":"0"},{"children":[{"label":"INT"}],"label":"1"}],"label":"type"}],"label":"1"}],"label":"type"},{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"0"}],"label":"value"}],"label":"initializer"}],"label":"variable"}],"label":"variables"},{"children":[{"label":"VariableDeclarationExpr"}],"label":"type"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"2"},{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"left"},{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"10"}],"label":"value"}],"label":"right"},{"children":[{"label":"BinaryExpr"}],"label":"type"},{"children":[{"label":"LESS"}],"label":"operator"}],"label":"condition"},{"children":[{"label":"WhileStmt"}],"label":"type"},{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"AssignExpr"}],"label":"type"},{"children":[{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"left"},{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"1"}],"label":"value"}],"label":"right"},{"children":[{"label":"BinaryExpr"}],"label":"type"},{"children":[{"label":"PLUS"}],"label":"operator"}],"label":"value"},{"children":[{"label":"ASSIGN"}],"label":"operator"},{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"target"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"0"},{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"prod"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"left"},{"children":[{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"100"}],"label":"value"}],"label":"left"},{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"right"},{"children":[{"label":"BinaryExpr"}],"label":"type"},{"children":[{"label":"DIVIDE"}],"label":"operator"}],"label":"right"},{"children":[{"label":"BinaryExpr"}],"label":"type"},{"children":[{"label":"GREATER"}],"label":"operator"}],"label":"condition"},{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"AssignExpr"}],"label":"type"},{"children":[{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"left"},{"children":[{"children":[{"label":"IntegerLiteralExpr"}],"label":"type"},{"children":[{"label":"1"}],"label":"value"}],"label":"right"},{"children":[{"label":"BinaryExpr"}],"label":"type"},{"children":[{"label":"MINUS"}],"label":"operator"}],"label":"value"},{"children":[{"label":"ASSIGN"}],"label":"operator"},{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"target"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"0"},{"children":[{"children":[{"label":"BreakStmt"}],"label":"type"}],"label":"1"}],"label":"statement"}],"label":"statements"},{"children":[{"label":"BlockStmt"}],"label":"type"}],"label":"thenStmt"},{"children":[{"label":"IfStmt"}],"label":"type"}],"label":"1"},{"children":[{"children":[{"children":[{"label":"AssignExpr"}],"label":"type"},{"children":[{"children":[{"children":[{"children":[{"label":"sum"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"left"},{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"right"},{"children":[{"label":"BinaryExpr"}],"label":"type"},{"children":[{"label":"PLUS"}],"label":"operator"}],"label":"value"},{"children":[{"label":"ASSIGN"}],"label":"operator"},{"children":[{"children":[{"children":[{"label":"sum"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"target"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"2"},{"children":[{"children":[{"children":[{"label":"AssignExpr"}],"label":"type"},{"children":[{"children":[{"children":[{"label":"prod"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"value"},{"children":[{"label":"ASSIGN"}],"label":"operator"},{"children":[{"children":[{"children":[{"label":"sum"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"target"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"3"},{"children":[{"children":[{"children":[{"label":"AssignExpr"}],"label":"type"},{"children":[{"children":[{"children":[{"children":[{"label":"prod"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"left"},{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"right"},{"children":[{"label":"BinaryExpr"}],"label":"type"},{"children":[{"label":"MULTIPLY"}],"label":"operator"}],"label":"value"},{"children":[{"label":"ASSIGN"}],"label":"operator"},{"children":[{"children":[{"children":[{"label":"prod"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"target"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"4"}],"label":"statement"}],"label":"statements"},{"children":[{"label":"BlockStmt"}],"label":"type"}],"label":"body"}],"label":"3"},{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"System"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"scope"},{"children":[{"children":[{"label":"out"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"FieldAccessExpr"}],"label":"type"}],"label":"scope"},{"children":[{"children":[{"label":"println"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"children":[{"children":[{"label":"i"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"argument"}],"label":"arguments"},{"children":[{"label":"MethodCallExpr"}],"label":"type"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"4"},{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"System"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"scope"},{"children":[{"children":[{"label":"out"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"FieldAccessExpr"}],"label":"type"}],"label":"scope"},{"children":[{"children":[{"label":"println"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"children":[{"children":[{"label":"sum"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"argument"}],"label":"arguments"},{"children":[{"label":"MethodCallExpr"}],"label":"type"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"5"},{"children":[{"children":[{"children":[{"children":[{"children":[{"children":[{"label":"System"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"scope"},{"children":[{"children":[{"label":"out"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"FieldAccessExpr"}],"label":"type"}],"label":"scope"},{"children":[{"children":[{"label":"println"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"children":[{"children":[{"label":"prod"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"NameExpr"}],"label":"type"}],"label":"argument"}],"label":"arguments"},{"children":[{"label":"MethodCallExpr"}],"label":"type"}],"label":"expression"},{"children":[{"label":"ExpressionStmt"}],"label":"type"}],"label":"6"}],"label":"statement"}],"label":"statements"},{"children":[{"label":"BlockStmt"}],"label":"type"}],"label":"body"},{"children":[{"children":[{"children":[{"children":[{"label":"Modifier"}],"label":"type"},{"children":[{"label":"PUBLIC"}],"label":"keyword"}],"label":"0"},{"children":[{"children":[{"label":"Modifier"}],"label":"type"},{"children":[{"label":"STATIC"}],"label":"keyword"}],"label":"1"}],"label":"modifier"}],"label":"modifiers"},{"children":[{"children":[{"children":[{"label":"false"}],"label":"isVarArgs"},{"children":[{"children":[{"label":"args"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"children":[{"label":"Parameter"}],"label":"0"},{"children":[{"children":[{"children":[{"children":[{"label":"String"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"ClassOrInterfaceType"}],"label":"type"}],"label":"componentType"},{"children":[{"label":"TYPE"}],"label":"origin"},{"children":[{"label":"ArrayType"}],"label":"type"}],"label":"1"}],"label":"type"}],"label":"parameter"}],"label":"parameters"}],"label":"2"}],"label":"member"}],"label":"members"},{"children":[{"children":[{"label":"WhileIf"}],"label":"identifier"},{"children":[{"label":"SimpleName"}],"label":"type"}],"label":"name"},{"children":[{"label":"ClassOrInterfaceDeclaration"}],"label":"type"},{"children":[{"children":[{"children":[{"label":"Modifier"}],"label":"type"},{"children":[{"label":"PUBLIC"}],"label":"keyword"}],"label":"modifier"}],"label":"modifiers"},{"children":[{"label":"false"}],"label":"isInterface"}],"label":"type"}],"label":"types"},{"children":[{"label":"CompilationUnit"}],"label":"type"}],"label":"root"}
+        testData:{}
       }
     },
+    created(){
+        this.getFileMethod()
+    },
     methods: {
+      getFileMethod(){
+        getFile(localStorage.getItem("uid")).then(res => {
+        if(res.success){
+          this.fileData = res.data
+          //console.log(this.fileData)
+        }
+        else{
+          this.$message({
+            type:'warning',
+            message: res.msg
+          });
+        }}
+      )},
+      getAst(val){
+        getAST(val).then(res => {
+          if(res.success){
+            this.testData = res.data.result;
+            console.log(this.testData);
+           // this.$forceUpdate()
+          }
+          else{
+            this.$message({
+            type:'warning',
+            message: res.msg
+          })}
+        })
+      },
+
       collapse(list) {   
         var _this = this;    
         list.forEach(
