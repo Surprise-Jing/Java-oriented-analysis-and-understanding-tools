@@ -4,23 +4,21 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.LabeledStmt;
-import com.github.javaparser.ast.stmt.LocalClassDeclarationStmt;
 import com.github.javaparser.ast.stmt.SwitchEntry;
 import com.nju.boot.edges.Edge;
-import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.slicer.exceptions.FileUnparsableException;
 import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
 import com.nju.boot.util.GraphsUtil;
-import io.swagger.models.auth.In;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class DynamicSlicer {
     Set<Node> result;
@@ -66,7 +64,6 @@ public class DynamicSlicer {
         result = dynamicExecuter.dynamicSlice(line);
 
         return result;
-        //return dynamicExecuter.dynamicSlice(line);
     }
 
     public DynamicSlicer slice(String input, int line) throws Exception {

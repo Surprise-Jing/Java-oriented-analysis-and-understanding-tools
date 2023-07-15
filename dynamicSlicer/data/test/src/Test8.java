@@ -7,6 +7,7 @@ public class Test8 {
         int prod = 1;
 
         while (n < 10000){
+            prod = n + 1;
             prod = sum;
             sum += prod;
             n++;
