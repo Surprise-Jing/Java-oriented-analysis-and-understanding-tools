@@ -28,3 +28,10 @@ export function deleteFile(id, uid) {
         method: 'get',
     })
 }
+
+export function getFileInfo(id) {
+    return service({
+        url: '/file/info?id=' + id,
+        method: 'get',
+    })
+}

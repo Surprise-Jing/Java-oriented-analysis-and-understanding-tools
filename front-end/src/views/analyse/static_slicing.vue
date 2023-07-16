@@ -12,10 +12,10 @@
       <el-button @click="tipsbtn" style="position: fixed;left:1300px;">{{tip_text}}</el-button>
       <div v-if="tip" class="tiparea">
         <div style="height: 15px;"></div>
-        <h1>使用方法:</h1>
+        <h1>静态切片使用说明:</h1>
         <br>
-        第一：<br>
-        第二:<br>
+        1、该软件系统只能对没有错误的Java文件进行静态切片。<br>
+        2、切片时请输入正确的代码行数和变量，且变量只能有一个。<br>
 
       </div>
       <div class="input_x">
