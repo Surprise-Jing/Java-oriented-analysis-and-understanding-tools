@@ -55,6 +55,11 @@ public class GraphsUtil {
         astNodeToPNGOutput(compilationUnit,outFile);
     }
 
+    public static void astNodeToPNGOutput(CompilationUnit compilationUnit, OutputStream outputStream) throws IOException {
+        String srcDot = new DotPrinter(true).output(compilationUnit);
+        Graphviz.fromString(srcDot).render(Format.PNG).toOutputStream(outputStream);
+    }
+
     public static Set<Integer> getLinesCoveredByNode(Node node){
         int start = node.getRange().get().begin.line;
         int end = node.getRange().get().end.line;
