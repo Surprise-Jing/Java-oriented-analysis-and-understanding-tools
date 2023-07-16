@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_15__20_40__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_15__20_40__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_5__15_57__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_5__15_57__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_15__21_49__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_15__21_49__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/FilesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/FilesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/SaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/SaveController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/output/cfg/Test4.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/output/cg/Test4.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/output/pdg/Test4.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/util/GraphsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/util/GraphsUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +25,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="dynamic" />
+        <entry key="$PROJECT_DIR$" value="newdev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -124,9 +121,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MainApplication" />
         <item itemvalue="JUnit.DynamicSlicerTest.programExecute" />
         <item itemvalue="JUnit.DynamicSlicerTest" />
+        <item itemvalue="Application.MainApplication" />
         <item itemvalue="Application.MainApplication" />
         <item itemvalue="JUnit.DynamicSlicerTest.programExecute" />
       </list>
@@ -154,7 +151,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/data-flow-pdg" />
+                        <option value="dev" />
                       </list>
                     </value>
                   </entry>
@@ -175,5 +172,8 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$SymbolSolverTest_Test.ic" NAME="SymbolSolverTest.Test Coverage Results" MODIFIED="1688725093030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
