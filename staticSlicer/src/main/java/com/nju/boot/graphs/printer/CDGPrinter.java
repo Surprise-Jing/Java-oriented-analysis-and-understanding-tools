@@ -4,33 +4,30 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.nodes.GraphNode;
 import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.BaseExporter;
 import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.dot.DOTExporter;
 
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CDGPrinter extends GraphPrinter{
-    CDG cdg;
-    DOTExporter<GraphNode<?>, Edge> dotExporter = new DOTExporter<>(v->String.valueOf(v.getId()));
 
     public CDGPrinter(CDG cdg, Writer writer) {
-        this.cdg = cdg;
-        this.writer = writer;
-        setUpDotExporter();
+        super(cdg,writer);
     }
-    public void setUpDotExporter(){
-        dotExporter.setVertexAttributeProvider(v->{
+    public CDGPrinter(CDG cdg, Writer writer,Format format) {
+        super(cdg,writer,format);
+    }
+
+
+    @Override
+    protected void setUpExporter(BaseExporter<GraphNode<?>, Edge> exporter) {
+        exporter.setVertexAttributeProvider(v->{
             Map<String, Attribute> map = new HashMap<>();
             map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
             return map;
         });
-
     }
 
-    @Override
-    public void print() {
-        dotExporter.exportGraph(cdg,writer);
-    }
 }

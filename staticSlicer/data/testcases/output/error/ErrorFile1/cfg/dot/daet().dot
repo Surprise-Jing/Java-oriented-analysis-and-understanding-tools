@@ -1,0 +1,9 @@
+digraph G {
+  0 [ label="ENTER daet" ];
+  1 [ label="EXIT daet" ];
+  2 [ label="c = 2;" ];
+  3 [ label="int a = c;" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 1;
+}

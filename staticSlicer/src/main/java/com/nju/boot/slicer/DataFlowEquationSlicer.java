@@ -6,6 +6,7 @@ import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.exceptions.MethodNotFoundException;
 import com.nju.boot.slicer.printer.SelectivePrettyPrinter;
 import com.nju.boot.util.GraphsUtil;
 
@@ -106,7 +107,9 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
             }
         }
     }
-    public AbstractSlicer slice(int lineNumber,String variableName){
+    public AbstractSlicer slice(int lineNumber,String variableName) {
+        if(!isSlicable(lineNumber,variableName))
+        throw new MethodNotFoundException();
         CallableDeclaration<?> tarMethod = GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
         this.cfg = graphs.getCFG(tarMethod);
         this.cdg = graphs.getCDG(tarMethod);
@@ -121,11 +124,17 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
     }
 
     @Override
+    public boolean isSlicable(int lineNumber, String variable)  {
+        return GraphsUtil.getNodeBy(graphs,lineNumber,variable)!=null;
+
+    }
+
+    @Override
     public String getResultCode() {
         return new SelectivePrettyPrinter(getSlicedAstNode()).print(graphs.getCu());
     }
 
-    public AbstractSlicer slice(SlicerCriterion slicerCriterion){
+    private AbstractSlicer slice(SlicerCriterion slicerCriterion){
         InitializeRC0(slicerCriterion);
         InitializeSC0(slicerCriterion);
         System.out.println(relevantVariables);

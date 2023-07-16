@@ -20,24 +20,9 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-// import 'highlight.js/styles/atom-one-dark.css'
-// import 'highlight.js/lib/common'
-// import hljsVuePlugin from '@highlightjs/vue-plugin'
-// const app = createApp(App)
 
-//  //引入代码高亮，并进行全局注册
-// app.use(hljsVuePlugin)
-// app.mount('#app')
-import VueHighlightJS from 'vue-highlightjs'
-import 'highlight.js/styles/atom-one-dark.css'
-Vue.use(VueHighlightJS)
-
-
-
-
-
-
-
+import * as echarts from 'echarts'
+Vue.prototype.$echarts=echarts
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

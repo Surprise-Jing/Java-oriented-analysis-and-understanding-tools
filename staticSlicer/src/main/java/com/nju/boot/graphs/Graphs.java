@@ -2,6 +2,7 @@ package com.nju.boot.graphs;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -15,6 +16,8 @@ import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.dependencegraph.CDG;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
+import com.nju.boot.slicer.exceptions.FilePathErrorException;
+import com.nju.boot.slicer.exceptions.FileUnparsableException;
 import com.nju.boot.util.GraphsUtil;
 
 import java.io.File;
@@ -32,7 +35,7 @@ public class Graphs {
     CallGraph callGraph;
     Map<CallableDeclaration<?>, PDG> pdgMap = new HashMap<>();
     Map<CallableDeclaration<?>, CDG> cdgMap = new HashMap<>();
-
+    boolean parsed = true;
 
     public Graphs(String filePath) {
         this(new File(filePath));
@@ -44,9 +47,18 @@ public class Graphs {
 
     }
     public void generateGraphsFromFile(){
-        getCompilationUnit();
-        generateCFGandPDG();
-        generateCG();
+        try{
+            getCompilationUnit();
+            if (parsed ){
+                generateCFGandPDG();
+                generateCG();
+            }
+        }
+        catch (RuntimeException e){
+            throw new FileUnparsableException();
+        }
+
+
 
     }
     public String getFirstClassName(){
@@ -73,11 +85,15 @@ public class Graphs {
 
         try {
             Optional<CompilationUnit> _cu =  javaParser.parse(file).getResult();
-
             cu = _cu.orElse(null);
-            if (cu==null) throw new RuntimeException("ast树生成时发生错误");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("找不到要切片的文件",e);
+
+            if (cu==null||cu.getParsed()== Node.Parsedness.UNPARSABLE) {
+                cu = null;
+                parsed = false;
+                throw new FileUnparsableException();
+            }
+        }catch (FileNotFoundException e){
+            throw new FilePathErrorException();
         }
     }
     private void generateCFGandPDG(){

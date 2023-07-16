@@ -114,6 +114,12 @@ public class VariableVisitor<N extends Node> extends VoidVisitorAdapter<Var> {
     @Override
     public void visit(UnaryExpr unaryExpr, Var var){
         unaryExpr.getExpression().accept(this, var.type(Var.USED));
+        //只有自增自减重新对变量赋值
+        if(unaryExpr.getOperator() == UnaryExpr.Operator.PREFIX_DECREMENT||
+                unaryExpr.getOperator() == UnaryExpr.Operator.PREFIX_INCREMENT||
+                unaryExpr.getOperator() == UnaryExpr.Operator.POSTFIX_INCREMENT||
+                unaryExpr.getOperator() == UnaryExpr.Operator.POSTFIX_DECREMENT
+        )
         unaryExpr.getExpression().accept(this, var.type(Var.DEFINED));
     }
 

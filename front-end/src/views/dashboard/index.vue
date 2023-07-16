@@ -1,24 +1,25 @@
 <template>
   <div class="dashboard_container">
-
+    
     <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"  class="data_table">
       <el-table-column prop="id" label="文件id" width="280" v-if="false">
     </el-table-column>
-    <el-table-column prop="fileName" label="文件名称" width="180">
+    <el-table-column prop="fileName" label="文件名称" width="280">
 
     </el-table-column>
     <el-table-column prop="uploadTime" label="上传时间" width="280">
     </el-table-column>
     <el-table-column prop="operation" label="操作">
       <template slot-scope="scope">
-        <el-button  type="info"  @click="download_file(scope.row.id)">下载</el-button>
+        <el-button  type="info"  @click="download_file(scope.row.id)" >下载</el-button>
+
         <el-button type="info" @click="delete_file(scope.row.id)">删除</el-button>
+        <el-button type="info" @click="see_file(scope.row.id)">预览</el-button>
         <!-- <el-button :type="scope.row.status?'danger':'primary'" @click="changeStatus(scope.$index)" </el-button> -->
 
       </template>
     </el-table-column>
   </el-table>
-
   <div class="block" >
             <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -32,12 +33,25 @@
   </div>
 
 
+
+  <el-dialog
+  title="代码:"
+  :visible.sync="codeVisible"
+  width="30%"
+  
+  append-to-body>
+  <span style="white-space: pre-wrap;"> {{code_msg}}</span>
+  <span slot="footer" class="dialog-footer">
+   
+  </span>
+</el-dialog>
+
+
+
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import store from "@/store/index"
 import {getFile, getFileContext, deleteFile} from "@/api/file"
 import FileSaver from "file-saver"
 
@@ -47,7 +61,9 @@ export default {
       tableData : [],
         currentPage: 1, // 当前页码
         total: 20, // 总条数
-        pageSize: 5 // 每页的数据条数
+        pageSize: 5 ,// 每页的数据条数
+        code_msg:'',
+        codeVisible:false
       }
   },
   methods: {
@@ -96,7 +112,32 @@ export default {
             });
           }
         })
-      }
+      },
+      see_file(val){
+        getFileContext(val).then(res => {
+          if(res.success){
+            this.code_msg=res.data.content
+           // this.code_msg=this.preText(this.code_msg)
+           
+            //FileSaver.saveAs(blob, res.data.fileName)
+          }
+          else{
+              this.$message({
+              type:'warning',
+              message: res.msg
+            });
+          }
+        })
+        this.codeVisible=true
+      },
+      close_code(){
+        this.able_see=false
+      },
+      preText (pretext) {
+        return pretext.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;')
+      },
+
+      
 
   },
   mounted() {
@@ -119,7 +160,7 @@ export default {
 .dashboard_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image2.png');
+  //background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
@@ -127,23 +168,34 @@ export default {
 .data_table{
 
   //height: 300px;
-  width: 700px;
-  border: dashed 1px gray;
+  width: 900px;
+  border: solid 1px gray;
   margin-bottom: 10px;
   color: #777;
   position: absolute;
-  left:40%;
-  top:30%;
+  left:45%;
+  top:40%;
   transform: translate(-50%,-50%);
   background-color:gray;
-
+  font-size: large;
 }
 .block{
   position: absolute;
-  left:40%;
+  left:45%;
   top:80%;
   transform: translate(-50%,-50%);
   //background-color:gray;
 }
+.code_area{
+  height: 500px;
+  width:500px;
+  white-space: pre-wrap;
+  position: relative;
+  left: 30%;
+  background-color:darkgrey;
+  //border-radius: 5%;
+  font-size: large;
+  overflow:scroll;
 
+}
 </style>

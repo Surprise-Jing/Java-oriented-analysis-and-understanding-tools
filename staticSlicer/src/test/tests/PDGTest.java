@@ -62,12 +62,12 @@ public class PDGTest {
         CodeMetrics codeMetrics = new CodeMetrics(graphs);
         for(String method:methods){
            System.out.println("the 圈复杂度 of "+method+" is "+ String.valueOf(codeMetrics.getCyclomaticComplexity(method)));
-           System.out.println("the LOC of "+method+" is "+ String.valueOf(codeMetrics.getLineOfMethod(method)));
+           System.out.println("the LOC of "+method+" is "+ String.valueOf(codeMetrics.getLinesCodeOfMethod(method)));
            System.out.println("调用函数数量 "+method+" is "+ String.valueOf(codeMetrics.getTimesCalling(method)));
            System.out.println("被调用的次数 "+method+" is "+ String.valueOf(codeMetrics.getTimesCalled(method)));
            System.out.println("入参个数 "+method+" is "+ String.valueOf(codeMetrics.getNumOfParameters(method)));
            if(signature!=null&&signature.equals(method))
-        System.out.println("slice on 23:a is:\n"+new PDGSlicer(graphs).getSlicedCode(29,"a"));}
+        System.out.println("slice on 23:a is:\n"+new PDGSlicer(graphs).slice(29,"a").getResultCode());}
 }
 
 //            MethodDeclaration md = getFirstMethodDeclaration(c

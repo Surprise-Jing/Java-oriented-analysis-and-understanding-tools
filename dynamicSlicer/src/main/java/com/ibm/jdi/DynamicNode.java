@@ -1,26 +1,27 @@
 package com.ibm.jdi;
 
+import com.nju.boot.nodes.GraphNode;
 import lombok.Data;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
 public class DynamicNode {
+    private GraphNode<?> GN;
 
-    private int lineNumber;
+    private Integer version;
 
     private Set<DynamicNode> Def;
 
     private Set<DynamicNode> Pred;
 
-    private Set<Integer> ReachableStmt;
-
-    DynamicNode(int ln, Set<DynamicNode> def, Set<DynamicNode> pred, Set<Integer> reachableStmt){
-        this.lineNumber = ln;
+    DynamicNode(Set<DynamicNode> def, Set<DynamicNode> pred, GraphNode<?> GN, int version){
         this.Def = new HashSet<>(def);
         this.Pred = new HashSet<>(pred);
-        this.ReachableStmt = new HashSet<>(reachableStmt);
+        this.GN = GN;
+        this.version = version;
     }
     public boolean sameDef(Set<DynamicNode> D){
         return Def.equals(D);
@@ -28,5 +29,10 @@ public class DynamicNode {
 
     public boolean samePred(Set<DynamicNode> C){
         return Pred.equals(C);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getGN(), getVersion());
     }
 }

@@ -7,10 +7,11 @@ export function getAST(id){
     })
 }
 
-export function getCFG(id, method){
+export function getCFG(id, data){
     return service({
-        url: '/graph/cfg?id=' + id + '&method=' + method,
-        method: 'get',
+        url: '/graph/cfg?id=' + id,
+        method: 'post',
+        data: data
     })
 }
 
@@ -28,9 +29,11 @@ export function getMethod(id){
     })
 }
 
-export function getPDG(id, method){
+export function getPDG(id, data){
     return service({
-        url: '/graph/pdg?id=' + id + '&method=' + method,
-        method: 'get',
+        url: '/graph/pdg?id=' + id,
+        method: 'post',
+        data: data
     })
 }
+

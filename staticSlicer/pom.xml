@@ -6,6 +6,7 @@
 
     <artifactId>staticSlicer</artifactId>
     <name>staticSlicer</name>
+    <version>0.0.1-SNAPSHOT</version>
     <description>静态程序切片模块</description>
 
     <parent>
@@ -77,6 +78,15 @@
             <groupId>guru.nidi</groupId>
             <artifactId>graphviz-java</artifactId>
             <version>0.18.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>org.json</artifactId>
+            <version>chargebee-1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
         </dependency>
 
     </dependencies>

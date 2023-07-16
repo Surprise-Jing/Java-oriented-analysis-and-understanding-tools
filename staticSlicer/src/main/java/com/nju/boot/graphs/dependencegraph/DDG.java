@@ -2,6 +2,9 @@ package com.nju.boot.graphs.dependencegraph;
 
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.nju.boot.graphs.augmented.ACFG;
+import com.nju.boot.graphs.printer.PDGPrinter;
+
+import java.io.Writer;
 
 public class DDG extends DependenceGraph{
     public void buildFromACFG(ACFG acfg){
@@ -18,4 +21,8 @@ public class DDG extends DependenceGraph{
         buildFromACFG(acfg);
     }
 
+    @Override
+    protected void writeAsDot(Writer writer) {
+        return;
+    }
 }

@@ -58,7 +58,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '主页', icon: 'dashboard' }
     }]
   },
 
@@ -87,7 +87,7 @@ export const constantRoutes = [
         path: 'Ast',
         name: 'Ast',
         component: () => import('@/views/analyse/ast'),
-        meta: { title: 'AST', icon: 'table' }
+        meta: { title: 'AST', icon: 'tree' }
       },
       {
         path: 'Cfg',
@@ -102,41 +102,69 @@ export const constantRoutes = [
         meta: { title: 'CG', icon: 'tree' }
       },
       {
-        path: 'Dfg',
-        name: 'Dfg',
-        component: () => import('@/views/analyse/dfg'),
-        meta: { title: 'DFG', icon: 'tree' }
-      },
-      {
         path: 'Pdg',
         name: 'Pdg',
         component: () => import('@/views/analyse/pdg'),
         meta: { title: 'PDG', icon: 'tree' }
       },
-      {
-        path: '/program_slice',
-        component: () => import('@/views/analyse/slice'),
-        name: 'program_slice',
-        meta: { title: '程序切片', icon: 'tree' },
-        children:[
-          {
-            path: 'static_slicing',
-            name: 'Static_slicing',
-            component: () => import('@/views/analyse/static_slicing'),
-            meta: { title: '静态切片', icon: 'table' }
-          },
-          {
-            path: 'dynamic_slicing',
-            name: 'Dynamic_slicing',
-            component: () => import('@/views/analyse/dynamic_slicing'),
-            meta: { title: '动态切片', icon: 'table' }
-          }
-        ]
+      // {
+      //   path: '/program_slice',
+      //   component: () => import('@/views/analyse/slice'),
+      //   name: 'program_slice',
+      //   meta: { title: '程序切片', icon: 'tree' },
+      //   children:[
+      //     {
+      //       path: 'static_slicing',
+      //       name: 'Static_slicing',
+      //       component: () => import('@/views/analyse/static_slicing'),
+      //       meta: { title: '静态切片', icon: 'table' }
+      //     },
+      //     {
+      //       path: 'dynamic_slicing',
+      //       name: 'Dynamic_slicing',
+      //       component: () => import('@/views/analyse/dynamic_slicing'),
+      //       meta: { title: '动态切片', icon: 'table' }
+      //     }
+      //   ]
 
+      // }
+    ]
+  },
+  //todo
+  {
+    path: '/program_slice',
+    component:Layout,
+    name: 'program_slice',
+    meta: { title: '程序切片', icon: 'tree' },
+    children:[
+      {
+        path: 'static_slicing',
+        name: 'Static_slicing',
+        component: () => import('@/views/analyse/static_slicing'),
+        meta: { title: '静态切片', icon: 'table' }
+      },
+      {
+        path: 'dynamic_slicing',
+        name: 'Dynamic_slicing',
+        component: () => import('@/views/analyse/dynamic_slicing'),
+        meta: { title: '动态切片', icon: 'table' }
+      }
+    ]
+
+  },
+  //endtodo
+  {
+    path: '/codemessage',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Code_message',
+        component: () => import('@/views/code_message/code_message'),
+        meta: { title: '代码度量', icon: 'nested' }
       }
     ]
   },
-
   {
     path: '/report',
     component: Layout,
@@ -145,10 +173,11 @@ export const constantRoutes = [
         path: 'index',
         name: 'Create_report',
         component: () => import('@/views/create_report/create_report'),
-        meta: { title: '报告生成', icon: 'form' }
+        meta: { title: '报告生成', icon: 'link' }
       }
     ]
   },
+  
  
 
   // 404 page must be placed at the end !!!

@@ -6,33 +6,32 @@ import com.nju.boot.edges.Edge;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
 import org.jgrapht.nio.Attribute;
+import org.jgrapht.nio.BaseExporter;
 import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.dot.DOTExporter;
 
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PDGPrinter extends GraphPrinter{
-    PDG pdg;
 
-    DOTExporter<GraphNode<?>, Edge> dotExporter = new DOTExporter<>(v->String.valueOf(v.getId()));
     public PDGPrinter(PDG pdg,Writer writer) {
-        this.pdg = pdg;
-        this.writer = writer;
-        setUpDotExporter();
+        super(pdg,writer);
     }
-    public void setUpDotExporter(){
-        dotExporter.setVertexAttributeProvider(
+    public PDGPrinter(PDG pdg,Writer writer,Format format) {
+        super(pdg,writer,format);
+    }
+
+    @Override
+    protected void setUpExporter(BaseExporter<GraphNode<?>, Edge> exporter) {
+        exporter.setVertexAttributeProvider(
                 v->{
                     Map<String, Attribute> map = new HashMap<>();
                     map.put("label", DefaultAttribute.createAttribute(v.getInstruction()));
-                    if(pdg.isMarked(v))
-                        map.put("color",DefaultAttribute.createAttribute("red"));
                     return map;
                 }
         );
-        dotExporter.setEdgeAttributeProvider(e->{
+        exporter.setEdgeAttributeProvider(e->{
             Map<String,Attribute> map = new HashMap<>();
             if(e instanceof ControlDependencyEdge);
             else if (e instanceof DataDependencyEdge){
@@ -46,10 +45,4 @@ public class PDGPrinter extends GraphPrinter{
     }
 
 
-
-    @Override
-    public void print() {
-
-        dotExporter.exportGraph(pdg,writer);
-    }
 }
