@@ -1,0 +1,54 @@
+Index: staticSlicer/data/testcases/output/specific/WhileIf/cg.dot
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>digraph G {\r\n  1 [ label=\"WhileIf.whileIfContinue2()\" ];\r\n  2 [ label=\"java.io.PrintStream.println(java.lang.String)\" ];\r\n  1 -> 2;\r\n}\r\n
+===================================================================
+diff --git a/staticSlicer/data/testcases/output/specific/WhileIf/cg.dot b/staticSlicer/data/testcases/output/specific/WhileIf/cg.dot
+--- a/staticSlicer/data/testcases/output/specific/WhileIf/cg.dot	
++++ b/staticSlicer/data/testcases/output/specific/WhileIf/cg.dot	
+@@ -1,5 +1,5 @@
+ digraph G {
+-  1 [ label="WhileIf.whileIfContinue2()" ];
+-  2 [ label="java.io.PrintStream.println(java.lang.String)" ];
++  1 [ label="WhileIf.main(java.lang.String[])" ];
++  2 [ label="java.io.PrintStream.println(int)" ];
+   1 -> 2;
+ }
+Index: staticSlicer/data/testcases/src/specific/WhileIf.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>public class WhileIf {\r\n\r\n    public void whileIfContinue2(){\r\n        boolean a = true;\r\n        int i = 0;\r\n        while(a){\r\n            i++;\r\n            if(i!=3){\r\n                continue;\r\n            }\r\n            else{\r\n                System.out.println(\"else\");\r\n            }\r\n            System.out.println(\"didn't continue\");\r\n        }\r\n\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/staticSlicer/data/testcases/src/specific/WhileIf.java b/staticSlicer/data/testcases/src/specific/WhileIf.java
+--- a/staticSlicer/data/testcases/src/specific/WhileIf.java	
++++ b/staticSlicer/data/testcases/src/specific/WhileIf.java	
+@@ -1,18 +1,16 @@
+ public class WhileIf {
+ 
+-    public void whileIfContinue2(){
+-        boolean a = true;
+-        int i = 0;
+-        while(a){
+-            i++;
+-            if(i!=3){
+-                continue;
+-            }
+-            else{
+-                System.out.println("else");
+-            }
+-            System.out.println("didn't continue");
++    public static void main(String[] args) {
++        int n = 0;
++        int i = 1;
++        int sum = 0;
++        int product = 1;
++        while (i < n){
++            sum = sum + i;
++            product = product * i;
++            i = i + 1;
+         }
+-
++        System.out.println(sum);
++        System.out.println(product);
+     }
+ }

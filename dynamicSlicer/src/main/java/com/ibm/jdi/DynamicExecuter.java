@@ -136,9 +136,6 @@ public class DynamicExecuter {
         catch (IndexOutOfBoundsException e) {
             throw new FileUnexecutableException();
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
         finally {
 //            InputStreamReader reader = null;
 //            if (vm != null) {
@@ -344,10 +341,10 @@ public class DynamicExecuter {
 
                 Set<String> Use = GN.getUsedVariables();
                 for(String v : Use){
-//                    System.out.println(i + " Used Variable: " + v);
+                    System.out.println(GN.getAstNode().getClass() + " at " + i + " Used Variable: " + v);
                     if (DefnNode.containsKey(v)) {
                         Def.add(DefnNode.get(v));
-//                        System.out.println(DefnNode.get(v).getGN().getAstNode().getBegin().get().line);
+                        System.out.println("Variable " + v + " refers to " + DefnNode.get(v).getGN().getAstNode().getBegin().get().line);
 //                        System.out.println("add reachable: " + DefnNode.get(v).getReachableStmt());
 
                     }
@@ -355,7 +352,7 @@ public class DynamicExecuter {
 
                 for(Edge inEdge : _cdg.incomingEdgesOf(GN)){
                     GraphNode<?> p = _cdg.getEdgeSource(inEdge);
-//                    System.out.println( i + " Controled by: " + p.getAstNode().getBegin().get().line + ",type: " + p.getAstNode().getClass());
+                    System.out.println( i + " Controled by: " + p.getAstNode().getBegin().get().line + ",type: " + p.getAstNode().getClass());
                     if(p.getAstNode() instanceof BreakStmt || p.getAstNode() instanceof ContinueStmt)
                         continue;
                     if(PrednNode.containsKey(p)){

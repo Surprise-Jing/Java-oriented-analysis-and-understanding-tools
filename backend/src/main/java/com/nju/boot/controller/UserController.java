@@ -48,11 +48,17 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    @ApiOperation(value = "获得用户信息")
+    @ApiOperation(value = "根据token获得用户信息")
     public User getInfo(String token){
         String username = JwtTokenUtils.getUsername(token);
         User user = iUserService.findByUsername(username);
         return user;
+    }
+
+    @GetMapping("")
+    @ApiOperation(value = "根据id获得用户信息")
+    public User getInfoId(String id){
+        return iUserService.getById(id);
     }
 
     @PostMapping("/logout")

@@ -47,4 +47,10 @@ export function logout() {
         method: 'post'
     })
 }
-  
+
+export function getInfoId(id) {
+    return service({
+      url: '/user?id=' + id,
+      method: 'get',
+    })
+}

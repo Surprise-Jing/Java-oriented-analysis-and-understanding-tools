@@ -22,7 +22,7 @@ import java.util.UUID;
  * </p>
  *
  * @author JingYa
- * @since 2023-07-06
+ * @since 2023-06-28
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
@@ -44,7 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if(!bCryptPasswordEncoder.matches(loginDto.getPassword(), user.getPassword())){
             throw new Exception("用户名或密码错误");
         }
-        return update(user);
+        user.setUpdateAt(DateTimeUtils.getNowTimeString());
+        userMapper.updateById(user);
+        return user;
     }
 
     @Override
@@ -61,8 +63,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User update(User user) {
+        User oldUser = userMapper.selectById(user.getId());
         user.setUpdateAt(DateTimeUtils.getNowTimeString());
         userMapper.updateById(user);
+        if(!oldUser.getPassword().equals(bCryptPasswordEncoder.encode(user.getPassword()))) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
         return user;
     }
 

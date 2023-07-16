@@ -59,7 +59,7 @@ const actions = {
         }
 
         const {name} = data;
-        const avatar = 'https://bpic.51yuansu.com/pic2/cover/00/37/77/58121dd048cdb_610.jpg'
+        const avatar = 'https://bpic.588ku.com/element_origin_min_pic/01/48/73/4357443aa53522b.jpg'
 
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)

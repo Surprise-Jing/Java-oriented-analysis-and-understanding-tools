@@ -6,8 +6,8 @@
       <div class="drag-area" @dragover="fileDragover" @drop="fileDrop">
         <div v-if="fileName" class="file-name">{{ fileName }}</div>
         <div v-else class="uploader-tips">
-          <span>将文件拖拽至此，或</span>
-          <label for="fileInput" style="color: #11A8FF; cursor: pointer">点此上传</label>
+          <span style="font-size: large;">将文件拖拽至此，或</span>
+          <label for="fileInput" style="color: #11A8FF; cursor: pointer;font-size: large;">点此上传</label>
         </div>
       </div>
     </div>
@@ -15,9 +15,8 @@
     <div class="footer">
       <input type="file" id="fileInput" @change="chooseUploadFile" style="display: none;">
      
-      <button class="uploadbtn" @click="uploadOk">提交</button>
-     
-     
+      <el-button class="uploadbtn" @click="uploadOk">提交</el-button>
+      <el-button class="cleanbtn" @click="cleanFile">清空</el-button>
     </div>
   </div>
   </div>
@@ -31,7 +30,7 @@ import { uploadFile } from '@/api/file'
 
 export default {
   data () {
-    return {
+    return {  
       fileName: '',
       batchFile: '',
       MAX_FILE_SIZE: 10 * 1000 * 1000
@@ -93,7 +92,12 @@ export default {
               });
             }
           })
+    },
+    cleanFile(){
+      this.fileName='';
+      this.batchFile='';
     }
+   
   }
 
 }
@@ -103,7 +107,7 @@ export default {
 .upload_container{
   min-height: 100%;
   width: 100%;
-  background-image:url('../../assets/bg-image.png');
+ // background-image:url('../../assets/bg-image.png');
   background-size:100%;
   position: fixed;
 }
@@ -114,23 +118,25 @@ export default {
     .drag-area {
       height: 300px;
       width: 700px;
-      border: dashed 1px darkslategrey;
+      border: solid 1px darkslategrey;
       margin-bottom: 10px;
       color: #777;
       position: absolute;
       left:45%;
       top:30%;
       transform: translate(-50%,-50%);
-      background-color:darkslategrey;
-      //border-radius: 5%;
+      //background-color:darkslategrey;
+     //background-color: darkgray;
+      opacity: 0.75;
+      border-radius: 5%;
     }
     .uploader-tips {
       text-align: center;
       height: 200px;
       line-height: 200px;
       //color:white;
-      color:darkgray;
-     
+     // color:darkgray;
+      color:black;
     }
     .file-name {
       text-align: center;
@@ -139,7 +145,7 @@ export default {
     }
     .uploadbtn{
       position: absolute;
-      left:45%;
+      left:40%;
       top:60%;
       height: 50px;
       width:70px;
@@ -147,7 +153,20 @@ export default {
       color:darkgray;
       background-color: darkslategray;
       border-color: black;
+      font-size: large;
     }
-    
+    .cleanbtn{
+      position: absolute;
+      left:50%;
+      top:60%;
+      height: 50px;
+      width:70px;
+      transform: translate(-50%,-50%);
+      color:darkgray;
+      background-color: darkslategray;
+
+      border-color: black;
+      font-size: large;
+    }
 
 </style>

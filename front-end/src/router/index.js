@@ -58,7 +58,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '主页', icon: 'dashboard' }
     }]
   },
 
@@ -87,7 +87,7 @@ export const constantRoutes = [
         path: 'Ast',
         name: 'Ast',
         component: () => import('@/views/analyse/ast'),
-        meta: { title: 'AST', icon: 'table' }
+        meta: { title: 'AST', icon: 'tree' }
       },
       {
         path: 'Cfg',
@@ -161,7 +161,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Code_message',
         component: () => import('@/views/code_message/code_message'),
-        meta: { title: '代码度量', icon: 'form' }
+        meta: { title: '代码度量', icon: 'nested' }
       }
     ]
   },
@@ -173,7 +173,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Create_report',
         component: () => import('@/views/create_report/create_report'),
-        meta: { title: '报告生成', icon: 'form' }
+        meta: { title: '报告生成', icon: 'link' }
       }
     ]
   },
