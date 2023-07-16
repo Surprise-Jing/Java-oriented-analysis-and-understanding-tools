@@ -10,10 +10,7 @@
                   :value="item.id">
         </el-option>
       </el-select>
-    </div>
-
-    <div class="choose_func" >
-          选择函数:
+      选择函数:
       <el-select v-model="selectFunc.name" placeholder="请选择">
         <el-option
         v-for="item in funcData"
@@ -24,6 +21,10 @@
       </el-select>
       <el-button @click="btn_ok" class="file_btn">确定</el-button>
     </div>
+
+    <!-- <div class="choose_func" >
+        
+    </div> -->
   <div class="graph">
       <svg class="canvas">
           <g></g>
@@ -101,7 +102,7 @@ import * as d3 from "d3";
                   //节点形状
                   shape: "ellipse",
                   //节点样式
-                  style: "fill:#E1FFFF;stroke:#000",
+                  style: "fill:#fff;stroke:#000",
 
                   labelStyle: "fill:#000;font-weight:bold"
                   })
@@ -111,7 +112,7 @@ import * as d3 from "d3";
                   //边标签
                   label: item.label,
                   //边样式
-                  style: "fill:	#483D8B;stroke:#333;stroke-width:1.5px"
+                  style: "fill:	#fff;stroke:#333;stroke-width:1.5px"
                   })
               })
               //绘制图形

@@ -20,11 +20,6 @@
       </template>
     </el-table-column>
   </el-table>
-        <div class="code_area" v-if="able_see">
-          <div style="height: 15px;"></div>
-          <el-button @click="close_code" style="float:right;">关闭</el-button>
-          {{code_msg}}
-        </div>
   <div class="block" >
             <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -36,6 +31,21 @@
             :total="tableData.length">
             </el-pagination>
   </div>
+
+
+
+  <el-dialog
+  title="代码:"
+  :visible.sync="codeVisible"
+  width="30%"
+  
+  append-to-body>
+  <span style="white-space: pre-wrap;"> {{code_msg}}</span>
+  <span slot="footer" class="dialog-footer">
+   
+  </span>
+</el-dialog>
+
 
 
   </div>
@@ -53,7 +63,7 @@ export default {
         total: 20, // 总条数
         pageSize: 5 ,// 每页的数据条数
         code_msg:'',
-        able_see:false
+        codeVisible:false
       }
   },
   methods: {
@@ -118,7 +128,7 @@ export default {
             });
           }
         })
-        this.able_see=true
+        this.codeVisible=true
       },
       close_code(){
         this.able_see=false

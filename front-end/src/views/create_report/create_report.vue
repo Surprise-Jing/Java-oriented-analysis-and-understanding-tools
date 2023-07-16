@@ -19,10 +19,6 @@
     <el-progress type="circle" :width="400" :percentage="percentage" :color="colors" :stroke-width="20"
      class="show_board"></el-progress>
       <div class="per_board">
-        <el-button-group>
-          <el-button  @click="decrease">减少</el-button>
-          <el-button  @click="increase">增加</el-button>
-        </el-button-group>
       </div>
 
 
@@ -188,6 +184,7 @@ export default {
         }})
     },
     getfilecontext(val){
+      this.percentage=0;
       getFileInfo(val).then(res =>{
         if(res.success){
           this.fileName = res.data.name;
@@ -244,15 +241,40 @@ export default {
     },
 
     getReport(){
+      setTimeout(() => {
+        this.increase();
+      }, 200);
+
       this.getData();
       this.refresh_table();
       this.getCurrentTime();
 
-
+      setTimeout(() => {
+        this.increase();
+      }, 400);
+      setTimeout(() => {
+        this.increase();
+      }, 600);
+      setTimeout(() => {
+        this.increase();
+      }, 800);
+      setTimeout(() => {
+        this.increase();
+      }, 1000);
+      setTimeout(() => {
+        this.increase();
+      }, 1200);
+      setTimeout(() => {
+        this.increase();
+      },1400);
       setTimeout(() => {
         let dom = document.getElementById('dom')  
        this.getPdfFromHtml(dom,'test')
-	    }, 2000);
+       this.increase();
+       this.increase();
+       this.increase();
+      }, 2000);
+       
 
 
       
