@@ -57,11 +57,12 @@ public class VariableVisitor<N extends Node> extends VoidVisitorAdapter<Var> {
         assignExpr.getTarget().accept(this, var.type(Var.DEFINED));
         assignExpr.getValue().accept(this, var.type(Var.USED));
     }
-
+    //todo：加入对+=等符号的处理
     @Override
     public void visit(BinaryExpr binaryExpr, Var var){
         binaryExpr.getLeft().accept(this, var.type(Var.USED));
         binaryExpr.getRight().accept(this, var.type(Var.USED));
+
     }
 
     @Override

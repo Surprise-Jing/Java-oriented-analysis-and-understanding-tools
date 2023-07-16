@@ -1,0 +1,5 @@
+digraph G {
+  0 [ label="ENTER A" ];
+  2 [ label="System.out.println(\"test1\");" ];
+  0 -> 2 [ ];
+}

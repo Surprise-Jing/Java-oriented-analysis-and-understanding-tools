@@ -1,0 +1,7 @@
+digraph G {
+  1 [ label="CallGraphTest02.g()" ];
+  2 [ label="A.f()" ];
+  3 [ label="B.f()" ];
+  1 -> 2;
+  1 -> 3;
+}

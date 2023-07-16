@@ -1,0 +1,23 @@
+digraph G {
+  0 [ label="ENTER fun03" ];
+  1 [ label="EXIT fun03" ];
+  2 [ label="a = 3;" ];
+  3 [ shape="diamond" label="switch (a)" ];
+  4 [ label="case 0" ];
+  5 [ label="break;" ];
+  6 [ label="case 1" ];
+  7 [ label="break;" ];
+  8 [ label="default" ];
+  9 [ label="break;" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 4;
+  4 -> 5;
+  3 -> 6;
+  6 -> 7;
+  3 -> 8;
+  8 -> 9;
+  5 -> 1;
+  7 -> 1;
+  9 -> 1;
+}

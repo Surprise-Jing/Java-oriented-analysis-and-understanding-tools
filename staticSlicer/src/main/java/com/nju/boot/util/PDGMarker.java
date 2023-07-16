@@ -21,9 +21,14 @@ public class PDGMarker {
         _variables.add(variable);
         SlicerCriterion criterion = new SlicerCriterion(_variables,lineNumber,pdg);
         Set<GraphNode<?>> nodes = criterion.getNodes();
-        Set<String> variables = new HashSet<>();
-        variables.add(variable);
-        nodes.stream().forEach(node->backTraverse(node,variables));
+
+        nodes.stream().forEach(node->{
+            Set<String> variables = new HashSet<>();
+            variables.add(variable);
+            if(node.getDefinedVariables().contains(variable))
+                variables.addAll(node.getUsedVariables());
+            backTraverse(node,variables);
+        });
         pdg.setMarkedNodes(markedVertices);
 
     }

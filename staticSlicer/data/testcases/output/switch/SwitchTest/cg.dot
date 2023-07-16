@@ -1,1 +1,14 @@
-{"creator":"JGraphT JSON Exporter","version":"1","nodes":[{"id":"1","label":"SwitchTest.func01(int)"},{"id":"2","label":"SwitchTest.func02(int)"},{"id":"3","label":"java.io.PrintStream.println(java.lang.String)"},{"id":"4","label":"java.io.PrintStream.println(int)"}],"edges":[{"source":"1","target":"3"},{"source":"2","target":"3"},{"source":"2","target":"4"}]}
+digraph G {
+  1 [ label="SwitchTest.fun01(int)" ];
+  2 [ label="SwitchTest.fun02(int)" ];
+  3 [ label="SwitchTest.fun03(int)" ];
+  4 [ label="SwitchTest.fun04(int)" ];
+  5 [ label="SwitchTest.func05(int)" ];
+  6 [ label="SwitchTest.func06(int)" ];
+  7 [ label="SwitchTest.func07(int)" ];
+  8 [ label="java.io.PrintStream.println(int)" ];
+  4 -> 8;
+  5 -> 8;
+  6 -> 8;
+  7 -> 8;
+}

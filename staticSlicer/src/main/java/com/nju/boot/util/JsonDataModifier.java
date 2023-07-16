@@ -29,7 +29,7 @@ public class JsonDataModifier {
         }
 
     }
-    public JSONObject reconstruct2JsonObject(String key,JSONObject object) throws JSONException {
+    private JSONObject reconstruct2JsonObject(String key,JSONObject object) throws JSONException {
         JSONObject result = new JSONObject();
         result.put("label",key);
         if(object == null) return result;
@@ -43,7 +43,7 @@ public class JsonDataModifier {
         result.put("children",new JSONArray(childrenObjects));
         return result;
     }
-    public JSONObject reconstruct2JsonObject(String key,JSONArray object) throws JSONException {
+    private JSONObject reconstruct2JsonObject(String key,JSONArray object) throws JSONException {
         JSONObject result = new JSONObject();
         result.put("label",key);
         List<JSONObject> childrenObjects = new ArrayList<>();
@@ -55,7 +55,7 @@ public class JsonDataModifier {
         result.put("children",new JSONArray(childrenObjects));
         return result;
     }
-    public JSONObject reconstruct2JsonObject(String key,Boolean object) throws JSONException {
+    private JSONObject reconstruct2JsonObject(String key,Boolean object) throws JSONException {
         JSONObject result = new JSONObject();
         result.put("label",key);
         List<JSONObject> childrenObjects = new ArrayList<>();
@@ -65,7 +65,7 @@ public class JsonDataModifier {
         result.put("children",new JSONArray(childrenObjects));
         return result;
     }
-    public JSONObject reconstruct2JsonObject(String key,Number object) throws JSONException {
+    private JSONObject reconstruct2JsonObject(String key,Number object) throws JSONException {
         JSONObject result = new JSONObject();
         result.put("label",key);
         List<JSONObject> childrenObjects = new ArrayList<>();
@@ -75,7 +75,7 @@ public class JsonDataModifier {
         result.put("children",new JSONArray(childrenObjects));
         return result;
     }
-    public JSONObject reconstruct2JsonObject(String key,String object) throws JSONException {
+    private JSONObject reconstruct2JsonObject(String key,String object) throws JSONException {
         JSONObject result = new JSONObject();
         result.put("label",key);
         List<JSONObject> childrenObjects = new ArrayList<>();
@@ -85,7 +85,7 @@ public class JsonDataModifier {
         result.put("children",new JSONArray(childrenObjects));
         return result;
     }
-    public JSONObject reconstruct2JsonObject(String key,Object object) throws JSONException {
+    private JSONObject reconstruct2JsonObject(String key,Object object) throws JSONException {
         if(object instanceof String){
             return  reconstruct2JsonObject(key,(String) object);
         }

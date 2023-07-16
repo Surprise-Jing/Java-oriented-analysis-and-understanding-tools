@@ -12,7 +12,7 @@ import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.graphs.dependencegraph.DominatorTree;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.nodes.GraphNode;
-import com.nju.boot.util.PathUtils;
+import com.nju.boot.PathUtils;
 import org.jgrapht.nio.Attribute;
 import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.dot.DOTExporter;

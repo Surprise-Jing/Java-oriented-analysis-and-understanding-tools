@@ -53,7 +53,7 @@ public class ACFGBuilder extends CFGBuilder {
             }
         }
         processingNodes.remove(condNode);
-
+        jumpVertexes.add(condNode);
         processingNodes.addAll(breakStack.pop());
     }
 

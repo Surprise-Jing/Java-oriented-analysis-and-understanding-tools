@@ -1,0 +1,14 @@
+public class Prog01 {
+
+    public void f() {
+
+        int sum_q = 0;
+
+        for (a = 0; a < N; a++) {
+            sum_q += a;
+
+        }
+        System.out.println(sum_q);
+
+    }
+}

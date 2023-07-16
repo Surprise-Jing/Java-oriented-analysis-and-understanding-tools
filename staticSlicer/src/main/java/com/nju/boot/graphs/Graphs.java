@@ -37,12 +37,14 @@ public class Graphs {
     Map<CallableDeclaration<?>, CDG> cdgMap = new HashMap<>();
     boolean parsed = true;
 
-    public Graphs(String filePath) {
+    public Graphs(String filePath)  {
         this(new File(filePath));
     }
     public CompilationUnit getCu(){return cu;}
-    public Graphs(File fileToSlice) {
+    public Graphs(File fileToSlice)  {
         this.file = fileToSlice;
+        if(!file.exists()||file.isDirectory())
+            throw new FilePathErrorException();
         generateGraphsFromFile();
 
     }

@@ -44,8 +44,7 @@ public class SlicerCriterion {
                 return false;
             int begin = astNode.getBegin().get().line;
             int end = astNode.getEnd().get().line;
-            return lineNumber>=begin&&lineNumber<=end;
-            //return lineNumber == begin || lineNumber == end;
+            return lineNumber==begin&&lineNumber==end;
         }).collect(Collectors.toSet());
     }
 

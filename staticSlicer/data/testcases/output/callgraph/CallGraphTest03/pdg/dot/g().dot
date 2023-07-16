@@ -1,0 +1,8 @@
+digraph G {
+  0 [ label="ENTER g" ];
+  2 [ label="A a = new A();" ];
+  3 [ label="a.f();" ];
+  2 -> 3 [ style="dashed" label="[a]" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+}

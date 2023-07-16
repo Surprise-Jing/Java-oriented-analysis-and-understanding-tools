@@ -8,6 +8,7 @@ import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.printer.DotPrinter;
 import com.github.javaparser.printer.XmlPrinter;
+import com.nju.boot.graphs.Graph;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.cfg.CFG;
 import com.nju.boot.nodes.GraphNode;
@@ -65,13 +66,9 @@ public class GraphsUtil {
         nodes.stream().map(GraphsUtil::getLinesCoveredByNode).forEach(result::addAll);
         return result;
     }
-    public static GraphNode<?> getNodeBy(Graphs graphs,int lineNumber,String variable){
-        CallableDeclaration<?>targetMethod = findMethodByLineNumber(graphs.getCu(),lineNumber);
-        if(targetMethod == null)
-            throw new MethodNotFoundException();
-        CFG cfg = graphs.getCFG(targetMethod);
+    public static GraphNode<?> getNodeBy(Graph<?> g,int lineNumber,String variable){
         GraphNode<?>result = null;
-        for(GraphNode<?>graphNode:cfg.vertexSet()){
+        for(GraphNode<?>graphNode:g.vertexSet()){
 
             int lineBegin = graphNode.getAstNode().getBegin().get().line,
                     lineEnd = graphNode.getAstNode().getEnd().get().line;
@@ -87,5 +84,13 @@ public class GraphsUtil {
             throw new VariableNotFoundException();
         }
         return result;
+    }
+    public static GraphNode<?> getNodeBy(Graphs graphs,int lineNumber,String variable){
+        CallableDeclaration<?>targetMethod = findMethodByLineNumber(graphs.getCu(),lineNumber);
+        if(targetMethod == null)
+            throw new MethodNotFoundException();
+        CFG cfg = graphs.getCFG(targetMethod);
+       return  getNodeBy(cfg,lineNumber,variable);
+
     }
 }

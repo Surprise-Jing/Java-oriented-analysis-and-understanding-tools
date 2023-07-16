@@ -3,6 +3,7 @@ package com.nju.boot.slicer;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.XmlPrinter;
 import com.github.javaparser.printer.YamlPrinter;
+import com.kitfox.svg.A;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.graphs.augmented.ACFG;
 import com.nju.boot.graphs.callgraph.CallGraph;
@@ -11,6 +12,7 @@ import com.nju.boot.graphs.dependencegraph.DominatorTree;
 import com.nju.boot.graphs.dependencegraph.PDG;
 import com.nju.boot.graphs.printer.*;
 import com.nju.boot.metrics.CodeMetrics;
+import com.nju.boot.slicer.exceptions.FilePathErrorException;
 import com.nju.boot.slicer.exceptions.FileUnparsableException;
 import com.nju.boot.util.JsonDataModifier;
 import guru.nidi.graphviz.engine.Format;
@@ -67,7 +69,7 @@ class GraphsTest {
             File dotFile = Paths.get(outputDirPath.toString(), "cg.dot").toFile();
             File pngFile = Paths.get(outputDirPath.toString(), "cg.png").toFile();
             new CallGraphPrinter(callGraph,
-                    new FileWriter(dotFile))
+                    new FileWriter(dotFile), GraphPrinter.Format.DOT)
                     .print();
             if(printPNG)Graphviz.fromFile(dotFile).render(Format.PNG).toFile(pngFile);
 
@@ -79,24 +81,7 @@ class GraphsTest {
                 PDG pdg = graphs.getPDG(mSig);
                 ACFG acfg = pdg.getAcfg();
                 CompilationUnit cu = graphs.getCu();
-                try {
-                    JSONObject jsonObject = XML.toJSONObject(new XmlPrinter(true).output(cu));
-                    JSONArray jsonArray = jsonObject.names();
-                    JsonDataModifier jsonDataModifier = new JsonDataModifier(new XmlPrinter(true).output(cu));
-                    jsonDataModifier.modify();
-                    String result = jsonDataModifier.getResult().toString();
-                    FileWriter jsonWriter = new FileWriter(Paths.get(outputDirPath.toString(),"tree.json").toString());
-                    jsonWriter.write(result.toString());
-                    jsonWriter.flush();
-                    System.out.println("a");
-                    JSONObject modifiedTree = new JSONObject();
-                    String root = jsonObject.names().get(0).toString();
-                    for( int i =0;i< jsonObject.getJSONArray(root).length();i++){
 
-                    }
-                } catch (JSONException e) {
-                    System.out.println("error");
-                }
 
 
 
@@ -112,9 +97,10 @@ class GraphsTest {
 
                 Path cfgPngPath = Paths.get(cfgPngDirPath.toString(), plainSig + ".png");
                 FileWriter cfgWriter = new FileWriter(cfgDotPath.toFile());
+
                 //导出cfg
 
-                new CFGPrinter(cfg, cfgWriter).print();
+                new CFGPrinter(cfg, cfgWriter, GraphPrinter.Format.DOT).print();
                 if(printPNG)Graphviz.fromFile(cfgDotPath.toFile()).render(Format.PNG).toFile(cfgPngPath.toFile());
 
 
@@ -131,7 +117,7 @@ class GraphsTest {
                 FileWriter pdgWriter = new FileWriter(pdgDotPath.toFile());
 
 
-                new PDGPrinter(pdg, pdgWriter).print();
+                new PDGPrinter(pdg, pdgWriter, GraphPrinter.Format.DOT).print();
                 if(printPNG)Graphviz.fromFile(pdgDotPath.toFile()).render(Format.PNG).toFile(pdgPngPath.toFile());
 
 
@@ -140,7 +126,7 @@ class GraphsTest {
    }
     }
 
-    Boolean printPNG =false;
+    Boolean printPNG =true;
     @Test
     public void ifTests() throws IOException {
         testFiles("if",printPNG);
@@ -162,8 +148,24 @@ class GraphsTest {
     public void testSpecific() throws IOException{
         testFiles("specific",printPNG);
     }
+
+    @Test
+    public void testSwitch() throws IOException {
+        testFiles("switch",printPNG);
+    }
+    //测试错误的（不可parse的文件）
     @Test
     public void testWrongFile(){
         Assertions.assertThrows(FileUnparsableException.class,()->testFiles("error",printPNG));
     }
+    @Test
+    public void testWrongFilePath(){
+        //传入错误路径
+        Assertions.assertThrows(FilePathErrorException.class,()->new Graphs("aehiahet"));
+    }
+    @Test
+    public void testCallGraph() throws IOException {
+        testFiles("callgraph",printPNG);
+    }
+
 }

@@ -1,5 +1,6 @@
 public class Seq {
     public void func01(){
+
         int i = 0;
     }
     public void func02(){

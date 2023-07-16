@@ -24,6 +24,11 @@ public class ACFGPrinter extends CFGPrinter{
 
     @Override
     protected void setUpExporter(BaseExporter<GraphNode<?>, Edge> exporter) {
+        exporter.setVertexAttributeProvider(v->{
+            Map<String, Attribute> map = new HashMap<>();
+                map.put("label",DefaultAttribute.createAttribute(v.getInstruction()));
+            return map;
+        });
         exporter.setEdgeAttributeProvider(e->{
             Map<String, Attribute> map = new HashMap<>();
             if(e instanceof DummyEdge)
