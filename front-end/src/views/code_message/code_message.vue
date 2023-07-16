@@ -244,7 +244,14 @@ export default{
             setTimeout(() => {
                 this.drawLine()
             }, 1000);
-            
+
+        //     PdgPNG(this.selectFile.id).then(res => {
+        //   let pdgbinaryData = [];
+        //     pdgbinaryData.push(res);
+        //     let url = window.URL.createObjectURL(new Blob(pdgbinaryData));		// 获取对象url
+        //     this.pdgurl = url	// 给变量赋值
+        // })
+
         }
     }}
 

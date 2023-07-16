@@ -6,15 +6,23 @@
         <span style="position: fixed;left:55%;top:16%;font-size: large;color: gray;">切片结果:</span>
       <CodeEdit v-model="content1" class="show_code"/>
       <CodeEdit2 v-model="content2" class="show_slicecode"/>
-      <el-button @click="tipsbtn" style="position: fixed;left:1300px;">{{tip_text}}</el-button>
-      <div v-if="tip" class="tiparea">
-        <div style="height: 15px;"></div>
-        <h1>动态切片使用说明:</h1>
-        <br>
+
+
+      <el-button type="text" @click="dialogVisible = true">点击打开使用说明</el-button>
+      <el-dialog
+        title="动态切片使用说明"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose"
+        append-to-body>
+
         1、该软件系统只能对没有错误且可运行（即必须包含main函数）的Java文件进行动态切片。<br>
         2、切片时请输入正确的代码行数和整个程序对应的所有输入内容，输入以空格隔开。若程序不需要输入，则无需填写输入变量内容。<br>
-
-      </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
       <div class="input_x">
         请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
         <br>
@@ -48,8 +56,6 @@ export default {
   components: {CodeEdit,CodeEdit2},
   data() {
     return {
-      tip_text:'打开tips',
-    tip:false,
      content1:'',
      content2:'',
       variable:'',
@@ -64,7 +70,8 @@ export default {
       },
     {
       id:'2', methodName: '基于程序依赖图的切片'
-    }]
+    }],
+    dialogVisible: false
     }
   },
   methods: {
@@ -98,12 +105,13 @@ export default {
     getMethod(val){
       //val=2;
     },
-    tipsbtn(){
-      if(this.tip)this.tip_text='打开tips'
-      else this.tip_text='关闭tips'
-      this.tip=!this.tip
-      
-    }
+    handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      }
   },
     
   mounted() {
@@ -171,18 +179,6 @@ export default {
   position:fixed;
   background-color:rgb(40, 44, 52);
   color:darkgray;
-  }
-  .tiparea{
-    position: fixed;
-    width:600px;
-    height:400px;
-    border-color: black;
-    border-width: 3px;
-    background-color: white;
-    left:500px;
-    top:200px;
-    border-radius: 5%;
-
   }
  
 </style>
