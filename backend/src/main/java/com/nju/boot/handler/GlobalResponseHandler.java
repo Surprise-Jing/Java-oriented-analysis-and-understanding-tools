@@ -21,6 +21,16 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
         return !methodParameter.hasMethodAnnotation(DisableBaseResponse.class);
     }
 
+    /**
+     * 全局代码返回值封装成ResponseDto格式，返回值不能直接为String类型，需要再进行封装
+     * @param o
+     * @param methodParameter
+     * @param mediaType
+     * @param aClass
+     * @param serverHttpRequest
+     * @param serverHttpResponse
+     * @return
+     */
     @Override
     public ResponseDto<Object> beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass,
                                                ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {

@@ -35,8 +35,6 @@ public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files> implements
     @Value("${server.port}")
     private String serverPort;
 
-    @Value("${server.address}")
-    private String serverAddress;
     @Resource
     private FilesMapper filesMapper;
 

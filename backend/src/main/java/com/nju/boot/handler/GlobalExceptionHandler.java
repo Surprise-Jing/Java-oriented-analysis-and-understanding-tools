@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @DisableBaseResponse
     public Object handleException(Exception e) {
+        // 处理全局抛出的Exception
         if (e.getClass().equals(AccessDeniedException.class)){
             return new ResponseDto<>(403, "你没有访问权限");
         }

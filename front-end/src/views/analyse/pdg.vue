@@ -23,11 +23,16 @@
       <el-button @click="btn_ok" class="file_btn">确定</el-button>
     </div>
 
-  <div class="graph">
-      <svg class="canvas">
+  
+      <!-- <svg class="canvas">
           <g></g>
-      </svg>
-  </div>
+      </svg> -->
+      <el-image 
+           class="graph"
+            :src="pdgurl" 
+            :preview-src-list="srcList">
+  </el-image>
+  
   </div>
 </template>
 
@@ -37,7 +42,7 @@ import {getMethod} from "@/api/graph"
 import {getPDG} from "@/api/graph";
 import dagreD3 from "dagre-d3";
 import * as d3 from "d3";
-
+import {PdgPNG} from '@/api/create_report'
   export default {
       data() {
           return {
@@ -49,7 +54,11 @@ import * as d3 from "d3";
               selectFunc:{
                   name:''
               },
-              list: {}
+              list: {},
+             pdgurl:require('../../assets/bg-image.png'),
+             srcList:[
+             require('../../assets/bg-image.png'),
+             ]
           };
       },
       created(){
@@ -136,10 +145,24 @@ import * as d3 from "d3";
                   type:'warning',
                   message: res.msg
               });
-          }})
+          }}),
+
+          PdgPNG(this.selectFile.id).then(res => {
+          let pdgbinaryData = [];
+            pdgbinaryData.push(res);
+            let url = window.URL.createObjectURL(new Blob(pdgbinaryData));		// 获取对象url
+            this.pdgurl = url	// 给变量赋值
+           this.vbs(url)
+        }),
+
           setTimeout(() => {
             this.initGraph()
           }, 1000);
+          
+        },
+        vbs(val){
+            this.srcList=[]
+            this.srcList.push(val)
         }
   }
 }
@@ -169,16 +192,14 @@ import * as d3 from "d3";
       position: relative;
 }
   .graph {
-    width: 1000px;
-      height: 600px;
-      border: solid;
-      border-color: gray;
+    
+    height: 600px;
       background-color: rgb(255, 255, 255);
       position: relative;
       left:100px;
       top: 20px;
       margin: auto;
-      overflow: scroll;
+      
   }
 
 </style>

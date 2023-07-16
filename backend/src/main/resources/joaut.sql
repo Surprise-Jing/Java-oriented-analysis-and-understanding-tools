@@ -24,7 +24,7 @@ CREATE TABLE `j_user` (
   `password` varchar(255) NOT NULL COMMENT '用户密码(密文存储)',
   `phone_number` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '用户电话号码',
   `email` varchar(255) DEFAULT NULL COMMENT '用户邮箱',
-  `update_at` varchar(25) NOT NULL COMMENT '最近登录日期',
+  `update_at` varchar(255) NOT NULL COMMENT '最近登录日期',
   `status` int NOT NULL DEFAULT '0' COMMENT '用户状态，0表示正常，1表示被禁',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -46,7 +46,7 @@ CREATE TABLE `j_files` (
   `type` varchar(255) DEFAULT NULL COMMENT '文件类型',
   `md5` varchar(255) DEFAULT NULL COMMENT 'MD5值',
   `url` varchar(255) NOT NULL COMMENT '下载链接',
-  `upload_time` varchar(25) NOT NULL COMMENT '上传时间',
+  `upload_time` varchar(255) NOT NULL COMMENT '上传时间',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '是否删除',
   `enable` tinyint(1) DEFAULT '1' COMMENT '是否禁用链接',
   PRIMARY KEY (`id`)

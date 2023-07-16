@@ -15,3 +15,17 @@ export function getLinesMethod(id, data) {
         data: data
     })
 }
+
+export function getLines(id) {
+    return service({
+        url: '/metrics/lines?id=' + id,
+        method: 'get'
+    })
+}
+
+export function getCodeMetrics(id) {
+    return service({
+        url: '/metrics?id=' + id,
+        method: 'get'
+    })
+}

@@ -38,8 +38,7 @@ public class FilesController {
     @Value("${server.port}")
     private String serverPort;
 
-    @Value("${server.address}")
-    private String serverAddress;
+    private final String serverAddress = "localhost";
 
     @Resource
     private IFilesService iFilesService;
@@ -99,7 +98,7 @@ public class FilesController {
 
     @GetMapping("")
     @ApiOperation(value = "获取文件内容")
-    public Map<String, String> getFileContent(@RequestParam("id") String id) throws Exception{ //流请求还是字符串请求？
+    public Map<String, String> getFileContent(@RequestParam("id") String id) throws Exception{
         Map<String, String> map = new HashMap<>();
         if("".equals(id)){
             return map;
@@ -111,6 +110,12 @@ public class FilesController {
         map.put("fileName", files.getName());
         map.put("content", FileUtils.readFileToString(file, "utf-8"));
         return map;
+    }
+
+    @GetMapping("/info")
+    @ApiOperation(value = "获取文件基本信息")
+    public Files getFileInfo(@RequestParam("id") String id) throws Exception{
+        return iFilesService.getById(id);
     }
 
     @GetMapping("/user")
