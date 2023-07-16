@@ -1,0 +1,38 @@
+digraph G {
+  0 [ label="ENTER func01" ];
+  2 [ label="a = 3;" ];
+  3 [ label="b < 10" ];
+  4 [ label="a++;" ];
+  5 [ label="a % 2 == 0" ];
+  6 [ label="continue;" ];
+  7 [ label="System.out.println(a);" ];
+  8 [ label="a % 4 == 0" ];
+  9 [ label="break;" ];
+  10 [ label="System.out.println(a);" ];
+  11 [ label="b++;" ];
+  11 -> 3 [ style="dashed" label="[b]" ];
+  2 -> 4 [ style="dashed" label="[a]" ];
+  4 -> 4 [ style="dashed" label="[a]" ];
+  4 -> 5 [ style="dashed" label="[a]" ];
+  4 -> 7 [ style="dashed" label="[a]" ];
+  4 -> 8 [ style="dashed" label="[a]" ];
+  4 -> 10 [ style="dashed" label="[a]" ];
+  11 -> 11 [ style="dashed" label="[b]" ];
+  0 -> 2 [ ];
+  0 -> 3 [ ];
+  3 -> 4 [ ];
+  3 -> 5 [ ];
+  5 -> 6 [ ];
+  6 -> 7 [ ];
+  6 -> 8 [ ];
+  5 -> 7 [ ];
+  5 -> 8 [ ];
+  8 -> 9 [ ];
+  9 -> 10 [ ];
+  9 -> 11 [ ];
+  9 -> 3 [ ];
+  8 -> 10 [ ];
+  8 -> 11 [ ];
+  8 -> 3 [ ];
+  6 -> 3 [ ];
+}

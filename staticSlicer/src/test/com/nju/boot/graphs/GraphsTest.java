@@ -1,4 +1,4 @@
-package com.nju.boot.slicer;
+package com.nju.boot.graphs;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.printer.XmlPrinter;
@@ -131,7 +131,10 @@ class GraphsTest {
     public void ifTests() throws IOException {
         testFiles("if",printPNG);
     }
-
+    @Test
+    public void performanceTest() throws IOException {
+        testFiles("performance",false);
+    }
     @Test
     public void sequenceTests() throws IOException {
         testFiles("sequence",printPNG);
@@ -139,6 +142,7 @@ class GraphsTest {
     @Test
     public void whileTests() throws IOException {
         testFiles("while",printPNG);
+
     }
     @Test
     public void switchTests()throws  IOException{

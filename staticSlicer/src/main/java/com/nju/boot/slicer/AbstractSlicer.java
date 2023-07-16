@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class AbstractSlicer {
+
     /**@return cfg图的被切结点*/
     public abstract AbstractSlicer slice(int lineNumber,String variable) ;
     /**@return ast树的被切结点*/

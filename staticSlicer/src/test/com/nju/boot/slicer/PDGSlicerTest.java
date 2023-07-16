@@ -111,6 +111,11 @@ public class PDGSlicerTest {
         testSlice("simpleprograms","Prog3.java",13,"a");
         testSlice("simpleprograms","Prog3.java",13,"a",false);
         testSlice("simpleprograms","Prog3.java",11,"a",false);
+        testSlice("simpleprograms","Prog3.java",11,"a");
+        testSlice("simpleprograms","Prog04.java",10,"a");
+        testSlice("simpleprograms","Prog04.java",10,"a",false);
+        testSlice("simpleprograms","Prog04.java",8,"a");
+        testSlice("simpleprograms","Prog04.java",8,"a",false);
 
 
     }

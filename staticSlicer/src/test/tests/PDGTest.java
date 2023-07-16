@@ -22,6 +22,7 @@ import java.util.Set;
 public class PDGTest {
     public CompilationUnit getCompilationUnit(String fileName) throws FileNotFoundException {
         JavaParser javaParser = new JavaParser();
+
         javaParser.getParserConfiguration().setSymbolResolver(new JavaSymbolSolver(new ReflectionTypeSolver()));
         File file = new File(fileName);
         CompilationUnit cu = javaParser.parse(file).getResult().orElse(null);

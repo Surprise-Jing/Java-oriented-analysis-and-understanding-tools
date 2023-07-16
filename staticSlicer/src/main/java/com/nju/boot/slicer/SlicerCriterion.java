@@ -1,18 +1,14 @@
 package com.nju.boot.slicer;
 
-import com.github.javaparser.Range;
-import com.github.javaparser.ast.CompilationUnit;
+
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.BodyDeclaration;
-import com.github.javaparser.ast.body.CallableDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
 import com.nju.boot.graphs.Graph;
 import com.nju.boot.nodes.GraphNode;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.*;
 public class SlicerCriterion {
 
     protected Set<String> variable;
@@ -44,7 +40,7 @@ public class SlicerCriterion {
                 return false;
             int begin = astNode.getBegin().get().line;
             int end = astNode.getEnd().get().line;
-            return lineNumber==begin&&lineNumber==end;
+            return lineNumber<=begin&&lineNumber>=end;
         }).collect(Collectors.toSet());
     }
 

@@ -1,0 +1,9 @@
+public class Prog04 {
+
+    public void func(int a) {
+        a = 3;
+
+
+
+    }
+}

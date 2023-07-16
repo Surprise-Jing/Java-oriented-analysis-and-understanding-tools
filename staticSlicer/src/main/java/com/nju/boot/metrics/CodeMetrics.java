@@ -18,6 +18,7 @@ import com.nju.boot.util.GraphsUtil;
 import java.util.List;
 
 public class CodeMetrics {
+    //todo : 修改行数统计 空白行
     Graphs graphs;
     public CodeMetrics(String fileName){
         this.graphs = new Graphs(fileName);
@@ -120,6 +121,7 @@ public class CodeMetrics {
             if(node == null)
                 return -1;
             else{
+                //callgraph的边有调用次数的信息
                 int result = 0;
                 for(Edge e: callGraph.outgoingEdgesOf(node)){
                     assert e instanceof CallEdge;

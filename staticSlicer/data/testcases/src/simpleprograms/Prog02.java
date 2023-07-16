@@ -4,9 +4,9 @@ public class Prog02 {
         while(b<10){
             a++;
             if(a%2 == 0)continue;
-            System.out.println(a);
+            System.out.println(a+1);
             if(a%4 == 0)break;
-            System.out.println(a);
+            System.out.println(a+2);
             b++;
         }
         System.out.println(b);

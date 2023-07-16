@@ -1,20 +1,23 @@
 package com.nju.boot.metrics;
 
 import com.nju.boot.graphs.Graphs;
+import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
+import java.sql.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 
 class CodeMetricsTest {
     static String absolutePath = new File("").getAbsolutePath();
+
     static String inheritedClassesPath = Paths.get(absolutePath,"data","testcases", "codeMetrics","InheritedClasses.java").toString();
     static String lineOfCodeTestPath = Paths.get(absolutePath,"data","testcases", "codeMetrics","LineOfCodeTest.java").toString();
+    static String cycCompTestPath = Paths.get(absolutePath,"data","testcases", "codeMetrics","CycCompTest.java").toString();
+
     @Test
     void getMaxDepthOfInheritance() {
         Graphs graphs = new Graphs(inheritedClassesPath);
@@ -25,12 +28,27 @@ class CodeMetricsTest {
     }
 
     @Test
-    void getLineOfMethod() {
+    void getLinesOfCode() {//todo：修正
         Graphs graphs = new Graphs(lineOfCodeTestPath);
         CodeMetrics codeMetrics = new CodeMetrics(graphs);
-        List<Integer>lOCs =  graphs.getQualifiedSignatures().stream()
-                .map(codeMetrics::getLinesCodeOfMethod).collect(Collectors.toList());
-        assert lOCs.equals(Arrays.asList(new Integer[]{10}));
+        String methodSig = graphs.getQualifiedSignatures().stream().collect(Collectors.toList()).get(0);
+        Assertions.assertEquals(10,codeMetrics.getLinesCodeOfMethod(methodSig));
+        Assertions.assertEquals(6,codeMetrics.getLinesCommentOfMethod(methodSig));
+        Assertions.assertEquals(0,codeMetrics.getLinesBlankOfMethod(methodSig));
+
+    }
+
+    @Test
+    void getCyclomaticComplexity() {
+        Graphs graphs = new Graphs(cycCompTestPath);
+        CodeMetrics codeMetrics = new CodeMetrics(graphs);
+        Set<Integer> results = new HashSet<>() ;
+        for(String methodSig : graphs.getQualifiedSignatures()){
+            results.add(codeMetrics.getCyclomaticComplexity(methodSig));
+        }
+        Set<Integer>expected = new HashSet<>();
+        expected.add(5);
+        Assertions.assertArrayEquals(expected.toArray(),results.toArray());
 
     }
 }
