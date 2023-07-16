@@ -33,7 +33,7 @@ public class UserfileServiceImpl extends ServiceImpl<UserfileMapper, Userfile> i
         for(Userfile userfile: userfileList){
             if(userfile.getUid().equals(uid)){
                 userfileMapper.deleteById(userfile);
-                //待处理，如果没有需求，file数据库里需要删除数据
+                //如果没有需求，file数据库里需要删除数据
                 return true;
             }
         }

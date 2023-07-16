@@ -125,7 +125,7 @@ public class DynamicExecuter {
                     if (event instanceof ExceptionEvent) {
 //                        System.out.println("Exception catched.");
                         vm.exit(0);
-                        throw new FileRunningException();
+                        throw new Exception("文件运行失败，请检查输入");
                     }
                     vm.resume();
                 }
@@ -135,9 +135,6 @@ public class DynamicExecuter {
         }
         catch (IndexOutOfBoundsException e) {
             throw new FileUnexecutableException();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
         }
         finally {
 //            InputStreamReader reader = null;

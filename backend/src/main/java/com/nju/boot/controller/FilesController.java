@@ -38,8 +38,7 @@ public class FilesController {
     @Value("${server.port}")
     private String serverPort;
 
-    @Value("${server.address}")
-    private String serverAddress;
+    private final String serverAddress = "localhost";
 
     @Resource
     private IFilesService iFilesService;
