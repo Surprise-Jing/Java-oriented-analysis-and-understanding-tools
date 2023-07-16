@@ -83,5 +83,11 @@ public abstract class Graph<RootN extends Node> extends DirectedPseudograph<Grap
         File file = new File(filePath);
         save2FileAsPNG(file);
     }
+    public void save2FileAsPNG(OutputStream outputStream) throws IOException {
+        StringWriter stringWriter = new StringWriter();
+        writeAsDot(stringWriter);
+        String srcDot = stringWriter.toString();
+        Graphviz.fromString(srcDot).render(Format.PNG).toOutputStream(outputStream);
+    }
 
 }

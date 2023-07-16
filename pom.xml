@@ -26,7 +26,7 @@
     <!--父工程管理依赖的版本号 -->
     <properties>
         <joaut-version>0.0.1-SNAPSHOT</joaut-version>
-        <java-version>17.0.7</java-version>
+        <java-version>17</java-version>
 
         <spring-boot-version>2.7.12</spring-boot-version>
         <freemarker-version>2.3.28</freemarker-version>

@@ -1,108 +1,169 @@
 <template>
-    <div class = "cgGraph" style="border: none; padding: 20px; width: 600px; height: 600px">
-    <svg class="graph" width="1200" height="1200">
-      <g class="container"></g>
-    </svg>
-
-      <div>
-              <select
-              v-model="selectFile.id"
-              @change="getfileid(selectFile.id)" style="width: 150px;">
-        <option
-          class="choose_file"
-              v-for="item in fileData"
-              :key="item.fileId"
-              :label="item.fileName"
-              :value="item.fileId"
-              >
-          </option>
-              </select>
-      </div>
+  <div class="box">
+      <div class="choose_file" >
+          选择文件:
+      <el-select v-model="selectFile.id" @change="getmethod(selectFile.id)" placeholder="请选择">
+        <el-option
+        v-for="item in fileData"
+                  :key="item.id" 
+                  :label="item.fileName"
+                  :value="item.id">
+        </el-option>
+      </el-select>
+      <el-button @click="btn_ok" class="file_btn">确定</el-button>
     </div>
-
+    
+  <div class="graph">
+      <svg class="canvas">
+          <g></g>
+      </svg>
+  </div>
+  </div>
 </template>
 
 <script>
-export default {
-  name: 'cfgGraph',
-  data() {
-    return {
-      fileData:[],//要选择的文件
+import {getFile} from "@/api/file"
+import {getCG} from "@/api/graph";
+import dagreD3 from "dagre-d3";
+import * as d3 from "d3";
+
+  export default {
+      data() {
+          return {
+              fileData:[],
               selectFile:{
                   id:''
               },
-      //nodes: [],
-      //edges: []
-      //测试用数据
-    nodes: [
-      { id: 0, label: "流动人员", shape: "rect" },
-      { id: 1, label: "安全筛查", shape: "rect" },
-      { id: 2, label: "热像仪人体测温筛查", shape: "diamond" },
-      { id: 3, label: "人工复测", shape: "diamond" },
-      { id: 4, label: "快速通过", shape: "rect" },
-      { id: 5, label: "紧急处理", shape: "rect" }
-    ],
-    edges: [
-      { source: 0, target: 1, label: "" },
-      { source: 1, target: 2, label: "" },
-      { source: 2, target: 4, label: "正常" },
-      { source: 2, target: 3, label: "不正常" },
-      { source: 3, target: 5, label: "不正常" },
-      { source: 3, target: 4, label: "正常" }
-    ]
-    };
-  },
-  mounted() {
-    var that = this;
-    that.draw();
-  },
-  methods: {
-    getfileid(val){
-      console.log(val)
-    },
+              list: {}
+          };
+      },
+      created(){
+          this.getFileMethod();
+      },
+      mounted() {
+          this.initGraph();
 
-  //绘图
-  draw() {
-    let g = new dagreD3.graphlib.Graph();
-  //设置图
-  g.setGraph({
-    rankdir: 'LR'
-  });
+      },
+      methods: {
+      getFileMethod(){
+          getFile(localStorage.getItem("uid")).then(res => {
+              if(res.success){
+                  this.fileData = res.data
+                  //console.log(this.fileData)
+              }
+              else{
+                  this.$message({
+                  type:'warning',
+                  message: res.msg
+                  });
+              }
+              })},
+          getmethod(val){
+              getMethod(val).then(res => {
+                  if(res.success){
+                      this.funcData = res.data
+                      this.selectFunc.name = ''
+                  }
+                  else{
+                      this.$message({
+                      type:'warning',
+                      message: res.msg
+                  });
+                  }
+              })
+          },
+          initGraph() {
+              var g = new dagreD3.graphlib.Graph().setGraph({rankdir: 'UD'});
+              // 添加节点
+              let that = this;
+              that.list.nodes.forEach(item => {
+                  g.setNode(item.id, {
+                  //节点标签
+                  label: item.label,
+                  //节点形状
+                  shape: "ellipse",
+                  //节点样式
+                  style: "fill:#fff;stroke:#000",
 
-  console.log(this.nodes);
-  console.log(this.edges);
+                  labelStyle: "fill:#000;font-weight:bold"
+                  })
+              });
+              this.list.edges.forEach(item => {
+                  g.setEdge(item.source, item.target, {
+                  //边标签
+                  label: item.label,
+                  //边样式
+                  style: "fill:#fff;stroke:#333;stroke-width:1.5px"
+                  })
+              })
+              //绘制图形
+              var svg = d3.select(".box").select(".graph").select("svg");
+              var inner = svg.select("g");
+              //缩放
+              var zoom = d3.zoom().on("zoom", function () {
+                  inner.attr("transform", d3.zoomTransform(svg.node()));
+              });
+              svg.call(zoom);
 
-  this.nodes.forEach(item => {
-    g.setNode(item.id, {
-      //节点标签
-      label: item.label,
-      //节点形状
-      shape: item.shape,
-      //节点样式
-      style: "fill:#F0F8FF;stroke:#000"
-    })
-  })
-  this.edges.forEach(item => {
-    g.setEdge(item.source, item.target, {
-      //边标签
-      label: item.label,
-      //边样式
-      style: "fill:#4682B4;stroke:#000;stroke-width:2px"
-    })
-  })
-  // 创建渲染器
-  let render = new dagreD3.render();
-  // 选择 svg 并添加一个g元素作为绘图容器.
-  let svgGroup = d3.select('svg').append('g');
-  // 在绘图容器上运行渲染器生成流程图.
-  render(svgGroup, g);
+              var render = new dagreD3.render();
+              render(inner, g);      
+          },
 
-  },
-
-},
+      btn_ok(){
+          getCG(this.selectFile.id).then(res =>{
+              if(res.success){
+                  this.list = JSON.parse(res.data.result);
+                  console.log(this.list)
+              }
+              else{
+              this.$message({
+                  type:'warning',
+                  message: res.msg
+              });
+          }})
+          setTimeout(() => {
+            this.initGraph()
+          }, 1000);
+          
+      }
+  }
 }
 </script>
 
-<style>
+<style lang="less">
+  svg {
+      width: 1250px;
+      height: 650px;
+      font-size: 14px;
+  }
+
+  .node rect {
+      stroke: #606266;
+      fill: #fff;
+  }
+
+  .edgePath path {
+      stroke: #606266;
+      fill: #333;
+      stroke-width: 1.5px;
+  }
+  .box {
+      width:1350px;
+      height:800px;
+      background-color:rgb(255, 255, 255);
+      position: relative;
+}
+  .graph {
+    width: 1000px;
+      height: 600px;
+      border: solid;
+      border-color: gray;
+      background-color: rgb(255, 255, 255);
+      position: relative;
+      left:100px;
+      top: 20px;
+      margin: auto;
+      overflow: scroll;
+  }
 
 </style>

@@ -66,7 +66,7 @@ public class PDGSlicerTest {
     }
     @Test
     void testWrongVariable(){
-        Assertions.assertThrows(VariableNotFoundException.class,()->testSlice("specific","Specific.java",5,"prod"));
+        Assertions.assertThrows(VariableNotFoundException.class,()->testSlice("specific","Specific.java",19,"sum"));
     }
     @Test
     void testWrongFilePath(){

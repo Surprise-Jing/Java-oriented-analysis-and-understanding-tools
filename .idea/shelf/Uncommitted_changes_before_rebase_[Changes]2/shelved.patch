@@ -1,0 +1,666 @@
+Index: backend/src/main/java/com/nju/boot/controller/FilesController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.nju.boot.controller;\r\n\r\nimport cn.hutool.core.io.FileUtil;\r\nimport cn.hutool.core.util.StrUtil;\r\nimport cn.hutool.crypto.SecureUtil;\r\nimport com.nju.boot.entity.Files;\r\nimport com.nju.boot.graphs.cfg.CFG;\r\nimport com.nju.boot.handler.DisableBaseResponse;\r\nimport com.nju.boot.mapper.FilesMapper;\r\nimport com.nju.boot.service.IFilesService;\r\nimport com.nju.boot.service.impl.FilesServiceImpl;\r\nimport com.nju.boot.utils.DateTimeUtils;\r\nimport io.swagger.annotations.Api;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport org.apache.commons.io.FileUtils;\r\nimport org.springframework.beans.factory.annotation.Value;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.web.multipart.MultipartFile;\r\n\r\nimport javax.annotation.Resource;\r\nimport java.io.File;\r\nimport java.io.IOException;\r\nimport java.time.LocalDateTime;\r\nimport java.util.UUID;\r\n\r\n/**\r\n * <p>\r\n *  前端控制器\r\n * </p>\r\n *\r\n * @author JingYa\r\n * @since 2023-07-07\r\n */\r\n@RestController\r\n@RequestMapping(\"/file\")\r\n@Api(tags = \"文件上传接口\")\r\npublic class FilesController {\r\n\r\n    @Value(\"${files.upload.path}\")\r\n    private String fileUploadPath;\r\n\r\n    @Value(\"${server.port}\")\r\n    private String serverPort;\r\n\r\n    @Value(\"${server.address}\")\r\n    private String serverAddress;\r\n\r\n    @Resource\r\n    private IFilesService iFilesService;\r\n\r\n    @Resource\r\n    private FilesMapper filesMapper;\r\n\r\n    @PostMapping(\"\")\r\n    @ApiOperation(value = \"上传文件\")\r\n    public Files uploadFile(String uid,MultipartFile file) throws Exception {\r\n        if(file == null) throw new Exception(\"请求参数缺失\");\r\n        if(file.isEmpty()){\r\n            throw new Exception(\"上传失败，请选择文件\");\r\n        }\r\n        File uploadParentFile = new File(fileUploadPath);\r\n        if(!uploadParentFile.exists()){\r\n            uploadParentFile.mkdirs();\r\n        }\r\n\r\n        String uuId = UUID.randomUUID().toString();\r\n        String originalFilename = file.getOriginalFilename();\r\n        String type = FileUtil.extName(originalFilename);\r\n        String fileUUID = uuId + StrUtil.DOT + type;\r\n        File uploadFile = new File(fileUploadPath + \"/\" + fileUUID);\r\n\r\n        String md5 = SecureUtil.md5(file.getInputStream());\r\n        String url;\r\n        Files files = iFilesService.getFileByMd5(md5);\r\n        if(files != null){\r\n            url = files.getUrl();\r\n        }\r\n        else {\r\n            file.transferTo(uploadFile);\r\n            url = \"http://\" + serverAddress + \":\" + serverPort + \"/file?id=\" + fileUUID;\r\n        }\r\n        Files saveFile = new Files(uuId, originalFilename, type, md5, url, uid, DateTimeUtils.getNowTimeString(), false, true);\r\n        iFilesService.save(saveFile);\r\n        return saveFile;\r\n    }\r\n\r\n    @GetMapping(\"\")\r\n    @ApiOperation(value = \"获取文件内容\")\r\n    public String getFileContent(@RequestParam(\"id\") String id) throws Exception{ //流请求还是字符串请求？\r\n        if(\"\".equals(id)){\r\n            return \"\";\r\n        }\r\n        String path = fileUploadPath + \"/\" + id;\r\n        File file = new File(path);\r\n        return FileUtils.readFileToString(file, \"utf-8\");\r\n    }\r\n\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/nju/boot/controller/FilesController.java b/backend/src/main/java/com/nju/boot/controller/FilesController.java
+--- a/backend/src/main/java/com/nju/boot/controller/FilesController.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/src/main/java/com/nju/boot/controller/FilesController.java	(date 1689164856063)
+@@ -4,10 +4,13 @@
+ import cn.hutool.core.util.StrUtil;
+ import cn.hutool.crypto.SecureUtil;
+ import com.nju.boot.entity.Files;
++import com.nju.boot.entity.Userfile;
+ import com.nju.boot.graphs.cfg.CFG;
+ import com.nju.boot.handler.DisableBaseResponse;
+ import com.nju.boot.mapper.FilesMapper;
++import com.nju.boot.mapper.UserfileMapper;
+ import com.nju.boot.service.IFilesService;
++import com.nju.boot.service.IUserfileService;
+ import com.nju.boot.service.impl.FilesServiceImpl;
+ import com.nju.boot.utils.DateTimeUtils;
+ import io.swagger.annotations.Api;
+@@ -22,6 +25,8 @@
+ import java.io.File;
+ import java.io.IOException;
+ import java.time.LocalDateTime;
++import java.util.HashMap;
++import java.util.Map;
+ import java.util.UUID;
+ 
+ /**
+@@ -52,6 +57,9 @@
+     @Resource
+     private FilesMapper filesMapper;
+ 
++    @Resource
++    private IUserfileService iUserfileService;
++
+     @PostMapping("")
+     @ApiOperation(value = "上传文件")
+     public Files uploadFile(String uid,MultipartFile file) throws Exception {
+@@ -74,26 +82,49 @@
+         String url;
+         Files files = iFilesService.getFileByMd5(md5);
+         if(files != null){
+-            url = files.getUrl();
++            if(files.getEnable()){
++                files.setDeleted(false);
++                files.setEnable(true);
++                files.setUploadTime(DateTimeUtils.getNowTimeString());
++                filesMapper.updateById(files);
++            }
+         }
+         else {
+             file.transferTo(uploadFile);
+             url = "http://" + serverAddress + ":" + serverPort + "/file?id=" + fileUUID;
++            files = new Files(uuId, originalFilename, type, md5, url, DateTimeUtils.getNowTimeString(), false, true);
++            iFilesService.save(files);
+         }
+-        Files saveFile = new Files(uuId, originalFilename, type, md5, url, uid, DateTimeUtils.getNowTimeString(), false, true);
+-        iFilesService.save(saveFile);
+-        return saveFile;
++        Userfile userfile = new Userfile(UUID.randomUUID().toString(), uid, uuId);
++        iUserfileService.save(userfile);
++        return files;
+     }
+ 
+     @GetMapping("")
+     @ApiOperation(value = "获取文件内容")
+-    public String getFileContent(@RequestParam("id") String id) throws Exception{ //流请求还是字符串请求？
++    public Map<String, String> getFileContent(@RequestParam("id") String id) throws Exception{
++        Map<String, String> map = new HashMap<>();
+         if("".equals(id)){
+-            return "";
++            return map;
+         }
+-        String path = fileUploadPath + "/" + id;
++        String path = fileUploadPath + "/" + id + ".java";
++        Files files = filesMapper.selectById(id);
+         File file = new File(path);
+-        return FileUtils.readFileToString(file, "utf-8");
++        map.put("fileName", files.getName());
++        map.put("content", FileUtils.readFileToString(file, "utf-8"));
++        return map;
++    }
++
++    @GetMapping("/delete")
++    @ApiOperation(value = "删除文件")
++    public boolean deleteFile(String id, String uid) throws Exception{
++        Files files = filesMapper.selectById(id);
++        if(files != null){
++            files.setDeleted(true);
++            filesMapper.updateById(files);
++            return true;
++        }
++        return false;
+     }
+ 
+ }
+Index: backend/src/main/java/com/nju/boot/service/IFilesService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.nju.boot.service;\r\n\r\nimport com.nju.boot.entity.Files;\r\nimport com.baomidou.mybatisplus.extension.service.IService;\r\nimport org.springframework.web.multipart.MultipartFile;\r\n\r\nimport java.util.List;\r\n\r\n/**\r\n * <p>\r\n *  服务类\r\n * </p>\r\n *\r\n * @author JingYa\r\n * @since 2023-07-07\r\n */\r\npublic interface IFilesService extends IService<Files> {\r\n\r\n    public Files getFileByMd5(String md5);\r\n\r\n    List<Files> getFilesByUid(String uid);\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/nju/boot/service/IFilesService.java b/backend/src/main/java/com/nju/boot/service/IFilesService.java
+--- a/backend/src/main/java/com/nju/boot/service/IFilesService.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/src/main/java/com/nju/boot/service/IFilesService.java	(date 1689164856068)
+@@ -18,6 +18,4 @@
+ 
+     public Files getFileByMd5(String md5);
+ 
+-    List<Files> getFilesByUid(String uid);
+-
+ }
+Index: backend/src/main/java/com/nju/boot/service/impl/FilesServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.nju.boot.service.impl;\r\n\r\nimport cn.hutool.core.io.FileUtil;\r\nimport cn.hutool.core.util.StrUtil;\r\nimport cn.hutool.crypto.SecureUtil;\r\nimport com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;\r\nimport com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;\r\nimport com.nju.boot.entity.Files;\r\nimport com.nju.boot.mapper.FilesMapper;\r\nimport com.nju.boot.service.IFilesService;\r\nimport com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;\r\nimport org.springframework.beans.factory.annotation.Value;\r\nimport org.springframework.stereotype.Service;\r\nimport org.springframework.util.DigestUtils;\r\nimport org.springframework.web.multipart.MultipartFile;\r\n\r\nimport javax.annotation.Resource;\r\nimport java.io.IOException;\r\nimport java.io.InputStream;\r\nimport java.time.LocalDateTime;\r\nimport java.util.List;\r\nimport java.util.UUID;\r\n\r\n/**\r\n * <p>\r\n *  服务实现类\r\n * </p>\r\n *\r\n * @author JingYa\r\n * @since 2023-07-07\r\n */\r\n@Service\r\npublic class FilesServiceImpl extends ServiceImpl<FilesMapper, Files> implements IFilesService {\r\n\r\n    @Value(\"${server.port}\")\r\n    private String serverPort;\r\n\r\n    @Value(\"${server.address}\")\r\n    private String serverAddress;\r\n    @Resource\r\n    private FilesMapper filesMapper;\r\n\r\n    @Override\r\n    public Files getFileByMd5(String md5) {\r\n        Files files = filesMapper.selectOne(new QueryWrapper<Files>().eq(\"md5\", md5));\r\n        return files;\r\n    }\r\n\r\n    @Override\r\n    public List<Files> getFilesByUid(String uid) {\r\n        return filesMapper.selectList(new QueryWrapper<Files>().in(\"uid\", uid));\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/nju/boot/service/impl/FilesServiceImpl.java b/backend/src/main/java/com/nju/boot/service/impl/FilesServiceImpl.java
+--- a/backend/src/main/java/com/nju/boot/service/impl/FilesServiceImpl.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/src/main/java/com/nju/boot/service/impl/FilesServiceImpl.java	(date 1689164856069)
+@@ -45,9 +45,4 @@
+         Files files = filesMapper.selectOne(new QueryWrapper<Files>().eq("md5", md5));
+         return files;
+     }
+-
+-    @Override
+-    public List<Files> getFilesByUid(String uid) {
+-        return filesMapper.selectList(new QueryWrapper<Files>().in("uid", uid));
+-    }
+ }
+Index: backend/src/main/java/com/nju/boot/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.nju.boot.controller;\r\n\r\nimport com.nju.boot.entity.Files;\r\nimport com.nju.boot.entity.User;\r\nimport com.nju.boot.entity.dto.LoginDto;\r\nimport com.nju.boot.service.IFilesService;\r\nimport com.nju.boot.service.IUserService;\r\nimport com.nju.boot.utils.JwtTokenUtils;\r\nimport io.swagger.annotations.Api;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport org.apache.catalina.LifecycleState;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport org.springframework.stereotype.Controller;\r\n\r\nimport javax.annotation.Resource;\r\nimport java.util.HashMap;\r\nimport java.util.List;\r\nimport java.util.Map;\r\nimport java.util.Set;\r\n\r\n/**\r\n * <p>\r\n *  前端控制器\r\n * </p>\r\n *\r\n * @author JingYa\r\n * @since 2023-07-06\r\n */\r\n@RestController\r\n@RequestMapping(\"/user\")\r\n@Api(tags = \"用户管理接口\")\r\npublic class UserController {\r\n\r\n    @Resource\r\n    private IUserService iUserService;\r\n\r\n    @Resource\r\n    private IFilesService iFilesService;\r\n\r\n    @PostMapping(\"/login\")\r\n    @ApiOperation(value = \"用户登录\")\r\n    public Map<String, Object> login(@RequestBody LoginDto loginDto) throws Exception{\r\n        User user = iUserService.login(loginDto);\r\n        Map<String, Object> map = new HashMap<>();\r\n        //过期时间\r\n        long exp = JwtTokenUtils.EXPIRATION_TIME;\r\n        map.put(\"token\", JwtTokenUtils.createToken(loginDto.getUsername(), exp));\r\n        map.put(\"user\", user);\r\n        return map;\r\n    }\r\n\r\n    @GetMapping(\"/info\")\r\n    @ApiOperation(value = \"获得用户信息\")\r\n    public User getInfo(String token){\r\n        String username = JwtTokenUtils.getUsername(token);\r\n        User user = iUserService.findByUsername(username);\r\n        return user;\r\n    }\r\n\r\n    @PostMapping(\"/logout\")\r\n    @ApiOperation(value = \"用户登出\")\r\n    public boolean Logout(){\r\n        return true;\r\n    }\r\n\r\n\r\n    @PostMapping(\"/register\")\r\n    @ApiOperation(value = \"用户注册\")\r\n    public User create(@RequestBody User user) throws Exception{\r\n        return iUserService.create(user);\r\n    }\r\n\r\n    @PutMapping(\"\")\r\n    @ApiOperation(value = \"更新用户\")\r\n    public User updateUser(@RequestBody User user){\r\n        return iUserService.update(user);\r\n    }\r\n\r\n    @GetMapping(\"/file\")\r\n    @ApiOperation(value = \"获得用户上传的所有文件\")\r\n    public List<Files> getUserFiles(@RequestParam(\"uid\") String uid){\r\n        return iFilesService.getFilesByUid(uid);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/nju/boot/controller/UserController.java b/backend/src/main/java/com/nju/boot/controller/UserController.java
+--- a/backend/src/main/java/com/nju/boot/controller/UserController.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/src/main/java/com/nju/boot/controller/UserController.java	(date 1689164856064)
+@@ -2,9 +2,13 @@
+ 
+ import com.nju.boot.entity.Files;
+ import com.nju.boot.entity.User;
++import com.nju.boot.entity.Userfile;
++import com.nju.boot.entity.dto.FileDto;
+ import com.nju.boot.entity.dto.LoginDto;
++import com.nju.boot.mapper.FilesMapper;
+ import com.nju.boot.service.IFilesService;
+ import com.nju.boot.service.IUserService;
++import com.nju.boot.service.IUserfileService;
+ import com.nju.boot.utils.JwtTokenUtils;
+ import io.swagger.annotations.Api;
+ import io.swagger.annotations.ApiOperation;
+@@ -13,10 +17,7 @@
+ import org.springframework.stereotype.Controller;
+ 
+ import javax.annotation.Resource;
+-import java.util.HashMap;
+-import java.util.List;
+-import java.util.Map;
+-import java.util.Set;
++import java.util.*;
+ 
+ /**
+  * <p>
+@@ -37,6 +38,9 @@
+     @Resource
+     private IFilesService iFilesService;
+ 
++    @Resource
++    private IUserfileService iUserfileService;
++
+     @PostMapping("/login")
+     @ApiOperation(value = "用户登录")
+     public Map<String, Object> login(@RequestBody LoginDto loginDto) throws Exception{
+@@ -78,8 +82,15 @@
+ 
+     @GetMapping("/file")
+     @ApiOperation(value = "获得用户上传的所有文件")
+-    public List<Files> getUserFiles(@RequestParam("uid") String uid){
+-        return iFilesService.getFilesByUid(uid);
++    public List<FileDto> getUserFiles(@RequestParam("uid") String uid){
++        List<FileDto> fileDtoList = new LinkedList<>();
++        for(Userfile userfile: iUserfileService.selectUserFileByUid(uid)){
++            Files files = iFilesService.getById(userfile.getFileId());
++            if(!files.getDeleted()){
++                fileDtoList.add(new FileDto(files.getId(), files.getName(), files.getUploadTime()));
++            }
++        }
++        return fileDtoList;
+     }
+ 
+ }
+Index: backend/file/d74124b2-34ab-4372-8905-a285386eea35.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/file/d74124b2-34ab-4372-8905-a285386eea35.java b/backend/file/d74124b2-34ab-4372-8905-a285386eea35.java
+deleted file mode 100644
+--- a/backend/file/d74124b2-34ab-4372-8905-a285386eea35.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ /dev/null	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
+@@ -1,10 +0,0 @@
+-public class CFG_Test1 {
+-    public static void main(String[] args) {
+-        int a = 0;
+-        int b = 0;
+-        System.out.println(a);
+-    }
+-    public int like(){
+-        return 0;
+-    }
+-}
+\ No newline at end of file
+Index: backend/file/Test2.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/file/Test2.java b/backend/file/Test2.java
+deleted file mode 100644
+--- a/backend/file/Test2.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ /dev/null	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
+@@ -1,16 +0,0 @@
+-public class CFG_Test2 {
+-    public static void main(String[] args) {
+-        int a = 1;
+-        int b = 2;
+-        int c = 3;
+-        int d = 4;
+-        if(a == b){
+-            d = d+1;
+-        }
+-        else{
+-            a = b;
+-            c = c+2;
+-        }
+-        System.out.println(a);
+-    }
+-}
+Index: dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.ibm.jdi.test;\r\n\r\nimport com.nju.boot.graphs.dependencegraph.CDG;\r\nimport com.nju.boot.graphs.dependencegraph.PDG;\r\nimport com.nju.boot.slicer.Graphs;\r\nimport com.nju.boot.util.SlicerUtil;\r\nimport org.checkerframework.checker.units.qual.C;\r\nimport org.junit.jupiter.api.Test;\r\n\r\nimport java.io.File;\r\nimport java.nio.file.Paths;\r\nimport java.util.Set;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\nclass DynamicSlicerTest {\r\n    String absolutePath = new File(\"\").getAbsolutePath();\r\n    String filePath = Paths.get(absolutePath,\"data\",\"test\",\"src\").toString();\r\n    String fileName = \"Test1.java\";\r\n    String wholePath = Paths.get(filePath,fileName).toString();\r\n    @Test\r\n    void programExecute() throws Exception {\r\n        Graphs graphs = new Graphs(wholePath);\r\n\r\n        CDG cdg  = graphs.getCDG(SlicerUtil.findMethodByLineNumber(graphs.getCu(),20));\r\n        System.out.println(cdg.toString());\r\n        Set<Integer> result = new DynamicSlicer().ProgramExecute(filePath,fileName,\"Test1\",\"\",20,cdg);\r\n        System.out.println(result);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java b/dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java
+--- a/dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java	(date 1689164856075)
+@@ -2,8 +2,8 @@
+ 
+ import com.nju.boot.graphs.dependencegraph.CDG;
+ import com.nju.boot.graphs.dependencegraph.PDG;
+-import com.nju.boot.slicer.Graphs;
+-import com.nju.boot.util.SlicerUtil;
++import com.nju.boot.graphs.Graphs;
++import com.nju.boot.util.GraphUtil;
+ import org.checkerframework.checker.units.qual.C;
+ import org.junit.jupiter.api.Test;
+ 
+@@ -22,7 +22,7 @@
+     void programExecute() throws Exception {
+         Graphs graphs = new Graphs(wholePath);
+ 
+-        CDG cdg  = graphs.getCDG(SlicerUtil.findMethodByLineNumber(graphs.getCu(),20));
++        CDG cdg  = graphs.getCDG(GraphUtil.findMethodByLineNumber(graphs.getCu(),20));
+         System.out.println(cdg.toString());
+         Set<Integer> result = new DynamicSlicer().ProgramExecute(filePath,fileName,"Test1","",20,cdg);
+         System.out.println(result);
+Index: backend/src/main/java/com/nju/boot/controller/GraphController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.nju.boot.controller;\r\n\r\nimport com.nju.boot.handler.DisableBaseResponse;\r\nimport com.nju.boot.graphs.Graphs;\r\nimport com.nju.boot.util.GraphUtil;\r\nimport io.swagger.annotations.Api;\r\nimport io.swagger.annotations.ApiOperation;\r\nimport org.springframework.beans.factory.annotation.Value;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.Set;\r\n\r\n@RestController\r\n@RequestMapping(\"/graph\")\r\n@Api(tags = \"Java文件解析成代码抽象模型接口\")\r\npublic class GraphController {\r\n\r\n    @Value(\"${files.upload.path}\")\r\n    private String fileUploadPath;\r\n\r\n\r\n    @GetMapping(\"/ast\")\r\n    @ApiOperation(value = \"获得语法分析树AST\")\r\n    public String getAST(@RequestParam(\"id\") String id){\r\n        String path = fileUploadPath + \"/\" + id;\r\n        Graphs graphs = new Graphs(path);\r\n        return GraphUtil.astNodeToXml(graphs.getCu());\r\n    }\r\n\r\n    @GetMapping(\"/cg\")\r\n    @ApiOperation(value = \"获得函数调用图Call graph\")\r\n    public String getCallGraph(@RequestParam(\"id\") String id){\r\n        String path = fileUploadPath + \"/\" + id;\r\n        Graphs graphs = new Graphs(path);\r\n        return graphs.getCallGraph().toString();\r\n    }\r\n\r\n    @GetMapping(\"/method\")\r\n    @ApiOperation(value = \"获得文件的所有方法\")\r\n    public Set<String> getMethod(@RequestParam(\"id\") String id){\r\n        String path = fileUploadPath + \"/\" + id;\r\n        Graphs graphs = new Graphs(path);\r\n        return graphs.getQualifiedSignatures();\r\n    }\r\n\r\n    @GetMapping(\"/cfg\")\r\n    @ApiOperation(value = \"获得控制流程图CFG\")\r\n    public String getCFG(String id, String method){\r\n        String path = fileUploadPath + \"/\" + id;\r\n        Graphs graphs = new Graphs(path);\r\n        if(method == null){\r\n            Set<String> methods = graphs.getQualifiedSignatures();\r\n            method = methods.stream().toList().get(0);\r\n        }\r\n        return graphs.getCFG(GraphUtil.findMethodBySignature(graphs, method)).toString();\r\n    }\r\n\r\n    @GetMapping(\"/pdg\")\r\n    @ApiOperation(value = \"获得程序依赖图PDG\")\r\n    public String getPDG(String id, String method){\r\n        String path = fileUploadPath + \"/\" + id;\r\n        Graphs graphs = new Graphs(path);\r\n        if(method == null){\r\n            Set<String> methods = graphs.getQualifiedSignatures();\r\n            method = methods.stream().toList().get(0);\r\n        }\r\n        return graphs.getPDG(GraphUtil.findMethodBySignature(graphs, method)).toString();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/nju/boot/controller/GraphController.java b/backend/src/main/java/com/nju/boot/controller/GraphController.java
+--- a/backend/src/main/java/com/nju/boot/controller/GraphController.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/src/main/java/com/nju/boot/controller/GraphController.java	(date 1689164856064)
+@@ -22,7 +22,7 @@
+     @GetMapping("/ast")
+     @ApiOperation(value = "获得语法分析树AST")
+     public String getAST(@RequestParam("id") String id){
+-        String path = fileUploadPath + "/" + id;
++        String path = fileUploadPath + "/" + id + ".java";
+         Graphs graphs = new Graphs(path);
+         return GraphUtil.astNodeToXml(graphs.getCu());
+     }
+@@ -30,7 +30,7 @@
+     @GetMapping("/cg")
+     @ApiOperation(value = "获得函数调用图Call graph")
+     public String getCallGraph(@RequestParam("id") String id){
+-        String path = fileUploadPath + "/" + id;
++        String path = fileUploadPath + "/" + id + ".java";
+         Graphs graphs = new Graphs(path);
+         return graphs.getCallGraph().toString();
+     }
+@@ -38,7 +38,7 @@
+     @GetMapping("/method")
+     @ApiOperation(value = "获得文件的所有方法")
+     public Set<String> getMethod(@RequestParam("id") String id){
+-        String path = fileUploadPath + "/" + id;
++        String path = fileUploadPath + "/" + id + ".java";
+         Graphs graphs = new Graphs(path);
+         return graphs.getQualifiedSignatures();
+     }
+@@ -46,7 +46,7 @@
+     @GetMapping("/cfg")
+     @ApiOperation(value = "获得控制流程图CFG")
+     public String getCFG(String id, String method){
+-        String path = fileUploadPath + "/" + id;
++        String path = fileUploadPath + "/" + id + ".java";
+         Graphs graphs = new Graphs(path);
+         if(method == null){
+             Set<String> methods = graphs.getQualifiedSignatures();
+@@ -58,7 +58,7 @@
+     @GetMapping("/pdg")
+     @ApiOperation(value = "获得程序依赖图PDG")
+     public String getPDG(String id, String method){
+-        String path = fileUploadPath + "/" + id;
++        String path = fileUploadPath + "/" + id + ".java";
+         Graphs graphs = new Graphs(path);
+         if(method == null){
+             Set<String> methods = graphs.getQualifiedSignatures();
+Index: front-end/src/views/dashboard/index.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><template>\r\n  <div class=\"dashboard_container\">\r\n\r\n    <el-table :data=\"tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)\"  class=\"data_table\">\r\n    <el-table-column prop=\"file_name\" label=\"文件名称\" width=\"180\">\r\n      \r\n    </el-table-column>\r\n    <el-table-column prop=\"upload_time\" label=\"上传时间\" width=\"280\">\r\n    </el-table-column>\r\n    <el-table-column prop=\"operation\" label=\"操作\">\r\n      <template slot-scope=\"scope\">\r\n        <el-button  type=\"info\"  @click=\"download_file(scope.row)\">下载</el-button>\r\n        <el-button type=\"info\" @click=\"delete_file(scope.row)\">删除</el-button>\r\n        <!-- <el-button :type=\"scope.row.status?'danger':'primary'\" @click=\"changeStatus(scope.$index)\" </el-button> -->\r\n\r\n      </template>\r\n    </el-table-column>\r\n  </el-table>\r\n\r\n  <div class=\"block\" >\r\n            <el-pagination align='center' @size-change=\"handleSizeChange\" @current-change=\"handleCurrentChange\" \r\n            :current-page=\"currentPage\"\r\n\r\n            :page-sizes=\"[1,5]\" \r\n\r\n            :page-size=\"pageSize\" \r\n            layout=\"total, sizes, prev, pager, next, jumper\" \r\n            :total=\"tableData.length\">\r\n            </el-pagination>\r\n  </div>\r\n\r\n\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nimport axios from \"axios\";\r\nimport store from \"@/store/index\"\r\n\r\nexport default {\r\n  data(){\r\n    return {\r\n       tableData:[\r\n        {\r\n          file_name:'test1',\r\n          upload_time:'2022-1-1'\r\n        },\r\n        {\r\n          file_name:'test2',\r\n          upload_time:'2022-1-1'\r\n        },\r\n        {\r\n          file_name:'test3',\r\n          upload_time:'2022-1-1'\r\n        },\r\n        {\r\n          file_name:'test4',\r\n          upload_time:'2022-1-1'\r\n        },\r\n        {\r\n          file_name:'test5',\r\n          upload_time:'2022-1-1'\r\n        },\r\n        {\r\n          file_name:'test6',\r\n          upload_time:'2022-1-1'\r\n        },\r\n       ],\r\n        currentPage: 1, // 当前页码\r\n        total: 20, // 总条数\r\n        pageSize: 5 // 每页的数据条数\r\n      }\r\n  },\r\n  methods: {\r\n    handleSizeChange(val) {\r\n          console.log(`每页 ${val} 条`);\r\n          this.currentPage = 1;\r\n          this.pageSize = val;\r\n      },\r\n                //当前页改变时触发 跳转其他页\r\n    handleCurrentChange(val) {\r\n          console.log(`当前页: ${val}`);\r\n          this.currentPage = val;\r\n      },\r\n\r\n\r\n      download_file(val){\r\n\r\n      },\r\n      delete_file(val){\r\n        \r\n      }\r\n\r\n  },\r\n}\r\n</script>\r\n\r\n<style lang=\"scss\" scoped>\r\n.dashboard_container{\r\n  min-height: 100%;\r\n  width: 100%;\r\n  background-image:url('../../assets/bg-image2.png');\r\n  background-size:100%;\r\n  position: fixed;\r\n}\r\n\r\n.data_table{\r\n\r\n  //height: 300px;\r\n  width: 700px;\r\n  border: dashed 1px gray;\r\n  margin-bottom: 10px;\r\n  color: #777;\r\n  position: absolute;\r\n  left:40%;\r\n  top:30%;\r\n  transform: translate(-50%,-50%);\r\n  background-color:gray;\r\n  \r\n}\r\n.block{\r\n  position: absolute;\r\n  left:40%;\r\n  top:80%;\r\n  transform: translate(-50%,-50%);\r\n  //background-color:gray;\r\n}\r\n\r\n</style>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/front-end/src/views/dashboard/index.vue b/front-end/src/views/dashboard/index.vue
+--- a/front-end/src/views/dashboard/index.vue	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/front-end/src/views/dashboard/index.vue	(date 1689164856077)
+@@ -2,15 +2,17 @@
+   <div class="dashboard_container">
+ 
+     <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"  class="data_table">
+-    <el-table-column prop="file_name" label="文件名称" width="180">
+-      
++      <el-table-column prop="id" label="文件id" width="280" v-if="false">
+     </el-table-column>
+-    <el-table-column prop="upload_time" label="上传时间" width="280">
++    <el-table-column prop="fileName" label="文件名称" width="180">
++      
++    </el-table-column>
++    <el-table-column prop="uploadTime" label="上传时间" width="280">
+     </el-table-column>
+     <el-table-column prop="operation" label="操作">
+       <template slot-scope="scope">
+-        <el-button  type="info"  @click="download_file(scope.row)">下载</el-button>
+-        <el-button type="info" @click="delete_file(scope.row)">删除</el-button>
++        <el-button  type="info"  @click="download_file(scope.row.id)">下载</el-button>
++        <el-button type="info" @click="delete_file(scope.row.id)">删除</el-button>
+         <!-- <el-button :type="scope.row.status?'danger':'primary'" @click="changeStatus(scope.$index)" </el-button> -->
+ 
+       </template>
+@@ -34,38 +36,15 @@
+ </template>
+ 
+ <script>
++import {getFile, getFileContext, deleteFile} from '@/api/file'
++import FileSaver from "file-saver"
+ import axios from "axios";
+ import store from "@/store/index"
+ 
+ export default {
+   data(){
+     return {
+-       tableData:[
+-        {
+-          file_name:'test1',
+-          upload_time:'2022-1-1'
+-        },
+-        {
+-          file_name:'test2',
+-          upload_time:'2022-1-1'
+-        },
+-        {
+-          file_name:'test3',
+-          upload_time:'2022-1-1'
+-        },
+-        {
+-          file_name:'test4',
+-          upload_time:'2022-1-1'
+-        },
+-        {
+-          file_name:'test5',
+-          upload_time:'2022-1-1'
+-        },
+-        {
+-          file_name:'test6',
+-          upload_time:'2022-1-1'
+-        },
+-       ],
++      tableData : [],
+         currentPage: 1, // 当前页码
+         total: 20, // 总条数
+         pageSize: 5 // 每页的数据条数
+@@ -85,13 +64,54 @@
+ 
+ 
+       download_file(val){
+-
++        getFileContext(val).then(res => {
++          if(res.success){
++            let blob = new Blob([res.data.content], {
++              type: "text/plain;charset=utf-8"
++            });
++            FileSaver.saveAs(blob, res.data.fileName)
++          }
++          else{
++              this.$message({
++              type:'warning',
++              message: res.msg
++            });
++          }
++        })
+       },
+       delete_file(val){
+-        
++        deleteFile(val, localStorage.getItem("uid")).then(res => {
++          if(res.success){
++            if(res.data){
++              this.$message.success('删除成功');
++            }
++            else{
++              this.$message.error('删除失败');
++            }
++          }
++          else{
++              this.$message({
++              type:'warning',
++              message: res.msg
++            });
++          }
++        })
+       }
+ 
+   },
++  mounted() {
++      getFile(localStorage.getItem("uid")).then(res => {
++        if(res.success){
++          this.tableData = res.data
++        }
++        else{
++          this.$message({
++            type:'warning',
++            message: res.msg
++          });
++        }
++      })
++  }
+ }
+ </script>
+ 
+Index: backend/src/main/java/com/nju/boot/entity/Files.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.nju.boot.entity;\r\n\r\nimport com.baomidou.mybatisplus.annotation.IdType;\r\nimport com.baomidou.mybatisplus.annotation.TableId;\r\nimport com.baomidou.mybatisplus.annotation.TableName;\r\nimport java.io.Serializable;\r\nimport java.time.LocalDateTime;\r\nimport io.swagger.annotations.ApiModel;\r\nimport io.swagger.annotations.ApiModelProperty;\r\nimport lombok.AllArgsConstructor;\r\n\r\n/**\r\n * <p>\r\n * File保存文件\r\n * </p>\r\n *\r\n * @author JingYa\r\n * @since 2023-07-07\r\n */\r\n@TableName(\"j_files\")\r\n@ApiModel(value = \"Files对象\", description = \"\")\r\n@AllArgsConstructor\r\npublic class Files implements Serializable {\r\n\r\n    private static final long serialVersionUID = 1L;\r\n\r\n    @ApiModelProperty(\"编号\")\r\n    private String id;\r\n\r\n    @ApiModelProperty(\"文件名\")\r\n    private String name;\r\n\r\n    @ApiModelProperty(\"文件类型\")\r\n    private String type;\r\n\r\n    @ApiModelProperty(\"MD5值\")\r\n    private String md5;\r\n\r\n    @ApiModelProperty(\"下载链接\")\r\n    private String url;\r\n\r\n    @ApiModelProperty(\"用户编号\")\r\n    private String uid;\r\n\r\n    @ApiModelProperty(\"上传时间\")\r\n    private String uploadTime;\r\n\r\n    @ApiModelProperty(\"是否删除\")\r\n    private Boolean deleted;\r\n\r\n    @ApiModelProperty(\"是否禁用链接\")\r\n    private Boolean enable;\r\n\r\n    public String  getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(String id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public String getType() {\r\n        return type;\r\n    }\r\n\r\n    public void setType(String type) {\r\n        this.type = type;\r\n    }\r\n\r\n    public String getMd5() {\r\n        return md5;\r\n    }\r\n\r\n    public void setMd5(String md5) {\r\n        this.md5 = md5;\r\n    }\r\n\r\n    public String getUrl() {\r\n        return url;\r\n    }\r\n\r\n    public void setUrl(String url) {\r\n        this.url = url;\r\n    }\r\n\r\n    public String getUid() {\r\n        return uid;\r\n    }\r\n\r\n    public void setUid(String uid) {\r\n        this.uid = uid;\r\n    }\r\n\r\n    public String getUploadTime() {\r\n        return uploadTime;\r\n    }\r\n\r\n    public void setUploadTime(String uploadTime) {\r\n        this.uploadTime = uploadTime;\r\n    }\r\n\r\n    public Boolean getDeleted() {\r\n        return deleted;\r\n    }\r\n\r\n    public void setDeleted(Boolean deleted) {\r\n        this.deleted = deleted;\r\n    }\r\n\r\n    public Boolean getEnable() {\r\n        return enable;\r\n    }\r\n\r\n    public void setEnable(Boolean enable) {\r\n        this.enable = enable;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"Files{\" +\r\n            \"id = \" + id +\r\n            \", name = \" + name +\r\n            \", type = \" + type +\r\n            \", md5 = \" + md5 +\r\n            \", url = \" + url +\r\n            \", uploadTime = \" + uploadTime +\r\n            \", deleted = \" + deleted +\r\n            \", enable = \" + enable +\r\n        \"}\";\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/nju/boot/entity/Files.java b/backend/src/main/java/com/nju/boot/entity/Files.java
+--- a/backend/src/main/java/com/nju/boot/entity/Files.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/src/main/java/com/nju/boot/entity/Files.java	(date 1689164856066)
+@@ -39,9 +39,6 @@
+     @ApiModelProperty("下载链接")
+     private String url;
+ 
+-    @ApiModelProperty("用户编号")
+-    private String uid;
+-
+     @ApiModelProperty("上传时间")
+     private String uploadTime;
+ 
+@@ -91,14 +88,6 @@
+         this.url = url;
+     }
+ 
+-    public String getUid() {
+-        return uid;
+-    }
+-
+-    public void setUid(String uid) {
+-        this.uid = uid;
+-    }
+-
+     public String getUploadTime() {
+         return uploadTime;
+     }
+Index: backend/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n\r\n    <groupId>com.nju</groupId>\r\n    <artifactId>backend</artifactId>\r\n    <version>1.0-SNAPSHOT</version>\r\n    <name>backend</name>\r\n    <description>项目后端代码</description>\r\n\r\n    <parent>\r\n        <groupId>com.nju</groupId>\r\n        <artifactId>joaut</artifactId>\r\n        <version>0.0.1-SNAPSHOT</version>\r\n    </parent>\r\n\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-web</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-test</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-devtools</artifactId>\r\n        </dependency>\r\n\r\n        <!--SpringSecurity依赖-->\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-security</artifactId>\r\n        </dependency>\r\n\r\n        <!--Redis cache依赖-->\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-data-redis</artifactId>\r\n        </dependency>\r\n\r\n        <!--数据连接池druid-->\r\n        <dependency>\r\n            <groupId>com.alibaba</groupId>\r\n            <artifactId>druid-spring-boot-starter</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>junit</groupId>\r\n            <artifactId>junit</artifactId>\r\n        </dependency>\r\n\r\n        <!-- mysql -->\r\n        <dependency>\r\n            <groupId>com.mysql</groupId>\r\n            <artifactId>mysql-connector-j</artifactId>\r\n        </dependency>\r\n        <!-- mybatis-plus -->\r\n        <dependency>\r\n            <groupId>com.baomidou</groupId>\r\n            <artifactId>mybatis-plus-boot-starter</artifactId>\r\n            <version>3.5.3.1</version>\r\n        </dependency>\r\n        <!-- mybatis-plus代码自动生成器依赖-->\r\n        <dependency>\r\n            <groupId>com.baomidou</groupId>\r\n            <artifactId>mybatis-plus-generator</artifactId>\r\n            <version>3.5.3.1</version>\r\n        </dependency>\r\n\r\n        <!--jwt依赖-->\r\n        <dependency>\r\n            <groupId>io.jsonwebtoken</groupId>\r\n            <artifactId>jjwt</artifactId>\r\n            <version>0.9.1</version>\r\n        </dependency>\r\n\r\n        <!--jdk9以上缺失的jar包-->\r\n        <dependency>\r\n            <groupId>javax.xml.bind</groupId>\r\n            <artifactId>jaxb-api</artifactId>\r\n            <version>2.3.0</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.sun.xml.bind</groupId>\r\n            <artifactId>jaxb-impl</artifactId>\r\n            <version>2.3.0</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.sun.xml.bind</groupId>\r\n            <artifactId>jaxb-core</artifactId>\r\n            <version>2.3.0</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>javax.activation</groupId>\r\n            <artifactId>activation</artifactId>\r\n            <version>1.1.1</version>\r\n        </dependency>\r\n\r\n        <!--json工具-->\r\n        <dependency>\r\n            <groupId>com.alibaba</groupId>\r\n            <artifactId>fastjson</artifactId>\r\n            <version>1.2.66</version>\r\n        </dependency>\r\n\r\n        <!--lombok-->\r\n        <dependency>\r\n            <groupId>org.projectlombok</groupId>\r\n            <artifactId>lombok</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>log4j</groupId>\r\n            <artifactId>log4j</artifactId>\r\n            <version>1.2.17</version>\r\n        </dependency>\r\n\r\n        <!--swagger2-->\r\n        <dependency>\r\n            <groupId>io.springfox</groupId>\r\n            <artifactId>springfox-swagger2</artifactId>\r\n            <version>3.0.0</version>\r\n        </dependency>\r\n        <!--swagger-ui-->\r\n        <dependency>\r\n            <groupId>io.springfox</groupId>\r\n            <artifactId>springfox-swagger-ui</artifactId>\r\n            <version>3.0.0</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>io.springfox</groupId>\r\n            <artifactId>springfox-boot-starter</artifactId>\r\n            <version>3.0.0</version>\r\n        </dependency>\r\n\r\n        <!--文件上传-->\r\n        <dependency>\r\n            <groupId>commons-fileupload</groupId>\r\n            <artifactId>commons-fileupload</artifactId>\r\n            <version>1.5</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>commons-io</groupId>\r\n            <artifactId>commons-io</artifactId>\r\n            <version>2.6</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>cn.hutool</groupId>\r\n            <artifactId>hutool-all</artifactId>\r\n            <version>5.7.20</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>com.nju</groupId>\r\n            <artifactId>staticSlicer</artifactId>\r\n            <version>0.0.1-SNAPSHOT</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.ibm</groupId>\r\n            <artifactId>dynamicSlicer</artifactId>\r\n            <version>1.0-SNAPSHOT</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>guru.nidi</groupId>\r\n            <artifactId>graphviz-java</artifactId>\r\n            <version>0.18.1</version>\r\n        </dependency>\r\n\r\n    </dependencies>\r\n\r\n</project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/pom.xml b/backend/pom.xml
+--- a/backend/pom.xml	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/pom.xml	(date 1689164856061)
+@@ -73,6 +73,12 @@
+             <version>3.5.3.1</version>
+         </dependency>
+ 
++        <dependency>
++            <groupId>org.freemarker</groupId>
++            <artifactId>freemarker</artifactId>
++            <version>2.3.28</version>
++        </dependency>
++
+         <!--jwt依赖-->
+         <dependency>
+             <groupId>io.jsonwebtoken</groupId>
+Index: front-end/src/api/user.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import service from \"@/utils/request\";\r\n\r\nexport function login(data) {\r\n    return service({\r\n        url: '/user/login',\r\n        method: 'post',\r\n        data: data\r\n    })\r\n}\r\n\r\nexport function Register(data){\r\n    return service({\r\n        url: '/user/register',\r\n        method: 'post',\r\n        data: data\r\n    })\r\n}\r\n\r\nexport function updateUser(data) {\r\n    return service({\r\n        url: '/user',\r\n        method: 'put',\r\n        data: data\r\n    })\r\n}\r\n\r\nexport function uploadFile(data) {\r\n    return service({\r\n        url: '/file',\r\n        method: 'post',\r\n        data: data\r\n    })\r\n}\r\n\r\n\r\nexport function getInfo(token) {\r\n    return service({\r\n      url: '/user/info',\r\n      method: 'get',\r\n      params: { token }\r\n    })\r\n}\r\n\r\nexport function logout() {\r\n    return service({\r\n        url: '/user/logout',\r\n        method: 'post'\r\n    })\r\n}\r\n  
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/front-end/src/api/user.js b/front-end/src/api/user.js
+--- a/front-end/src/api/user.js	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/front-end/src/api/user.js	(date 1689164856076)
+@@ -24,15 +24,6 @@
+     })
+ }
+ 
+-export function uploadFile(data) {
+-    return service({
+-        url: '/file',
+-        method: 'post',
+-        data: data
+-    })
+-}
+-
+-
+ export function getInfo(token) {
+     return service({
+       url: '/user/info',
+@@ -47,4 +38,3 @@
+         method: 'post'
+     })
+ }
+-  
+\ No newline at end of file
+Index: backend/src/test/java/CodeGenerator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import com.baomidou.mybatisplus.generator.FastAutoGenerator;\r\nimport com.baomidou.mybatisplus.generator.config.OutputFile;\r\nimport com.baomidou.mybatisplus.generator.config.rules.DbColumnType;\r\nimport com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;\r\n\r\nimport java.sql.Types;\r\nimport java.util.Collections;\r\n\r\npublic class CodeGenerator {\r\n    public static void main(String[] args) {\r\n        String url = \"jdbc:mysql://localhost:3306/joaut?characterEncoding=utf8&serverTimezone=UTC\";\r\n        String username = \"root\";\r\n        String password = \"123456\";\r\n        String tables = \"j_user\";\r\n        FastAutoGenerator.create(url, username, password)\r\n                .globalConfig(builder -> {\r\n                    builder.author(\"JingYa\") // 设置作者\r\n                            .enableSwagger() // 开启 swagger 模式\r\n                            //.fileOverride() // 覆盖已生成文件\r\n                            .outputDir(\"D:\\\\Java-oriented-analysis-and-understanding-tools\\\\backend\\\\src\\\\main\\\\java\"); // 指定输出目录\r\n                })\r\n                .dataSourceConfig(builder -> builder.typeConvertHandler((globalConfig, typeRegistry, metaInfo) -> {\r\n                    int typeCode = metaInfo.getJdbcType().TYPE_CODE;\r\n                    if (typeCode == Types.SMALLINT) {\r\n                        // 自定义类型转换\r\n                        return DbColumnType.INTEGER;\r\n                    }\r\n                    return typeRegistry.getColumnType(metaInfo);\r\n\r\n                }))\r\n                .packageConfig(builder -> {\r\n                    builder.parent(\"com.nju.boot\") // 设置父包名\r\n                            .moduleName(\"\") // 设置父包模块名\r\n                            .pathInfo(Collections.singletonMap(OutputFile.xml, \"D:\\\\Java-oriented-analysis-and-understanding-tools\\\\backend\\\\src\\\\main\\\\resources\\\\mapper\")); // 设置mapperXml生成路径\r\n                })\r\n                .strategyConfig(builder -> {\r\n                    builder.addInclude(tables) // 设置需要生成的表名\r\n                            .addTablePrefix(\"j_\"); // 设置过滤表前缀\r\n                })\r\n                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板\r\n                .execute();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/test/java/CodeGenerator.java b/backend/src/test/java/CodeGenerator.java
+--- a/backend/src/test/java/CodeGenerator.java	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/src/test/java/CodeGenerator.java	(date 1689164856071)
+@@ -11,7 +11,7 @@
+         String url = "jdbc:mysql://localhost:3306/joaut?characterEncoding=utf8&serverTimezone=UTC";
+         String username = "root";
+         String password = "123456";
+-        String tables = "j_user";
++        String tables = "j_userfile";
+         FastAutoGenerator.create(url, username, password)
+                 .globalConfig(builder -> {
+                     builder.author("JingYa") // 设置作者
+Index: backend/src/main/resources/joaut.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/*\r\nNavicat MySQL Data Transfer\r\n\r\nSource Server         : test\r\nSource Server Version : 80031\r\nSource Host           : localhost:3306\r\nSource Database       : joaut\r\n\r\nTarget Server Type    : MYSQL\r\nTarget Server Version : 80031\r\nFile Encoding         : 65001\r\n\r\nDate: 2023-06-08 23:30:27\r\n*/\r\n\r\nSET NAMES utf8mb4;\r\nSET FOREIGN_KEY_CHECKS=0;\r\n\r\n\r\nDROP TABLE IF EXISTS `j_user`;\r\nCREATE TABLE `j_user` (\r\n  `id` varchar(255) NOT NULL COMMENT '用户编号',\r\n  `username` varchar(255) NOT NULL COMMENT '用户名称(唯一)',\r\n  `password` varchar(255) NOT NULL COMMENT '用户密码(密文存储)',\r\n  `phone_number` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '用户电话号码',\r\n  `email` varchar(255) DEFAULT NULL COMMENT '用户邮箱',\r\n  `update_at` varchar(25) NOT NULL COMMENT '最近登录日期',\r\n  `status` int NOT NULL DEFAULT '0' COMMENT '用户状态，0表示正常，1表示被禁',\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;\r\n\r\n\r\nDROP TABLE IF EXISTS `j_file`;\r\nDROP TABLE IF EXISTS `j_files`;\r\nCREATE TABLE `j_files` (\r\n  `id` varchar(255) NOT NULL COMMENT '编号',\r\n  `name` varchar(255) NOT NULL COMMENT '文件名',\r\n  `type` varchar(255) DEFAULT NULL COMMENT '文件类型',\r\n  `md5` varchar(255) DEFAULT NULL COMMENT 'MD5值',\r\n  `url` varchar(255) NOT NULL COMMENT '下载链接',\r\n  `uid` varchar(255) NOT NULL COMMENT '用户编号',\r\n  `upload_time` varchar(25) NOT NULL COMMENT '上传时间',\r\n  `deleted` tinyint(1) DEFAULT '0' COMMENT '是否删除',\r\n  `enable` tinyint(1) DEFAULT '1' COMMENT '是否禁用链接',\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/resources/joaut.sql b/backend/src/main/resources/joaut.sql
+--- a/backend/src/main/resources/joaut.sql	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/src/main/resources/joaut.sql	(date 1689164856070)
+@@ -29,6 +29,14 @@
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+ 
++DROP TABLE IF EXISTS `j_userfile`;
++CREATE TABLE `j_userFile` (
++  `id` varchar(255) NOT NULL COMMENT '编号',
++  `userId` varchar(255) NOT NULL COMMENT '用户编号',
++  `fileId` varchar(255) NOT NULL COMMENT '文件编号',
++  PRIMARY KEY (`id`)
++) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
++
+ 
+ DROP TABLE IF EXISTS `j_file`;
+ DROP TABLE IF EXISTS `j_files`;
+@@ -38,7 +46,6 @@
+   `type` varchar(255) DEFAULT NULL COMMENT '文件类型',
+   `md5` varchar(255) DEFAULT NULL COMMENT 'MD5值',
+   `url` varchar(255) NOT NULL COMMENT '下载链接',
+-  `uid` varchar(255) NOT NULL COMMENT '用户编号',
+   `upload_time` varchar(25) NOT NULL COMMENT '上传时间',
+   `deleted` tinyint(1) DEFAULT '0' COMMENT '是否删除',
+   `enable` tinyint(1) DEFAULT '1' COMMENT '是否禁用链接',
+Index: backend/src/main/java/com/nju/boot/entity/dto/FileDto.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/nju/boot/entity/dto/FileDto.java b/backend/src/main/java/com/nju/boot/entity/dto/FileDto.java
+new file mode 100644
+--- /dev/null	
++++ b/backend/src/main/java/com/nju/boot/entity/dto/FileDto.java	
+@@ -0,0 +1,15 @@
++package com.nju.boot.entity.dto;
++
++import lombok.AllArgsConstructor;
++import lombok.Data;
++
++@Data
++@AllArgsConstructor
++public class FileDto {
++    private String id;
++
++    private String fileName;
++
++    private String uploadTime;
++}
++
+Index: backend/target/classes/joaut.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/*\r\nNavicat MySQL Data Transfer\r\n\r\nSource Server         : test\r\nSource Server Version : 80031\r\nSource Host           : localhost:3306\r\nSource Database       : joaut\r\n\r\nTarget Server Type    : MYSQL\r\nTarget Server Version : 80031\r\nFile Encoding         : 65001\r\n\r\nDate: 2023-06-08 23:30:27\r\n*/\r\n\r\nSET NAMES utf8mb4;\r\nSET FOREIGN_KEY_CHECKS=0;\r\n\r\n\r\nDROP TABLE IF EXISTS `j_user`;\r\nCREATE TABLE `j_user` (\r\n  `id` varchar(255) NOT NULL COMMENT '用户编号',\r\n  `username` varchar(255) NOT NULL COMMENT '用户名称(唯一)',\r\n  `password` varchar(255) NOT NULL COMMENT '用户密码(密文存储)',\r\n  `phone_number` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '用户电话号码',\r\n  `email` varchar(255) DEFAULT NULL COMMENT '用户邮箱',\r\n  `update_at` varchar(25) NOT NULL COMMENT '最近登录日期',\r\n  `status` int NOT NULL DEFAULT '0' COMMENT '用户状态，0表示正常，1表示被禁',\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;\r\n\r\n\r\nDROP TABLE IF EXISTS `j_file`;\r\nDROP TABLE IF EXISTS `j_files`;\r\nCREATE TABLE `j_files` (\r\n  `id` varchar(255) NOT NULL COMMENT '编号',\r\n  `name` varchar(255) NOT NULL COMMENT '文件名',\r\n  `type` varchar(255) DEFAULT NULL COMMENT '文件类型',\r\n  `md5` varchar(255) DEFAULT NULL COMMENT 'MD5值',\r\n  `url` varchar(255) NOT NULL COMMENT '下载链接',\r\n  `uid` varchar(255) NOT NULL COMMENT '用户编号',\r\n  `upload_time` varchar(25) NOT NULL COMMENT '上传时间',\r\n  `deleted` tinyint(1) DEFAULT '0' COMMENT '是否删除',\r\n  `enable` tinyint(1) DEFAULT '1' COMMENT '是否禁用链接',\r\n  PRIMARY KEY (`id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/target/classes/joaut.sql b/backend/target/classes/joaut.sql
+--- a/backend/target/classes/joaut.sql	(revision 0243c2f7bfc11113cefd0ec28c61817e4490fe35)
++++ b/backend/target/classes/joaut.sql	(date 1689164856072)
+@@ -29,6 +29,14 @@
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+ 
++DROP TABLE IF EXISTS `j_userfile`;
++CREATE TABLE `j_userFile` (
++  `id` varchar(255) NOT NULL COMMENT '编号',
++  `userId` varchar(255) NOT NULL COMMENT '用户编号',
++  `fileId` varchar(255) NOT NULL COMMENT '文件编号',
++  PRIMARY KEY (`id`)
++) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
++
+ 
+ DROP TABLE IF EXISTS `j_file`;
+ DROP TABLE IF EXISTS `j_files`;
+@@ -38,7 +46,6 @@
+   `type` varchar(255) DEFAULT NULL COMMENT '文件类型',
+   `md5` varchar(255) DEFAULT NULL COMMENT 'MD5值',
+   `url` varchar(255) NOT NULL COMMENT '下载链接',
+-  `uid` varchar(255) NOT NULL COMMENT '用户编号',
+   `upload_time` varchar(25) NOT NULL COMMENT '上传时间',
+   `deleted` tinyint(1) DEFAULT '0' COMMENT '是否删除',
+   `enable` tinyint(1) DEFAULT '1' COMMENT '是否禁用链接',

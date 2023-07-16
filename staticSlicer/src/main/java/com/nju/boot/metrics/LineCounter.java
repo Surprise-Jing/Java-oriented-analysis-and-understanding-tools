@@ -11,11 +11,11 @@ public class LineCounter {
         return linesOfCode;
     }
 
-    public int getLineOfComment() {
+    public int getLinesOfComment() {
         return lineOfComment;
     }
 
-    public int getLineOfBlanks() {
+    public int getLinesOfBlanks() {
         return lineOfBlanks;
     }
 

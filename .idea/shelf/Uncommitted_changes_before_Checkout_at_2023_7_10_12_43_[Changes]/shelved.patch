@@ -1,0 +1,37 @@
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile default=\"true\" name=\"Default\" enabled=\"true\" />\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"dynamicSlicer\" />\r\n        <module name=\"staticSlicer\" />\r\n        <module name=\"backend\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n    <bytecodeTargetLevel>\r\n      <module name=\"cmdJava\" target=\"1.8\" />\r\n      <module name=\"Java-oriented-analysis-and-understanding-tools\" target=\"1.8\" />\r\n    </bytecodeTargetLevel>\r\n  </component>\r\n  <component name=\"JavacSettings\">\r\n    <option name=\"ADDITIONAL_OPTIONS_OVERRIDE\">\r\n      <module name=\"Java-oriented-analysis-and-understanding-tools\" options=\"-parameters\" />\r\n      <module name=\"backend\" options=\"-parameters\" />\r\n      <module name=\"backend (1)\" options=\"-parameters\" />\r\n      <module name=\"dynamicSlicer\" options=\"-parameters\" />\r\n      <module name=\"joaut\" options=\"-parameters\" />\r\n      <module name=\"project\" options=\"-parameters\" />\r\n      <module name=\"staticSlicer\" options=\"-parameters\" />\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 8d4bfb1ddabecb5c1487ac31a2aca128bca09604)
++++ b/.idea/compiler.xml	(date 1688964184605)
+@@ -9,6 +9,7 @@
+         <outputRelativeToContentRoot value="true" />
+         <module name="dynamicSlicer" />
+         <module name="staticSlicer" />
++        <module name="dynamicSlicer" />
+         <module name="backend" />
+       </profile>
+     </annotationProcessing>
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectModuleManager\">\r\n    <modules>\r\n      <module fileurl=\"file://$PROJECT_DIR$/backend (1).iml\" filepath=\"$PROJECT_DIR$/backend (1).iml\" />\r\n      <module fileurl=\"file://$PROJECT_DIR$/staticSlicer/staticSlicer.iml\" filepath=\"$PROJECT_DIR$/staticSlicer/staticSlicer.iml\" />\r\n    </modules>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+--- a/.idea/modules.xml	(revision 8d4bfb1ddabecb5c1487ac31a2aca128bca09604)
++++ b/.idea/modules.xml	(date 1688964184617)
+@@ -3,7 +3,6 @@
+   <component name="ProjectModuleManager">
+     <modules>
+       <module fileurl="file://$PROJECT_DIR$/backend (1).iml" filepath="$PROJECT_DIR$/backend (1).iml" />
+-      <module fileurl="file://$PROJECT_DIR$/staticSlicer/staticSlicer.iml" filepath="$PROJECT_DIR$/staticSlicer/staticSlicer.iml" />
+     </modules>
+   </component>
+ </project>
+\ No newline at end of file
