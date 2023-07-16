@@ -28,7 +28,7 @@
 
 
       <p></p>
-     
+      
       <div id="dom" style="padding: 1600px 50px 50px 50px;overflow: visible;width: 1000px;" >
         <div style="height: 300px;"></div>
         <div style="position: relative;">
@@ -45,21 +45,21 @@
         <h2>一.抽象语法树(AST,Abstract Syntax Tree)</h2>
         <div style="height: 400px;"></div>
         <div style="position: relative;">
-          <img v-bind:src="ast" style="width: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+          <img v-bind:src="ast" style="height: 700px; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
         </div>
         <div style="height: 1000px;"></div>
 
         <h2>二.控制流图(CFG,Control Flow Graph)</h2>
         <div style="height: 400px;"></div>
         <div style="position: relative;">
-          <img v-bind:src="cfg" style="width: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+          <img v-bind:src="cfg" style="height: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
         </div>
         
         <div style="height: 900px;"></div>
         <h2>三.程序依赖图(PDG,Program Dependency Graph)</h2>
         <div style="height: 400px;"></div>
         <div style="position: relative;">
-          <img v-bind:src="pdg" style="width: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+          <img v-bind:src="pdg" style="height: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
         </div>
         <div style="height: 800px;"></div>
         <h2>四.调用关系图(CG,Call Graph)</h2>
@@ -102,7 +102,7 @@ import JsPDF from 'jspdf'
 import JSZip from'jszip'
 import FileSaver from'file-saver'
 import { saveAs } from 'file-saver';
-import { getFile } from '@/api/file'
+import { getFile, getFileInfo } from '@/api/file'
 import {getInfoId} from '@/api/user'
 import {getLines, getCodeMetrics} from '@/api/metrics'
 import {AstPNG, CfgPNG, CgPNG, PdgPNG} from '@/api/create_report'
@@ -112,17 +112,17 @@ import { blob } from 'd3'
 export default {
   data(){
     return {
-      ast:'',
-      cfg:'',
-      pdg:'',
-      cg:'',
+      ast:require('@/assets/report.png'),
+      cfg:require('@/assets/report.png'),
+      pdg:require('@/assets/report.png'),
+      cg:require('@/assets/report.png'),
 
       userName:'',
       fileName:'',
       createTime:'',
       fileData:[],      
       selectFile:{
-          id:''
+          id:'',
       },
 
       rowData:[
@@ -177,7 +177,7 @@ export default {
         getInfoId(localStorage.getItem("uid")).then(res => {
           if(res.success){
           this.userName = res.data.username
-          console.log(this.userName);
+         
           //console.log(this.fileData)
         }
         else{
@@ -188,7 +188,17 @@ export default {
         }})
     },
     getfilecontext(val){
-      // do nothing
+      getFileInfo(val).then(res =>{
+        if(res.success){
+          this.fileName = res.data.name;
+          //console.log(this.fileData)
+        }
+        else{
+          this.$message({
+            type:'warning',
+            message: res.msg
+          });
+      }})
         },
     getPdfFromHtml(ele) {
             html2Canvas(ele,{
@@ -236,13 +246,13 @@ export default {
     getReport(){
       this.getData();
       this.refresh_table();
-      console.log(this.funcData)
+      this.getCurrentTime();
 
 
       setTimeout(() => {
         let dom = document.getElementById('dom')  
        this.getPdfFromHtml(dom,'test')
-	    }, 1000);
+	    }, 2000);
 
 
       
@@ -272,55 +282,32 @@ export default {
 
       getData(){
         AstPNG(this.selectFile.id).then(res => {
-          if(res.success){
-              this.ast = require(res.data.result);
-              console.log(this.ast);
-             // this.$forceUpdate()
-            }
-            else{
-              this.$message({
-              type:'warning',
-              message: res.msg
-            })}
+            // this.$forceUpdate()
+            let astbinaryData = [];
+            astbinaryData.push(res);
+            let url = window.URL.createObjectURL(new Blob(astbinaryData));		// 获取对象url
+            this.ast = url	// 给变量赋值
         }),
 
         CfgPNG(this.selectFile.id).then(res => {
-          if(res.success){
-              this.cfg = res.data.result;
-              console.log(this.cfg);
-             // this.$forceUpdate()
-            }
-            else{
-              this.$message({
-              type:'warning',
-              message: res.msg
-            })}
+          let cfgbinaryData = [];
+            cfgbinaryData.push(res);
+            let url = window.URL.createObjectURL(new Blob(cfgbinaryData));		// 获取对象url
+            this.cfg = url	// 给变量赋值
         }),
 
         CgPNG(this.selectFile.id).then(res => {
-          if(res.success){
-              this.cg = res.data.result;
-              console.log(this.cg);
-             // this.$forceUpdate()
-            }
-            else{
-              this.$message({
-              type:'warning',
-              message: res.msg
-            })}
+          let cgbinaryData = [];
+            cgbinaryData.push(res);
+            let url = window.URL.createObjectURL(new Blob(cgbinaryData));		// 获取对象url
+            this.cg = url	// 给变量赋值
         }),
 
         PdgPNG(this.selectFile.id).then(res => {
-          if(res.success){
-              this.pdg = res.data.result;
-              console.log(this.pdg);
-             // this.$forceUpdate()
-            }
-            else{
-              this.$message({
-              type:'warning',
-              message: res.msg
-            })}
+          let pdgbinaryData = [];
+            pdgbinaryData.push(res);
+            let url = window.URL.createObjectURL(new Blob(pdgbinaryData));		// 获取对象url
+            this.pdg = url	// 给变量赋值
         }),
 
         getLines(this.selectFile.id).then(res => {
@@ -331,7 +318,7 @@ export default {
               annotation:res.data.linesOfComment,
               blankrow:res.data.linesOfBlanks
             })
-              console.log(this.rowData);
+             
             }
             else{
               this.$message({
@@ -343,7 +330,7 @@ export default {
         getCodeMetrics(this.selectFile.id).then(res => {
           if(res.success){
             this.funcData = res.data
-              console.log(this.funcData);
+           
             }
             else{
               this.$message({
@@ -353,30 +340,7 @@ export default {
         })
 
 
-        //代码度量
-        // this.rowData.push({
-        //   totalraw:'20',
-        //   coderow:'12',
-        //   annotation:'5',
-        //   blankrow:'3'
-        // })
-        // this.funcData.push({
-        //   "funcname":'getNum',
-        //   "paranumber":'2',
-        //   "codedepth":'3',
-        //   "circlecomplexity":'1',
-        //   "calltimes":'5',
-        //   "calledtimes":'7'
-        // })
-        // this.funcData.push({
-        //   funcname:'getRow',
-        //   paranumber:'1',
-        //   codedepth:'2',
-        //   circlecomplexity:'7',
-        //   calltimes:'4',
-        //   calledtimes:'8'
-        // })
-        
+       
       },
       refresh_table(){
         this.refresh = false
@@ -386,6 +350,15 @@ export default {
                 this.refresh = true
             })
       },
+      getCurrentTime() {
+        //获取当前时间并打印
+        var _this = this;
+        let yy = new Date().getFullYear();
+        let mm = new Date().getMonth()+1;
+        let dd = new Date().getDate();
+        _this.gettime = yy+'.'+mm+'.'+dd+' ';
+       this.createTime=_this.gettime ;
+    }
   },
   
     

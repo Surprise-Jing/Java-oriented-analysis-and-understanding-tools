@@ -9,10 +9,10 @@
       <el-button @click="tipsbtn" style="position: fixed;left:1300px;">{{tip_text}}</el-button>
       <div v-if="tip" class="tiparea">
         <div style="height: 15px;"></div>
-        <h1>使用方法:</h1>
+        <h1>动态切片使用说明:</h1>
         <br>
-        第一：<br>
-        第二:<br>
+        1、该软件系统只能对没有错误且可运行（即必须包含main函数）的Java文件进行动态切片。<br>
+        2、切片时请输入正确的代码行数和整个程序对应的所有输入内容，输入以空格隔开。若程序不需要输入，则无需填写输入变量内容。<br>
 
       </div>
       <div class="input_x">
