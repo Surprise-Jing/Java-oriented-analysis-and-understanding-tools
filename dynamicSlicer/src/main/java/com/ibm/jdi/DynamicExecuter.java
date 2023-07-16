@@ -398,6 +398,7 @@ public class DynamicExecuter {
                 if( !_cdg.outgoingEdgesOf(GN).isEmpty() /* GN is control Node */) {
 //                    更新PrednNode
                     PrednNode.put(GN, GNToDN.get(GN).get(GNToDN.get(GN).size() - 1));
+                    System.out.println("Upadte PrednNode: " + PrednNode.get(GN).getGN().getAstNode().getBegin().get().line);
                 }
 
             }

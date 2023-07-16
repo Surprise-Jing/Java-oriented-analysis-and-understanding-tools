@@ -9,7 +9,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="dynamicSlicer" />
         <module name="staticSlicer" />
-        <module name="dynamicSlicer" />
         <module name="backend" />
       </profile>
     </annotationProcessing>
