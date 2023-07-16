@@ -12,6 +12,10 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 支配树的打印类
+ * 仅做测试用
+ */
 public class DominatorTreePrinter extends GraphPrinter{
 
     public DominatorTreePrinter(DominatorTree dominatorTree, Writer writer) {

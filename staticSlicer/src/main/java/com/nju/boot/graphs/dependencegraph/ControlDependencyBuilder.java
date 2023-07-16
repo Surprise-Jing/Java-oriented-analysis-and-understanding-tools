@@ -7,9 +7,21 @@ import com.nju.boot.nodes.GraphNode;
 
 import java.util.Set;
 
+/***
+ * 建立控制依赖边的类
+ */
 public class ControlDependencyBuilder {
+    /**
+     * 建立控制依赖边的对象
+     */
     DependenceGraph pdg;
+    /***
+     * 对象的acfg图
+     */
     ACFG acfg;
+    /***
+     * 根据acfg图生成的后支配树
+     */
     DominatorTree postDominatorTree;
 
 
@@ -33,8 +45,6 @@ public class ControlDependencyBuilder {
         for(Edge controlFlowEdge: acfg.edgeSet()){
             GraphNode<?> src = acfg.getEdgeSource(controlFlowEdge),
                     target = acfg.getEdgeTarget(controlFlowEdge);
-
-
             if(!postDominatorTree.dominates(target,src)){
                 GraphNode<?>n = target;
                 //n的初始值为target

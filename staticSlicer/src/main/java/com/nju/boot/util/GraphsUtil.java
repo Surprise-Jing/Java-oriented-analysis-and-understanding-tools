@@ -24,6 +24,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GraphsUtil {
+    /**
+     *
+     * @param cu ast树根节点
+     * @param lineNumber 行号
+     * @return 该行所在的方法
+     */
     public static CallableDeclaration<?>  findMethodByLineNumber(CompilationUnit cu,int lineNumber){
 
         for (TypeDeclaration<?> typeDeclaration:cu.getTypes()){
@@ -38,39 +44,89 @@ public class GraphsUtil {
         return null;
     }
 
-
+    /**
+     *
+     * @param graphs 所有抽象模型信息
+     * @param signature 函数签名
+     * @return 找到的函数
+     */
     public static CallableDeclaration<?> findMethodBySignature(Graphs graphs, String signature){
 
         return graphs.getCallGraph().getSignatureToNodeMap().get(signature).getAstNode();
     }
+
+    /**
+     * 将ast树打印成xml格式
+     * @param compilationUnit ast树的根节点
+     * @return xml格式的字符串
+     */
     public static String astNodeToXml(CompilationUnit compilationUnit){
         XmlPrinter xmlPrinter = new XmlPrinter(true);
         return xmlPrinter.output(compilationUnit);
     }
+
+    /**
+     * 将ast树打印成png图的格式
+     * @param compilationUnit ast树的根节点
+     * @param outFile 保存到的文件
+     * @throws IOException
+     */
     public static void astNodeToPNGOutput(CompilationUnit compilationUnit, File outFile) throws IOException {
         String srcDot = new DotPrinter(true).output(compilationUnit);
         Graphviz.fromString(srcDot).render(Format.PNG).toOutputStream(new FileOutputStream(outFile));
     }
+
+    /**
+     * 将ast树保存为png图的格式
+     * @param compilationUnit ast树根节点
+     * @param outFilePath 保存到的文件路径
+     * @throws IOException
+     */
     public static void astNodeToPNGOutput(CompilationUnit compilationUnit, String outFilePath) throws IOException {
         File outFile = new File(outFilePath);
         astNodeToPNGOutput(compilationUnit,outFile);
     }
 
+    /**
+     * 将ast树保存为png图的格式
+     * @param compilationUnit ast树根节点
+     * @param outputStream 保存到的输出流
+     * @throws IOException
+     */
     public static void astNodeToPNGOutput(CompilationUnit compilationUnit, OutputStream outputStream) throws IOException {
         String srcDot = new DotPrinter(true).output(compilationUnit);
         Graphviz.fromString(srcDot).render(Format.PNG).toOutputStream(outputStream);
     }
 
+    /**
+     *
+     * @param node
+     * @return 该节点包含的所有行序号集合
+     */
     public static Set<Integer> getLinesCoveredByNode(Node node){
         int start = node.getRange().get().begin.line;
         int end = node.getRange().get().end.line;
         return IntStream.range(start,end+1).boxed().collect(Collectors.toSet());
     }
+
+    /**
+     *
+     * @param nodes
+     * @return 所有节点包含的所有行序号集合
+     */
     public static Set<Integer> getLinesCoveredByNodes(Set<Node>nodes){
         Set<Integer>result = new HashSet<>();
         nodes.stream().map(GraphsUtil::getLinesCoveredByNode).forEach(result::addAll);
         return result;
     }
+
+    /**
+     *
+     * @param g 包含所有节点的图
+     * @param lineNumber 切片准则中的行号
+     * @param variable 切片准则中的变量名
+     * @return 对应的节点
+     */
     public static GraphNode<?> getNodeBy(Graph<?> g,int lineNumber,String variable){
         GraphNode<?>result = null;
         for(GraphNode<?>graphNode:g.vertexSet()){
@@ -90,6 +146,13 @@ public class GraphsUtil {
         }
         return result;
     }
+
+    /**
+     * @param graphs 所有代码抽象模型信息
+     * @param lineNumber 切片准则中的行号
+     * @param variable 切片准则中的变量名
+     * @return 对应的节点
+     */
     public static GraphNode<?> getNodeBy(Graphs graphs,int lineNumber,String variable){
         CallableDeclaration<?>targetMethod = findMethodByLineNumber(graphs.getCu(),lineNumber);
         if(targetMethod == null)

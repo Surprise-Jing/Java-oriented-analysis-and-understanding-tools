@@ -38,6 +38,10 @@ public class PDGPrinter extends GraphPrinter{
                 map.put("label",DefaultAttribute
                         .createAttribute(((DataDependencyEdge) e).getDependentVariables()
                                 .toString()));
+                /*
+                 * 如果是数据依赖边
+                 * 以虚线表示
+                 */
                 map.put("style",DefaultAttribute.createAttribute("dashed"));
             }
             return map;

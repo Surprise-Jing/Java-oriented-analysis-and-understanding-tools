@@ -8,6 +8,9 @@ import org.json.XML;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 把xml格式的数据转换为可做显示处理的json对象
+ */
 public class JsonDataModifier {
     JSONObject src,result = null;
 

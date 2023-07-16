@@ -16,19 +16,40 @@ import java.io.Writer;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * 支配树，可以获得控制流图中节点之间的支配和被支配关系
+ */
 public class DominatorTree extends Graph<MethodDeclaration> {
     public DominatorTree(CFG cfg){
         this.cfg = cfg;
     }
+
+    /**
+     * 从其创建支配树的控制流图
+     */
     CFG cfg;
     boolean built = false;
     private int nodeID = 0;
-
+    /**
+     * 键：节点
+     * 值：该节点的支配者
+     */
     Map<GraphNode<?>,GraphNode<?>>doms = new HashMap<>();
-
+    /**
+     * 节点-编号的map
+     */
     Map<GraphNode<?>,Integer> nodeIndexMap = new HashMap<>();
+    /**
+     * 编号-节点的map
+     */
     Map<Integer,GraphNode<?>> indexNodeMap = new HashMap<>();
 
+    /**
+
+     * @param b1
+     * @param b2
+     * @return 节点b1，b2的最近共同支配节点
+     */
     public GraphNode<?> intersect(GraphNode<?>b1,GraphNode<?>b2){
         GraphNode<?>f1 = b1;
         GraphNode<?>f2 = b2;
@@ -42,12 +63,21 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         return f1;
     }
 
+    /**
+     * 深度遍历控制流图
+     */
     public void DFS(){
         Set<GraphNode<?>> visited=  new HashSet<>();
         GraphNode<?>root = cfg.getRootNode().get();
         DFS(root,visited);
 
     }
+
+    /**
+     * 深度遍历控制流图，为节点按后序编号
+     * @param n
+     * @param visited 遍历过的节点集合
+     */
     public void DFS(GraphNode<?> n,Set<GraphNode<?>>visited){
         visited.add(n);
             for(Edge e:cfg.outgoingEdgesOf(n)){
@@ -61,6 +91,11 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         nodeIndexMap.put(n,id);
         indexNodeMap.put(id,n);
     }
+
+    /**
+     * 该支配树的建造方法
+     * @return 建造好的支配树
+     */
 
     public DominatorTree build(){
         if(built)return this;
@@ -124,7 +159,13 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         }
         return this;
     }
-    /**returns if a dominates b*/
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return a是否支配b
+     */
     public boolean dominates(GraphNode<?>a,GraphNode<?>b){
 
         if(containsEdge(a,b))return true;
@@ -134,6 +175,13 @@ public class DominatorTree extends Graph<MethodDeclaration> {
             return dominates(a,parentOfB);
         }
     }
+
+    /**
+     *
+     * @param node
+     * @return node在支配树中的直接父结点，
+     * 如果node为根节点，则为null值
+     */
     public GraphNode<?>getParent(GraphNode<?>node){
         Set<Edge> incomingEdges = this.incomingEdgesOf(node);
         assert (incomingEdges.size()<=1);
@@ -143,7 +191,10 @@ public class DominatorTree extends Graph<MethodDeclaration> {
         return parent;
     }
 
-
+    /**
+     * 向writer中写入dot文件的支配树
+     * @param writer
+     */
     @Override
     protected void writeAsDot(Writer writer) {
         new DominatorTreePrinter(this,writer, GraphPrinter.Format.DOT).print();

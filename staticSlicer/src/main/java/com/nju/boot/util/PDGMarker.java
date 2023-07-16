@@ -10,6 +10,9 @@ import com.nju.boot.slicer.SlicerCriterion;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 图遍历法使用的标记器，从切片准则标记PDG图中的节点
+ */
 public class PDGMarker {
     PDG pdg;
     public PDGMarker(PDG pdg) {

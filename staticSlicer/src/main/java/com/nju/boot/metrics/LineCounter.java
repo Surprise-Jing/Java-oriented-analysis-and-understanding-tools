@@ -19,10 +19,16 @@ public class LineCounter {
         return lineOfBlanks;
     }
 
+    /**
+     * 统计代码行数
+     * @param text 代码
+     */
     public LineCounter(String text) {
         text.lines().forEach(line->{
             String trimmedLine = line.trim();
+            //如果是空白行
             if(trimmedLine.isBlank())lineOfBlanks++;
+            //如果是注释行
             else if ((trimmedLine.isBlank())||
                     (trimmedLine.startsWith("//"))||
                     (trimmedLine.startsWith("/*"))||

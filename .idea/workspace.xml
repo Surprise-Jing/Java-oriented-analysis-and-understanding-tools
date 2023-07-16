@@ -5,31 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/codeMetrics/CycCompTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/performance/LessThanFifty.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/performance/LessThanHunds.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/performance/LessThanThousand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/WebTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/codeMetrics/LineOfCodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/codeMetrics/LineOfCodeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/output/simpleprograms/prog02/Prog02.java-7-a-DataFlow" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/output/simpleprograms/prog02/Prog02.java-7-a-DataFlow" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/output/simpleprograms/prog02/Prog02.java-7-a-PDG" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/output/simpleprograms/prog02/Prog02.java-7-a-PDG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/output/simpleprograms/prog02/Prog02.java-9-a-DataFlow" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/output/simpleprograms/prog02/Prog02.java-9-a-DataFlow" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/output/simpleprograms/prog02/Prog02.java-9-a-PDG" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/output/simpleprograms/prog02/Prog02.java-9-a-PDG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/output/specific/specific/cg.dot" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/output/specific/specific/cg.dot" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/output/specific/specific/cg.png" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/output/specific/specific/cg.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/src/simpleprograms/Prog02.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/simpleprograms/Prog02.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/src/simpleprograms/Prog04.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/simpleprograms/Prog04.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/edges/CallEdge.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/edges/CallEdge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/edges/DataDependencyEdge.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/edges/DataDependencyEdge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/edges/DummyEdge.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/edges/DummyEdge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/augmented/ACFG.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/augmented/ACFG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/augmented/ACFGBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/augmented/ACFGBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/callgraph/CallGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/callgraph/CallGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/callgraph/EdgeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/callgraph/EdgeBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/callgraph/VertexBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/callgraph/VertexBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/CDG.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/CDG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/ControlDependencyBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/ControlDependencyBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/DDG.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/DDG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/DataDependencyBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/DataDependencyBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/DependenceGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/DependenceGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/DominatorTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/DominatorTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/PDG.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/dependencegraph/PDG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/ACFGPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/ACFGPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/CDGPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/CDGPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/CFGPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/CFGPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/CallGraphPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/CallGraphPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/DominatorTreePrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/DominatorTreePrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/GraphPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/GraphPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/PDGPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/printer/PDGPrinter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/metrics/CodeMetrics.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/metrics/CodeMetrics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/AbstractSlicer.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/AbstractSlicer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/SlicerCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/SlicerCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/metrics/LineCounter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/metrics/LineCounter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/PDGSlicer.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/PDGSlicer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/exceptions/FilePathErrorException.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/exceptions/FilePathErrorException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/exceptions/FileUnparsableException.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/exceptions/FileUnparsableException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/exceptions/MethodNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/exceptions/MethodNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/exceptions/VariableNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/exceptions/VariableNotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/printer/SelectivePrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/printer/SelectivePrettyPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/metrics/CodeMetricsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/metrics/CodeMetricsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/slicer/GraphsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/graphs/GraphsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/slicer/PDGSlicerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/slicer/PDGSlicerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/test/tests/PDGTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/test/tests/PDGTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/printer/SelectivePrettyPrinterVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/printer/SelectivePrettyPrinterVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/util/GraphsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/util/GraphsUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,31 +78,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "last_opened_file_path": "/Users/keitolove/Documents/nju/2023/se_project/fromGit/Java-oriented-analysis-and-understanding-tools/staticSlicer/data/testcases/src/simpleprograms",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.48045978",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "spring.configuration.checksum": "66c93422065c042ece7fc2ada957785d",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/keitolove/Documents/nju/2023/se_project/fromGit/Java-oriented-analysis-and-understanding-tools/staticSlicer/data/testcases/src/simpleprograms&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.48045978&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;66c93422065c042ece7fc2ada957785d&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/staticSlicer/data/testcases/src/simpleprograms" />
@@ -214,11 +223,23 @@
       <option name="presentableId" value="Default" />
       <updated>1689347269081</updated>
       <workItem from="1689434433185" duration="49936000" />
+      <workItem from="1689535571008" duration="4581000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -256,11 +277,6 @@
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/metrics/LineCounter.java</url>
-          <line>22</line>
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/Graphs.java</url>
           <line>53</line>
           <option name="timeStamp" value="45" />
@@ -274,11 +290,6 @@
           <url>file://$PROJECT_DIR$/staticSlicer/data/testcases/src/performance/LessThanFifty.java</url>
           <line>25</line>
           <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/staticSlicer/src/test/com/nju/boot/WebTest.java</url>
-          <line>34</line>
-          <option name="timeStamp" value="56" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

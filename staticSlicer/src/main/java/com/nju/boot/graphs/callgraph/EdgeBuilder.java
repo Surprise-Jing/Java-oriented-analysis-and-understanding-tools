@@ -11,6 +11,9 @@ import com.nju.boot.nodes.GraphNode;
 
 import java.util.Stack;
 
+/**
+ * 为CallGraph建立边关系
+ * */
 public class EdgeBuilder extends VoidVisitorAdapter<Void> {
     GraphNode<?> currentMethodNode;
     boolean includeImportedFunctions;
@@ -27,6 +30,8 @@ public class EdgeBuilder extends VoidVisitorAdapter<Void> {
         currentMethodNode = callGraph.getSignatureToNodeMap().get(n.resolve().getQualifiedSignature());
         super.visit(n, arg);
     }
+    //添加调用边
+    //根据是否已存在边决定是创建边还是增加调用次数
     public void call( GraphNode<?> tar){
         //已经存在边，则增加调用次数
         if(callGraph.containsEdge(currentMethodNode,tar)) {
@@ -44,8 +49,10 @@ public class EdgeBuilder extends VoidVisitorAdapter<Void> {
     public void visit(ExplicitConstructorInvocationStmt n, Void arg) {
 
         String sig = n.resolve().getQualifiedSignature();
+        //在map中寻找方法签名对应的节点
         GraphNode<CallableDeclaration<?>> target = callGraph.getSignatureToNodeMap().get(sig);
         if(target == null){
+            //如果没有该构造函数则创建该构造函数并指向它
             target = callGraph.addNode(sig,null);
             callGraph.getSignatureToNodeMap().put(sig,target);
         }
@@ -56,8 +63,11 @@ public class EdgeBuilder extends VoidVisitorAdapter<Void> {
     @Override
     public void visit(MethodCallExpr n, Void arg) {
         String sig = n.resolve().getQualifiedSignature();
+        //从map中由方法签名得到对应的节点
         GraphNode<CallableDeclaration<?>> target = callGraph.getSignatureToNodeMap().get(sig);
         if(target == null && includeImportedFunctions){
+            //如果没有这个节点且包含外部引用方法
+            //则在map中加入该节点并添加调用边
             target = callGraph.addNode(sig,null);
             callGraph.getSignatureToNodeMap().put(sig,target);
         }
