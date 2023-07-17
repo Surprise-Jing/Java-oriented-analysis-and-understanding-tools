@@ -17,6 +17,7 @@ public class ResponseDto<T> {
 
     private T data;
 
+    //默认正确处理，返回值为20000
     public ResponseDto() {
         this.code = 20000;
         this.success = true;

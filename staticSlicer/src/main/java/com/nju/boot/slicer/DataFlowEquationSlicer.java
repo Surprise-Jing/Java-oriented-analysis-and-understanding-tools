@@ -66,6 +66,14 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
         }
     }
 
+    /**
+     * 根据当前节点所有的后续节点，遍历获得变量的相关变量信息
+     * 若变量在当前节点未被定义，且在后续节点的变量相关信息里
+     * 若变量在当前节点被使用，则不继承后续变量信息
+     * @param node
+     * @param slicerCriterion 相应的切片准则
+     * @return
+     */
     Set<String> getRC0(GraphNode<?> node, SlicerCriterion slicerCriterion){
         if(slicerCriterion.getNodes().contains(node)){
             return slicerCriterion.getVariable();
@@ -109,7 +117,7 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
     }
     public AbstractSlicer slice(int lineNumber,String variableName) {
         if(!isSlicable(lineNumber,variableName))
-        throw new MethodNotFoundException();
+            throw new MethodNotFoundException();
         CallableDeclaration<?> tarMethod = GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
         this.cfg = graphs.getCFG(tarMethod);
         this.cdg = graphs.getCDG(tarMethod);
@@ -135,16 +143,20 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
     }
 
     private AbstractSlicer slice(SlicerCriterion slicerCriterion){
+        //初始化切片准则起始变量
         InitializeRC0(slicerCriterion);
+        //初始化当前流程中程序切片的最终结果
         InitializeSC0(slicerCriterion);
-        System.out.println(relevantVariables);
-        System.out.println(relevantStatements);
+        //System.out.println(relevantVariables);
+        //System.out.println(relevantStatements);
         branchStatements = new HashSet<>();
         int round = 0;
         while(true){
-            System.out.println(round++);
-            System.out.println(branchStatements);
+            //迭代次数round
+            //System.out.println(round++);
+            //System.out.println(branchStatements);
             Set<GraphNode<?>> oldBranchStatements = new HashSet<>(branchStatements);
+            //更新分支语句，根据当前分支语句中节点的控制依赖关系，判断是否有新的节点加入分支语句
             for(GraphNode<?> branch: cfg.vertexSet()) {
                 for (GraphNode<?> node : INFL(branch)) {
                     if (relevantStatements.contains(node)) {
@@ -153,15 +165,18 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
                     }
                 }
             }
+            //分支语句集合不再更新，循环结束
             if(branchStatements.equals(oldBranchStatements)){
                 break;
             }
+            //根据分支语句集合，更新每个节点的相关变量
             for(GraphNode<?> node: cfg.vertexSet()){
                for(GraphNode<?> branch: branchStatements){
                    relevantVariables.get(node).addAll(getRC0(node, new SlicerCriterion(branch, cfg)));
                }
             }
-            System.out.println(relevantVariables);
+            //System.out.println(relevantVariables);
+            //根据分支集合重新寻找当前迭代中程序切片结果
             relevantStatements.clear();
             for(Edge edge: cfg.edgeSet()){
                 GraphNode<?> src = cfg.getEdgeSource(edge);
@@ -183,6 +198,12 @@ public class DataFlowEquationSlicer extends  AbstractSlicer{
         return this;
     }
 
+    /**
+     * INFL(b)表示从b开始到距离它最近的后向支配语句之间的路径上除去端点以外所有语句的集合
+     * 其直接后驱>=2时才不为空，否则为空集
+     * @param node
+     * @return 控制依赖于b的语句集合
+     */
     Set<GraphNode<?>> INFL(GraphNode<?> node){
         Set<GraphNode<?>> result = new HashSet<>();
         if(cfg.outDegreeOf(node) < 2){

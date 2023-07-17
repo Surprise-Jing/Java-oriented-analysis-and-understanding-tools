@@ -28,7 +28,7 @@
       <div id="dom" style="padding: 1600px 50px 50px 50px;overflow: visible;width: 1000px;" >
         <div style="height: 300px;"></div>
         <div style="position: relative;">
-          <img src="../../assets/report.png" style="width: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+          <img src="../../assets/njulogo.jpg" style="width: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
         </div>
         <div style="height: 600px;"></div>
         <h1 style="text-align: center;">Java分析理解报告</h1>
@@ -254,10 +254,11 @@ export default {
       }, 400);
       setTimeout(() => {
         this.increase();
-      }, 600);
-      setTimeout(() => {
         this.increase();
-      }, 800);
+      }, 600);
+      // setTimeout(() => {
+      //   this.increase();
+      // }, 800);
       setTimeout(() => {
         this.increase();
       }, 1000);
@@ -334,8 +335,9 @@ export default {
 
         getLines(this.selectFile.id).then(res => {
           if(res.success){
+            this.rowData.pop()
             this.rowData.push({
-              totalraw:res.data.linesOfAll,
+              totalrow:res.data.linesOfAll,
               coderow:res.data.linesOfCode,
               annotation:res.data.linesOfComment,
               blankrow:res.data.linesOfBlanks

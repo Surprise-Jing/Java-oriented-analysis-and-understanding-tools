@@ -12,6 +12,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -128,15 +131,41 @@ public class MetricsController {
 
     @GetMapping("/lines")
     @ApiOperation(value = "统计文件的行数信息")
-    public LinesDto Lines(String id){
+    public LinesDto Lines(String id) throws Exception{
         String fileName = filesMapper.selectById(id).getName();
         String path = PathUtils.FILE_SRC_PATH + "/" + fileName;
         CodeMetrics codeMetrics = new CodeMetrics(path);
+        File file = new File(path);
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        int allLines = 0;
+        int nullLines = 0;
+        int annoLines = 0;
+        int codeLines = 0;
+        String line = "";
+        while ((line = br.readLine()) != null){
+            allLines++;
+            //java文件
+            String trimStr = line.trim();
+            if (trimStr.length() == 0){
+                //空行
+                nullLines++;
+            }else if (trimStr.startsWith("//")
+                    || trimStr.startsWith("/**")
+                    || trimStr.startsWith("*")
+                    || trimStr.startsWith("*/")
+                    || trimStr.startsWith("/*")
+            ){
+                annoLines++;
+            }
+            else {
+                codeLines++;
+            }
+        }
         int linesOfCode = codeMetrics.getLinesCode();
         int linesOfComment = codeMetrics.getLinesComment();
         int linesOfBlanks = codeMetrics.getLinesBlank();
         int linesOfAll = linesOfBlanks + linesOfComment + linesOfCode;
-        return new LinesDto(linesOfCode, linesOfComment, linesOfBlanks, linesOfAll);
+        return new LinesDto(linesOfCode, linesOfComment, nullLines, linesOfAll);
     }
 
 

@@ -1,4 +1,4 @@
-public class WhileIf {
+public class Specific {
     public int va = 0;
     public int vb = 1;
     public static void main(String[]args){
