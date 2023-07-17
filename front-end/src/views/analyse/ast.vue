@@ -18,12 +18,14 @@
       <el-button @click="download_img">下载图片</el-button>
         <!-- 生成ast树 -->
         <div class="ast" id="ast">
+          <div  id="ast">
             <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
             collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
             <!-- 创建浮窗盒子 -->
             <div v-show="BasicSwich" class="floating">    
               <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p>
             </div>
+          </div>
         </div>
         
   </div>
@@ -121,7 +123,8 @@
           floating.style.left = e.clientX +'px';    
           floating.style.top = e.clientY+'px';
         },
-        toggleExpand(data, val) {//一键展开
+        //val为true时一键展开
+        toggleExpand(data, val) {
           var _this = this;
           if (Array.isArray(data)) {
               data.forEach(function(item) {
@@ -137,10 +140,11 @@
               }
           }
         },
+       //一件展开，与button绑定
         expandall(){
           this.toggleExpand(this.testData,true)
         },
-
+        //缩小功能
         narrow() {
         this.$nextTick(() => {
             // imageWrapper 获取元素
@@ -150,6 +154,7 @@
             imageWrapper.style.transformOrigin = '0 0';
           })
         },
+        //放大功能
         enlarge() {
           this.$nextTick(() => {
             // imageWrapper 获取元素
@@ -159,8 +164,8 @@
             imageWrapper.style.transformOrigin = '0 0';
           })
        },
-       download_img(){  //下载图片
-        
+       //下载图片
+       download_img(){  
         AstPNG(this.selectFile.id).then(res => {
             let astbinaryData = [];
             astbinaryData.push(res);
@@ -169,7 +174,6 @@
 
             FileSaver(url,"ast.png")
         })
-        
        },
 
 
@@ -203,11 +207,9 @@
     text-align: left;    
     font-size: 12px;
   }
- .ast{
-  overflow: scroll;
- }
+
   .astGraph{
-  
+  overflow: scroll;
   }
   </style>
   

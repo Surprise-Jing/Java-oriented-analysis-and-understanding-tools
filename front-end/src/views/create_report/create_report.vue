@@ -240,6 +240,7 @@ export default {
            
     },
 
+
     getReport(){
       setTimeout(() => {
         this.increase();
@@ -310,6 +311,7 @@ export default {
             astbinaryData.push(res);
             let url = window.URL.createObjectURL(new Blob(astbinaryData));		// 获取对象url
             this.ast = url	// 给变量赋值
+           
         }),
 
         CfgPNG(this.selectFile.id).then(res => {
