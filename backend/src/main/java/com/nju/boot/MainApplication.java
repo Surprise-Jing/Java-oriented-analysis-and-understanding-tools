@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @MapperScan("com.nju.boot.mapper")
 @SpringBootApplication
-public class MainApplication {
+public class   MainApplication {
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class,args);
     }

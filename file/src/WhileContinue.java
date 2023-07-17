@@ -1,12 +1,11 @@
-public class WhileBreak {
+public class WhileContinue {
+
     public void func01(int a,int b){
         while(b<10){
             a++;
-            if(a%4 == 0)
-                break;
+            if(a%2 == 0)continue;
             System.out.println(a);
-            if(a%2 == 0)
-                break;
+            if(a%4 == 0)continue;
             System.out.println(a);
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div class = "pdgGraph">
+    <div class = "astGraph">
       <div class="choose_file" >
               选择文件:
           <el-select v-model="selectFile.id" @change="getAst(selectFile.id)" placeholder="请选择">
@@ -11,22 +11,19 @@
             </el-option>
           </el-select>
       </div>
+      <!-- 一键展开,放大,缩小,下载按钮 -->
       <el-button @click="expandall">全部展开</el-button>
-        <span style="left: 50%;position: relative;">
-          <el-button @click="enlarge" >放大</el-button>
-          <el-button @click="narrow">缩小</el-button>
-     </span>
-     
-     
-      
-        <div style="height: 3px;background-color: gray;"></div>
-        <div class="ast">
-          <div  id="ast">
-          <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
-          collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
-          <!-- 创建浮窗盒子 --><div v-show="BasicSwich" class="floating">    
-            <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p></div>
-          </div>
+      <el-button @click="enlarge" >放大</el-button>
+      <el-button @click="narrow">缩小</el-button>
+      <el-button @click="download_img">下载图片</el-button>
+        <!-- 生成ast树 -->
+        <div class="ast" id="ast">
+            <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
+            collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
+            <!-- 创建浮窗盒子 -->
+            <div v-show="BasicSwich" class="floating">    
+              <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p>
+            </div>
         </div>
         
   </div>
@@ -38,7 +35,9 @@
   import orgtree from "../../components/orgtree";
   import {getFile} from "@/api/file";
   import {getAST} from "@/api/graph";
-  
+  import html2canvas from 'html2canvas';
+  import FileSaver from'file-saver';
+  import {AstPNG} from '@/api/create_report'
     export default {
       components:{
         orgtree
@@ -122,7 +121,7 @@
           floating.style.left = e.clientX +'px';    
           floating.style.top = e.clientY+'px';
         },
-        toggleExpand(data, val) {
+        toggleExpand(data, val) {//一键展开
           var _this = this;
           if (Array.isArray(data)) {
               data.forEach(function(item) {
@@ -132,7 +131,6 @@
                 }
               });
           } else {
-            //console.log('here')
               this.$set(data, "expand", val);
               if (data.children) {
                 _this.toggleExpand(data.children, val);
@@ -160,7 +158,20 @@
             imageWrapper.style.transform = "scale(" + this.scal + ")";
             imageWrapper.style.transformOrigin = '0 0';
           })
-       }
+       },
+       download_img(){  //下载图片
+        
+        AstPNG(this.selectFile.id).then(res => {
+            let astbinaryData = [];
+            astbinaryData.push(res);
+            let url = window.URL.createObjectURL(new Blob(astbinaryData));		// 获取对象url
+            // this.ast = url	// 给变量赋值
+
+            FileSaver(url,"ast.png")
+        })
+        
+       },
+
 
 
       }
@@ -192,17 +203,11 @@
     text-align: left;    
     font-size: 12px;
   }
-  .ast{
-   
+ .ast{
+  overflow: scroll;
+ }
+  .astGraph{
   
-    width: 1000px;
-    height: 500px;
-    left:20%;
-    overflow: scroll;
-   
-  }
-  .pdgGraph{
-   
   }
   </style>
   

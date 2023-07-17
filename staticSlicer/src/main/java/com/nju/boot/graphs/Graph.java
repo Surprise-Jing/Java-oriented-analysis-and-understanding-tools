@@ -69,20 +69,27 @@ public abstract class Graph<RootN extends Node> extends DirectedPseudograph<Grap
     public Optional<GraphNode<?>> getRootNode(){
         return Optional.ofNullable(root);
     }
+
     public Optional<GraphNode<?>> getExitNode(){
         return Optional.ofNullable(exit);
     }
+
     protected abstract void writeAsDot(Writer writer);
+
+    /** 将生成图写入传入的文件中，可在本地访问 */
     public void save2FileAsPNG(File outFile) throws IOException {
         StringWriter stringWriter = new StringWriter();
         writeAsDot(stringWriter);
         String srcDot = stringWriter.toString();
         Graphviz.fromString(srcDot).render(Format.PNG).toFile(outFile);
     }
+
     public void save2FileAsPNG(String filePath) throws IOException {
         File file = new File(filePath);
         save2FileAsPNG(file);
     }
+
+    /** 将生成图写入传入的字符流中，供前端显示 */
     public void save2FileAsPNG(OutputStream outputStream) throws IOException {
         StringWriter stringWriter = new StringWriter();
         writeAsDot(stringWriter);

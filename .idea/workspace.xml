@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_15__20_40__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_15__20_40__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_5__15_57__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_7_5__15_57__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_15__21_49__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2023_7_15__21_49__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/dto/ResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/dto/ResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/JwtTokenUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/JwtTokenUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/PathUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/PathUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/DataFlowEquationSlicer.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/DataFlowEquationSlicer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +60,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Java-oriented-analysis-and-understanding-tools/backend/file&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Java-oriented-master/Java-oriented-master/Documents/TestReport&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
@@ -121,9 +124,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MainApplication" />
         <item itemvalue="JUnit.DynamicSlicerTest.programExecute" />
         <item itemvalue="JUnit.DynamicSlicerTest" />
-        <item itemvalue="Application.MainApplication" />
         <item itemvalue="Application.MainApplication" />
         <item itemvalue="JUnit.DynamicSlicerTest.programExecute" />
       </list>
@@ -151,7 +154,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="dev" />
+                        <option value="origin/dev" />
                       </list>
                     </value>
                   </entry>
@@ -174,6 +177,21 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$CodeMetricsTest.ic" NAME="CodeMetricsTest Coverage Results" MODIFIED="1689489604516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.nju.boot.metrics.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$PDGSlicerTest_getSlicedCode.ic" NAME="PDGSlicerTest.getSlicedCode Coverage Results" MODIFIED="1689489403962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.nju.boot.slicer.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$GraphsTest.ic" NAME="GraphsTest Coverage Results" MODIFIED="1689489563901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.nju.boot.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$PDGSlicerTest.ic" NAME="PDGSlicerTest Coverage Results" MODIFIED="1689489674912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.nju.boot.slicer.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$PDGSlicerTest_testWrongLine.ic" NAME="PDGSlicerTest.testWrongLine Coverage Results" MODIFIED="1689489132903" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.nju.boot.slicer.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$SymbolSolverTest_Test.ic" NAME="SymbolSolverTest.Test Coverage Results" MODIFIED="1688725093030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

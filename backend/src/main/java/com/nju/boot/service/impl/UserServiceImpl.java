@@ -66,6 +66,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         User oldUser = userMapper.selectById(user.getId());
         user.setUpdateAt(DateTimeUtils.getNowTimeString());
         userMapper.updateById(user);
+        //密码加密，是否更新需要单独判断
         if(!oldUser.getPassword().equals(bCryptPasswordEncoder.encode(user.getPassword()))) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
