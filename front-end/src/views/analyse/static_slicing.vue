@@ -35,6 +35,7 @@
         请输入变量:<el-input class="getvar" v-model="variable"></el-input>
         <el-button @click="input_ok">确定</el-button>
       </div>
+      
       <div class="choose_file" >
             选择文件:
         <el-select v-model="selectFile.id" @change="getfilecontext(selectFile.id)" placeholder="请选择">
@@ -144,7 +145,8 @@ export default {
             done();
           })
           .catch(_ => {});
-      }
+      },
+      
   },
 
   mounted() {
