@@ -55,9 +55,9 @@ import {PdgPNG} from '@/api/create_report'
                   name:''
               },
               list: {},
-             pdgurl:require('../../assets/bg-image.png'),
+             pdgurl:require('../../assets/white.png'),
              srcList:[
-             require('../../assets/bg-image.png'),
+             require('../../assets/white.png'),
              ]
           };
       },
