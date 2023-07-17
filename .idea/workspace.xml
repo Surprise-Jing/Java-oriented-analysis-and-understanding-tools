@@ -4,21 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="新增注释">
+    <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="完善测试文件">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/DynamicLabelAndBreakTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/For.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/DynamicTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/WhileIf2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test0.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/NormalTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test1.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/WhileBreak.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test3.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/WhileContinue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test4.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Switch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test5.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test6.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/IfElse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test7.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/ForEach.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/Test8.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/LongLoop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/data/test/src/WhileIf.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/WhileIf.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/test/java/com/ibm/jdi/test/DynamicSlicerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicNode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +39,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2SZHcnjzub9K7Qhbm4jhN1s15Bk" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -59,17 +50,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dynamic&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Java-oriented-analysis-and-understanding-tools/backend/file&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "dynamic",
+    "last_opened_file_path": "D:/Java-oriented-analysis-and-understanding-tools/backend/file",
+    "project.structure.last.edited": "模块",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Java-oriented-analysis-and-understanding-tools\backend\file" />
@@ -167,7 +159,15 @@
       <option name="project" value="LOCAL" />
       <updated>1689573125696</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="完善测试文件">
+      <option name="closed" value="true" />
+      <created>1689580281844</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1689580281844</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -196,7 +196,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Changes" />
     <MESSAGE value="新增注释" />
-    <option name="LAST_COMMIT_MESSAGE" value="新增注释" />
+    <MESSAGE value="完善测试文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善测试文件" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
