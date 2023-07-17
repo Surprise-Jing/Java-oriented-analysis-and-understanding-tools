@@ -21,6 +21,7 @@
         </el-option>
       </el-select>
       <el-button @click="btn_ok" class="file_btn">确定</el-button>
+      <el-button @click="download_img">下载图片</el-button>
     </div>
 
   
@@ -42,6 +43,7 @@ import {getMethod} from "@/api/graph"
 import {getPDG} from "@/api/graph";
 import dagreD3 from "dagre-d3";
 import * as d3 from "d3";
+import FileSaver from'file-saver';
 import {PdgPNG} from '@/api/create_report'
   export default {
       data() {
@@ -163,7 +165,15 @@ import {PdgPNG} from '@/api/create_report'
         vbs(val){
             this.srcList=[]
             this.srcList.push(val)
-        }
+        },
+        download_img(){  //下载图片
+            PdgPNG(this.selectFile.id).then(res => {
+                let pdgbinaryData = [];
+                pdgbinaryData.push(res);
+                let url = window.URL.createObjectURL(new Blob(pdgbinaryData));		// 获取对象url
+                FileSaver(url,"pdg.png")
+            })
+       },
   }
 }
 </script>

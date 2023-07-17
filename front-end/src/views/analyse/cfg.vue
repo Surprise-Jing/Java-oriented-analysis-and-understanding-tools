@@ -1,5 +1,6 @@
 <template>
   <div class="box">
+        <!-- 选择函数、选择文件以及下载图片 -->
       <div class="choose_file" >
           选择文件:
       <el-select v-model="selectFile.id" @change="getmethod(selectFile.id)" placeholder="请选择">
@@ -20,6 +21,7 @@
         </el-option>
       </el-select>
       <el-button @click="btn_ok" class="file_btn">确定</el-button>
+      <el-button @click="download_img">下载图片</el-button>
     </div>
 
     <!-- <div class="choose_func" >
@@ -39,6 +41,9 @@ import {getMethod} from "@/api/graph"
 import {getCFG} from "@/api/graph";
 import dagreD3 from "dagre-d3";
 import * as d3 from "d3";
+import {CfgPNG} from '@/api/create_report'
+import html2canvas from 'html2canvas';
+import FileSaver from'file-saver';
 
   export default {
       data() {
@@ -63,6 +68,7 @@ import * as d3 from "d3";
 
       },
       methods: {
+        //根据选择的文件获取文件信息
       getFileMethod(){
           getFile(localStorage.getItem("uid")).then(res => {
               if(res.success){
@@ -90,6 +96,7 @@ import * as d3 from "d3";
                   }
               })
           },
+        // 图的展示
           initGraph() {
               var g = new dagreD3.graphlib.Graph().setGraph({rankdir: 'UD'});
               // 添加节点
@@ -129,7 +136,7 @@ import * as d3 from "d3";
               var render = new dagreD3.render();
               render(inner, g);      
           },
-
+          //确认按钮
       btn_ok(){
           const funcName = {id:1, methodName: this.selectFunc.name}
           getCFG(this.selectFile.id, funcName).then(res =>{
@@ -147,7 +154,18 @@ import * as d3 from "d3";
                 this.initGraph()
             }, 1000);
           
-      }
+      },
+      //下载图片
+      download_img(){  
+        CfgPNG(this.selectFile.id).then(res => {
+            let cfgbinaryData = [];
+            cfgbinaryData.push(res);
+            let url = window.URL.createObjectURL(new Blob(cfgbinaryData));		// 获取对象url
+            FileSaver(url,"cfg.png")
+        })
+        
+       },
+
     }
 }
 </script>
