@@ -58,6 +58,9 @@ public class JwtTokenUtils {
         return getTokenClaims(token).getSubject();
     }
 
+    /**
+     * 从Token中获取过期时间
+     */
     public static Date getExpiration(String token){
         return getTokenClaims(token).getExpiration();
     }

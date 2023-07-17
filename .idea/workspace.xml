@@ -5,40 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dynamicSlicer/data/test/src/If1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/Comment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/while/WhileTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/FilesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/FilesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/MetricsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/controller/MetricsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/dto/MethodDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/dto/MethodDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/handler/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/handler/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/handler/GlobalResponseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/handler/GlobalResponseHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/service/impl/FilesServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/service/impl/FilesServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/service/impl/UserfileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/service/impl/UserfileServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/joaut.sql" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/joaut.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/dto/ResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/dto/ResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/JwtTokenUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/JwtTokenUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/PathUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/PathUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/joaut.sql" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/joaut.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicExecuter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicExecuter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/output/ast/Specific.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/output/ast/Test2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/output/ast/Test4.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/src/Seq.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/src/Specific.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/src/Test2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/file/src/Test4.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/analyse/dynamic_slicing.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/analyse/dynamic_slicing.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/views/create_report/create_report.vue" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/views/create_report/create_report.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/src/specific/Specific.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/specific/Specific.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/data/testcases/src/while/WhileBreak.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/data/testcases/src/while/WhileBreak.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/Graph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/cfg/CFGBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/graphs/cfg/CFGBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/nodes/GraphNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/nodes/GraphNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/nodes/VariableVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/nodes/VariableVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/DataFlowEquationSlicer.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/DataFlowEquationSlicer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +60,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Java-oriented-analysis-and-understanding-tools/backend/file&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Java-oriented-master/Java-oriented-master/Documents/TestReport&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
@@ -181,7 +154,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="origin/dev" />
                       </list>
                     </value>
                   </entry>
