@@ -128,6 +128,7 @@ export default {
       getFileContext(val).then(res => {
           if(res.success){
             this.content1 = res.data.content;
+            this.content2='';
             //console.log(this.code);
            // this.$forceUpdate()
           }
