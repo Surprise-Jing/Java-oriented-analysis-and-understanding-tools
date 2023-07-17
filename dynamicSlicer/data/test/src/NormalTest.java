@@ -1,5 +1,5 @@
 
-public class Test0{
+public class NormalTest{
     public static void main(String[]args){
         int a = 0;
         int b = 1;

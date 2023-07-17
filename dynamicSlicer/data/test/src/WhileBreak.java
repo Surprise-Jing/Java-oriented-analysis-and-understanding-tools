@@ -1,5 +1,5 @@
 
-public class Test1{
+public class WhileBreak{
 
     public static void main(String[]args){
         int sum = 0;

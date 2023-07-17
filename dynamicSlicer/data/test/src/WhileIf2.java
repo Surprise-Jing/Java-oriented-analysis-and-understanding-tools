@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class DynamicTest{
+public class WhileIf2{
     public static void main(String[]args) {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
