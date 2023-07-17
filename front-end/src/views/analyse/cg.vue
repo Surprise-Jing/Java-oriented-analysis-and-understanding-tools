@@ -29,10 +29,13 @@ import * as d3 from "d3";
   export default {
       data() {
           return {
+            //可选文件列表
               fileData:[],
+              //用户选择的文件id
               selectFile:{
                   id:''
               },
+              //图的数据
               list: {}
           };
       },
@@ -44,6 +47,7 @@ import * as d3 from "d3";
 
       },
       methods: {
+        //获取文件列表
       getFileMethod(){
           getFile(localStorage.getItem("uid")).then(res => {
               if(res.success){
@@ -57,6 +61,7 @@ import * as d3 from "d3";
                   });
               }
               })},
+              //获取函数列表（本页面未调用）
           getmethod(val){
               getMethod(val).then(res => {
                   if(res.success){
@@ -71,11 +76,13 @@ import * as d3 from "d3";
                   }
               })
           },
+          //初始化图
           initGraph() {
               var g = new dagreD3.graphlib.Graph().setGraph({rankdir: 'UD'});
               // 添加节点
               let that = this;
               that.list.nodes.forEach(item => {
+                //设置节点参数
                   g.setNode(item.id, {
                   //节点标签
                   label: item.label,
@@ -83,7 +90,7 @@ import * as d3 from "d3";
                   shape: "ellipse",
                   //节点样式
                   style: "fill:#fff;stroke:#000",
-
+                  //标签样式
                   labelStyle: "fill:#000;font-weight:bold"
                   })
               });
@@ -91,11 +98,11 @@ import * as d3 from "d3";
                   g.setEdge(item.source, item.target, {
                   //边标签
                   label: item.label,
-                  //边样式
+                  //边样式，注意fill
                   style: "fill:#fff;stroke:#333;stroke-width:1.5px"
                   })
               })
-              //绘制图形
+              //选择容器
               var svg = d3.select(".box").select(".graph").select("svg");
               var inner = svg.select("g");
               //缩放
@@ -103,11 +110,11 @@ import * as d3 from "d3";
                   inner.attr("transform", d3.zoomTransform(svg.node()));
               });
               svg.call(zoom);
-
+              //渲染
               var render = new dagreD3.render();
               render(inner, g);      
           },
-
+    //点击按钮，开始获取数据，进行图的渲染
       btn_ok(){
           getCG(this.selectFile.id).then(res =>{
               if(res.success){

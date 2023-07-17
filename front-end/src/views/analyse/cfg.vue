@@ -46,15 +46,21 @@ import saveSvgAsPng from "save-svg-as-png";
   export default {
       data() {
           return {
+              //用户可选的文件列表
               fileData:[],
+              //用户可选的函数列表
               funcData:[],
+              //用户选择的文件id
               selectFile:{
                   id:''
               },
+              //用户选择的函数名
               selectFunc:{
                   name:''
               },
+              //图的数据（包括nodes和edges）
               list: {},
+              //是否绘制图片
               draw: false
           };
       },
@@ -66,6 +72,7 @@ import saveSvgAsPng from "save-svg-as-png";
 
       },
       methods: {
+      //获取文件列表
       getFileMethod(){
           getFile(localStorage.getItem("uid")).then(res => {
               if(res.success){
@@ -79,6 +86,7 @@ import saveSvgAsPng from "save-svg-as-png";
                   });
               }
               })},
+          //获取函数列表
           getmethod(val){
               getMethod(val).then(res => {
                   if(res.success){
@@ -93,12 +101,13 @@ import saveSvgAsPng from "save-svg-as-png";
                   }
               })
           },
+          //绘制图
           initGraph() {
               var g = new dagreD3.graphlib.Graph().setGraph({rankdir: 'UD'});
               // 添加节点
               let that = this;
               that.list.nodes.forEach(item => {
-                  
+                  //设置节点格式
                   g.setNode(item.id, {
                   //节点标签
                   label: item.label,
@@ -106,7 +115,7 @@ import saveSvgAsPng from "save-svg-as-png";
                   shape: item => ('shape' in item) ? item.shape : "ellipse",
                   //节点样式
                   style: "fill:#E1FFFF;stroke:#000",
-
+                  //标签样式
                   labelStyle: "fill:#000;font-weight:bold"
                   })
               });
@@ -115,23 +124,29 @@ import saveSvgAsPng from "save-svg-as-png";
                   //边标签
                   label: item.label,
                   //边样式
+                  /**
+                   * 特别注意{@code fill}属性
+                   * 该属性设置以生成的连线为边的三角形的填充颜色，对视觉效果有很大影响
+                   * 此处将其设置为背景颜色，若背景色发生改动，此处也需要同步修改
+                   */
                   style: "fill:	#483D8B;stroke:#333;stroke-width:1.5px"
                   })
               })
-              //绘制图形
+              //选择容器
               var svg = d3.select(".box").select(".graph").select("svg");
               var inner = svg.select("g");
               this.draw = true;
 
-              //缩放
+              //设置缩放
               var zoom = d3.zoom().on("zoom", function () {
                   inner.attr("transform", d3.zoomTransform(svg.node()));
               });
               svg.call(zoom);
-
+              //渲染图形
               var render = new dagreD3.render();
               render(inner, g);      
           },
+          //
           downloadCfg() {
             if(!this.draw)
                 console.log("error");

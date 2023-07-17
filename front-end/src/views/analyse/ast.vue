@@ -33,12 +33,15 @@
       },
       data () {
         return {
+          //用户可选文件列表
           fileData:[],
+          //用户选择的文件id
           selectFile:{
               id:''
           },
           BasicSwich:false,	
           BasicInfo:{id:null,label:null},
+          //图的数据
           testData:{}
         }
       },
@@ -46,6 +49,7 @@
           this.getFileMethod()
       },
       methods: {
+        //获取文件列表
         getFileMethod(){
           getFile(localStorage.getItem("uid")).then(res => {
           if(res.success){
@@ -59,6 +63,7 @@
             });
           }}
         )},
+        //获取Ast树信息
         getAst(val){
           getAST(val).then(res => {
             if(res.success){
@@ -73,7 +78,7 @@
             })}
           })
         },
-  
+        //节点折叠
         collapse(list) {   
           var _this = this;    
           list.forEach(
@@ -83,6 +88,7 @@
               }        
               child.children && _this.collapse(child.children);	
             });},
+          //节点展开
         onExpand(e,data) {    
           if ("expand" in data) {       
             data.expand = !data.expand;    	
@@ -93,15 +99,19 @@
           else {        
             this.$set(data, "expand", true);    
           }},
+        //设置标签格式
         renderLabelClass (node) {
           return 'label-class-blue'
         },
+        //设置选中节点格式
         renderCurrentClass (node) {
           return 'label-bg-blue'
         },
+        //鼠标移出节点触发
         onMouseout(e, data) {    
           this.BasicSwich = false
         },
+        //鼠标移入节点触发
         onMouseover(e, data) {    
           this.BasicInfo = data;    
           this.BasicSwich = true;    
