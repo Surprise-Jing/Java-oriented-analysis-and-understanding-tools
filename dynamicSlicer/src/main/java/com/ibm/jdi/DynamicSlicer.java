@@ -21,11 +21,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class DynamicSlicer {
-    Set<Node> result; //依赖AST结点集合
-    Graphs graphs;  //静态依赖图
-    String path;  //文件路径
-    String fileName; //文件名
-    String className; //主类名
+    //依赖AST结点集合
+    Set<Node> result;
+    //静态依赖图
+    Graphs graphs;
+    //文件路径
+    String path;
+    //文件名
+    String fileName;
+    //主类名
+    String className;
 
     public DynamicSlicer(String filePath) {
         System.out.println(filePath);

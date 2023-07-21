@@ -135,7 +135,7 @@ public class DynamicExecuter {
 //                        运行中错误处理
 //                        System.out.println("Exception catched.");
                         vm.exit(0);
-                        throw new Exception("文件运行失败，请检查输入");
+                        throw new FileRunningException();
                     }
                     vm.resume();
                 }
