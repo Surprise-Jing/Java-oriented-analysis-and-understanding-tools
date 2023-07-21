@@ -1,0 +1,9 @@
+public class Prog04 {
+
+    public void func(int a) {
+        a = 3;
+        int b = 2;
+
+        System.out.println(a);
+    }
+}

@@ -1,0 +1,20 @@
+digraph G {
+  0 [ label="ENTER funcContinue" ];
+  1 [ label="EXIT funcContinue" ];
+  2 [ shape="diamond" label="a < 10" ];
+  3 [ shape="diamond" label="b < 10" ];
+  4 [ label="b++;" ];
+  5 [ shape="diamond" label="b == 5" ];
+  6 [ label="continue;" ];
+  7 [ label="a++;" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 4;
+  4 -> 5;
+  5 -> 6;
+  5 -> 3;
+  6 -> 3;
+  3 -> 7;
+  7 -> 2;
+  2 -> 1;
+}

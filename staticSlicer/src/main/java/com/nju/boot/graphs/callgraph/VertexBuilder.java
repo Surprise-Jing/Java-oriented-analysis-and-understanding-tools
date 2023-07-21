@@ -10,6 +10,9 @@ import com.nju.boot.nodes.GraphNode;
 
 import java.util.HashMap;
 import java.util.Map;
+/**
+ * 为callgraph建立结点集
+ */
 
 public class VertexBuilder extends VoidVisitorAdapter<Void> {
 

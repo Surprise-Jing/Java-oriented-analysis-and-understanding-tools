@@ -22,6 +22,12 @@ public class PDGSlicer extends AbstractSlicer{
         this.graphs = graphs;
     }
 
+    /**
+     * 切片
+     * @param lineNumber 切片准则中的行号
+     * @param variableName 切片准则中的变量名
+     * @return 自身
+     */
     public AbstractSlicer slice(int lineNumber, String variableName){
         if(!isSlicable(lineNumber,variableName))
             throw new MethodNotFoundException();
@@ -32,11 +38,21 @@ public class PDGSlicer extends AbstractSlicer{
         return this;
     }
 
+    /**
+     *
+     * @return 切片结果节点集合
+     */
     @Override
     public Set<GraphNode<?>> getSlicedGraphNode() {
         return slicedNodes;
     }
 
+    /**
+     *
+     * @param lineNumber 切片准则中的行号
+     * @param variable 切片准则中的变量名
+     * @return 是否可根据切片准则切片
+     */
     @Override
     public boolean isSlicable(int lineNumber, String variable) {
         try{
@@ -51,13 +67,19 @@ public class PDGSlicer extends AbstractSlicer{
 
     }
 
+    /**
+     *
+     * @return 切片后的java代码
+     */
     @Override
     public String getResultCode() {
         return new SelectivePrettyPrinter(getSlicedAstNode()).print(graphs.getCu());
     }
 
 
-    /**根据行号找到方法声明*/
+    /**
+     * 根据行号找到方法声明
+     * */
     public CallableDeclaration<?> findCallableDeclaration(int lineNumber){
         return GraphsUtil.findMethodByLineNumber(graphs.getCu(),lineNumber);
     }

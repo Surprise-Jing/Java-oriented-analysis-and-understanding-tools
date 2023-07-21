@@ -1,0 +1,5 @@
+digraph G {
+  0 [ label="ENTER f" ];
+  1 [ label="EXIT f" ];
+  0 -> 1;
+}

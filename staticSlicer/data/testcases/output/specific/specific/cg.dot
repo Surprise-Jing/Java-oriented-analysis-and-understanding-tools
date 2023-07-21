@@ -1,1 +1,5 @@
-{"creator":"JGraphT JSON Exporter","version":"1","nodes":[{"id":"1","label":"WhileIf.main(java.lang.String[])"},{"id":"2","label":"java.io.PrintStream.println(int)"}],"edges":[{"source":"1","target":"2"}]}
+digraph G {
+  1 [ label="WhileIf.func01(int, int)" ];
+  2 [ label="java.io.PrintStream.println(int)" ];
+  1 -> 2;
+}

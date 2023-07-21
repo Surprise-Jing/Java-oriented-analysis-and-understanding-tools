@@ -1,23 +1,13 @@
-public class Specific {
-    public int va = 0;
-    public int vb = 1;
-    public static void main(String[]args){
-        int sum = 0;
-        int prod = 1;
-
-        if(prod > 0) {
-            sum = prod;
+public class WhileIf {
+    public void func(int a){
+        a = 3;
+        int b = 2;
+        switch(a){
+            case 0:a = b+1;break;
+            case 1:b+=2;break;
+            default:a = b+1;break;
         }
-        else if (prod == 0) {
-            sum = 0;
-        }
-        else {
-            sum = -prod;
-        }
-
-        System.out.println(sum);
-        System.out.println(prod);
-
+        System.out.println(a);
     }
 
 }

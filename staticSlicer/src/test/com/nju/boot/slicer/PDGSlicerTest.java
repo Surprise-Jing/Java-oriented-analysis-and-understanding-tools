@@ -34,7 +34,10 @@ public class PDGSlicerTest {
     @Test
     void findCallableDeclaration() {
     }
-    void testSlice(String directory,String fileName,int line,String variable)throws RuntimeException{
+    void testSlice(String directory,String fileName,int line,String variable){
+        testSlice(directory,fileName,line,variable,true);
+    }
+    void testSlice(String directory,String fileName,int line,String variable,boolean isPDGSlicer)throws RuntimeException{
         String srcFileDirPath = Paths.get(srcDirPath,directory).toString();
 
         String srcFilePath = Paths.get(srcFileDirPath,fileName).toString();
@@ -44,12 +47,19 @@ public class PDGSlicerTest {
 
 
         String outFileName = fileName+"-"+String.valueOf(line)+"-"+variable;
+        outFileName += '-' + ((isPDGSlicer)?"PDG":"DataFlow");
 
         String outFilePath = Paths.get(outFileDirPath,outFileName).toString();
         FileWriter outWriter = null;
         try {
             outWriter = new FileWriter(outFilePath);
-            outWriter.write(new PDGSlicer(srcFilePath).slice(line,variable).getResultCode());
+            AbstractSlicer abstractSlicer = null;
+            if(isPDGSlicer){
+                abstractSlicer = new PDGSlicer(srcFilePath);
+            }
+            else
+                abstractSlicer = new DataFlowEquationSlicer(srcFilePath);
+            outWriter.write(abstractSlicer.slice(line,variable).getResultCode());
             outWriter.flush();
             outWriter.close();
         } catch (IOException e) {
@@ -61,15 +71,18 @@ public class PDGSlicerTest {
     public ExpectedException thrown = ExpectedException.none();
     @Test
     void testWrongLine() {
-        Assertions.assertThrows(MethodNotFoundException.class,()->testSlice("specific","Specific.java",2,"prod")) ;
-        Assertions.assertThrows(MethodNotFoundException.class,()->testSlice("specific","Specific.java",3,"prod")) ;
+        //输入错误的行号
+        Assertions.assertThrows(MethodNotFoundException.class,()->testSlice("specific","Specific.java",33,"prod")) ;
+        Assertions.assertThrows(MethodNotFoundException.class,()->testSlice("specific","Specific.java",1,"prod")) ;
     }
     @Test
     void testWrongVariable(){
-        Assertions.assertThrows(VariableNotFoundException.class,()->testSlice("specific","Specific.java",19,"sum"));
+        //输入不存在的变量
+        Assertions.assertThrows(VariableNotFoundException.class,()->testSlice("specific","Specific.java",10,"b"));
     }
     @Test
     void testWrongFilePath(){
+        //输入错误的文件路径
         Assertions.assertThrows(FilePathErrorException.class,()->testSlice("specific","Spseoa.java",20,"prod"));
     }
     @Test
@@ -82,7 +95,28 @@ public class PDGSlicerTest {
 //        testSlice("specific","Specific.java",5,"i");
 //        testSlice("specific","Specific.java",4,"sum");
 //        testSlice("specific","Specific.java",3,"i");
-        testSlice("specific","Specific.java",18,"sum");
+
+        testSlice("simpleprograms","Prog01.java",10,"sum_q");
+        testSlice("simpleprograms","Prog01.java",10,"sum_q",false);
+        testSlice("simpleprograms","Prog01.java",11,"product_q");
+        testSlice("simpleprograms","Prog01.java",11,"product_q",false);
+        testSlice("simpleprograms","Prog01.java",11,"product_q");
+        testSlice("simpleprograms","Prog01.java",11,"product_q",false);
+        testSlice("simpleprograms","Prog02.java",9,"a");
+        testSlice("simpleprograms","Prog02.java",9,"a",false);
+        testSlice("simpleprograms","Prog02.java",7,"a");
+        testSlice("simpleprograms","Prog02.java",7,"a",false);
+        testSlice("simpleprograms","Prog02.java",12,"b");//可体现break等语句的切片
+        testSlice("simpleprograms","Prog02.java",12,"b",false);
+        testSlice("simpleprograms","Prog3.java",13,"a");
+        testSlice("simpleprograms","Prog3.java",13,"a",false);
+        testSlice("simpleprograms","Prog3.java",11,"a",false);
+        testSlice("simpleprograms","Prog3.java",11,"a");
+        testSlice("simpleprograms","Prog04.java",10,"a");
+        testSlice("simpleprograms","Prog04.java",10,"a",false);
+        testSlice("simpleprograms","Prog04.java",8,"a");
+        testSlice("simpleprograms","Prog04.java",8,"a",false);
+
 
     }
 }

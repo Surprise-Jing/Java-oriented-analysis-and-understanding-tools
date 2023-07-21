@@ -11,6 +11,9 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * callgraph的打印类
+ */
 public class CallGraphPrinter extends GraphPrinter{
 
     public CallGraphPrinter(CallGraph callGraph, Writer writer) {

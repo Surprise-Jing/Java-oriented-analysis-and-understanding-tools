@@ -10,7 +10,7 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeS
 import com.nju.boot.metrics.CodeMetrics;
 import com.nju.boot.graphs.Graphs;
 import com.nju.boot.slicer.PDGSlicer;
-import com.nju.boot.util.PathUtils;
+import com.nju.boot.PathUtils;
 import com.nju.boot.util.GraphsUtil;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +22,7 @@ import java.util.Set;
 public class PDGTest {
     public CompilationUnit getCompilationUnit(String fileName) throws FileNotFoundException {
         JavaParser javaParser = new JavaParser();
+
         javaParser.getParserConfiguration().setSymbolResolver(new JavaSymbolSolver(new ReflectionTypeSolver()));
         File file = new File(fileName);
         CompilationUnit cu = javaParser.parse(file).getResult().orElse(null);

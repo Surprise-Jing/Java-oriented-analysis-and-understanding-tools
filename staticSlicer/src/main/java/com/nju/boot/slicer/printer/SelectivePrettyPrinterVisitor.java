@@ -10,6 +10,10 @@ import com.github.javaparser.printer.configuration.PrinterConfiguration;
 
 import java.util.Set;
 
+/**
+ * 打印切片的代码结果
+ * 对不在切片结果内的结点，跳过打印
+ */
 public class SelectivePrettyPrinterVisitor extends DefaultPrettyPrinterVisitor {
     public SelectivePrettyPrinterVisitor(PrinterConfiguration configuration,Set<Node> selectedNodes) {
         super(configuration);

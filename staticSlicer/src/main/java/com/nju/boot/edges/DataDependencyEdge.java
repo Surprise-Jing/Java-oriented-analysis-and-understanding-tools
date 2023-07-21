@@ -3,6 +3,9 @@ package com.nju.boot.edges;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 数据依赖边，保存了依赖的变量信息
+ */
 public class DataDependencyEdge extends Edge{
     Set<String> variables = new HashSet<>();
     /**加入数据依赖边相关的变量信息*/

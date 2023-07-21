@@ -1,6 +1,6 @@
 digraph G {
   1 [ label="WhileNested.func01(int, int)" ];
-  2 [ label="WhileNested.func02(int, int)" ];
-  3 [ label="WhileNested.func03(int, int)" ];
-  4 [ label="WhileNested.func04(int, int)" ];
+  2 [ label="WhileNested.funcContinue(int, int)" ];
+  3 [ label="WhileNested.funcBreak(int, int)" ];
+  4 [ label="WhileNested.funcContinue02(int, int)" ];
 }

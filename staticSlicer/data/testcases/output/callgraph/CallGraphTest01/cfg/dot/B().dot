@@ -1,0 +1,7 @@
+digraph G {
+  0 [ label="ENTER B" ];
+  1 [ label="EXIT B" ];
+  2 [ label="A();" ];
+  0 -> 2;
+  2 -> 1;
+}

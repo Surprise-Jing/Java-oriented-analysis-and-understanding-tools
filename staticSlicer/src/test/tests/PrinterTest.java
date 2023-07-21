@@ -2,7 +2,7 @@ package tests;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.nju.boot.util.PathUtils;
+import com.nju.boot.PathUtils;
 import com.nju.boot.util.GraphsUtil;
 import org.junit.jupiter.api.Test;
 

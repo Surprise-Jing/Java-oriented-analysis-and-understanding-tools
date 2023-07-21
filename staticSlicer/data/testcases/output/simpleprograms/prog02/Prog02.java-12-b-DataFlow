@@ -1,0 +1,17 @@
+public class Prog02 {
+
+    public void func01(int a, int b) {
+
+        while (b < 10) {
+            a++;
+            if (a % 2 == 0)
+
+
+            if (a % 4 == 0)
+
+
+            b++;
+        }
+        System.out.println(b);
+    }
+}
