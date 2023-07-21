@@ -20,7 +20,9 @@
         width="30%"
         :before-close="handleClose"
         append-to-body>
-
+        静态切片支持包含顺序Sequence、条件if-else、循环while/for/foreach、分支switch、跳转break/continue <br><br>
+        输入参数： 行号n，变量名v <br><br>
+        注意：<br>
         1、该软件系统只能对没有错误的Java文件进行静态切片。<br>
         2、切片时请输入正确的代码行数和变量，且变量只能有一个。<br>
         <span slot="footer" class="dialog-footer">
