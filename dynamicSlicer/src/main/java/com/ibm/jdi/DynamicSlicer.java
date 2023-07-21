@@ -21,11 +21,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class DynamicSlicer {
-    Set<Node> result;
-    Graphs graphs;
-    String path;
-    String fileName;
-    String className;
+    Set<Node> result; //依赖AST结点集合
+    Graphs graphs;  //静态依赖图
+    String path;  //文件路径
+    String fileName; //文件名
+    String className; //主类名
 
     public DynamicSlicer(String filePath) {
         System.out.println(filePath);
@@ -41,6 +41,8 @@ public class DynamicSlicer {
     public Set<Node> programExecute(String path, String fileName, String className, String input, Integer line, @NotNull CDG cdg) throws Exception {
         DynamicExecuter dynamicExecuter = new DynamicExecuter();
 
+
+//        根据静态图信息找到标签类语句位置，增加标签类语句搜索表
         Map<Integer, Integer> labels = new HashMap<>();
         for(GraphNode<?> GN : cdg.vertexSet()) {
             if(GN.getAstNode() instanceof LabeledStmt || GN.getAstNode() instanceof SwitchEntry || GN.getAstNode() instanceof ForStmt || GN.getAstNode() instanceof MethodDeclaration) {
@@ -80,7 +82,9 @@ public class DynamicSlicer {
     public Set<Node> getSlicedLines(){
         return result;
     }
-    public String getSlicedCode() throws IOException {
+    public String getSlicedCode() throws IOException
+//    将切片获得的AST结点集转化为文件信息（String）
+    {
 //        String fileStr = graphs.getCu().toString();
         SelectivePrettyPrinter selectivePrettyPrinter = new SelectivePrettyPrinter(result);
         return selectivePrettyPrinter.print(graphs.getCu());

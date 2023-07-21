@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class Test6 {
+public class IfElse {
     public static void main(String[]args) {
         int sum = 0;
         int prod = -1;

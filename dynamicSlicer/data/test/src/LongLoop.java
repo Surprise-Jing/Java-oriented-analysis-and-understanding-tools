@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class Test8 {
+public class LongLoop {
     public static void main(String[]args) {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();

@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class Test4 {
+public class Switch {
     public static void main(String[]args) {
         Scanner scanner = new Scanner(System.in); // 1
         int n = scanner.nextInt(); // 1
