@@ -13,10 +13,17 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
+/**
+ * 函数调用图
+ * 向build传入CompilationUnit来进行构建
+ * */
 public class CallGraph extends Graph<CallableDeclaration<?>> {
     Map<String, GraphNode<CallableDeclaration<?>>> signatureToNodeMap;
     boolean built = false;
 
+    /**
+     * 是否在节点中包括外部引入的方法
+     * */
     public void setIncludeImportedFunctions(boolean includeImportedFunctions) {
         this.includeImportedFunctions = includeImportedFunctions;
     }
@@ -37,7 +44,9 @@ public class CallGraph extends Graph<CallableDeclaration<?>> {
         new EdgeBuilder(this,includeImportedFunctions).visit(cu,null);
         built = true;
     }
-
+    /**
+     * 以json格式输出
+     * */
     @Override
     public String toString() {
         StringWriter stringWriter =  new StringWriter();

@@ -1,0 +1,22 @@
+digraph G {
+  0 [ label="ENTER funcContinue" ];
+  2 [ label="a < 10" ];
+  3 [ label="b < 10" ];
+  4 [ label="b++;" ];
+  5 [ label="b == 5" ];
+  6 [ label="continue;" ];
+  7 [ label="a++;" ];
+  7 -> 2 [ style="dashed" label="[a]" ];
+  4 -> 3 [ style="dashed" label="[b]" ];
+  4 -> 4 [ style="dashed" label="[b]" ];
+  4 -> 5 [ style="dashed" label="[b]" ];
+  7 -> 7 [ style="dashed" label="[a]" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+  2 -> 7 [ ];
+  2 -> 2 [ ];
+  3 -> 4 [ ];
+  3 -> 5 [ ];
+  3 -> 3 [ ];
+  5 -> 6 [ ];
+}

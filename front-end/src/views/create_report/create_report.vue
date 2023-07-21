@@ -38,33 +38,33 @@
         <p style="text-align: right;">--have a good time!</p>
         <div style="height: 200px;"></div>
 
-        <h2>一.抽象语法树(AST,Abstract Syntax Tree)</h2>
+        <!-- <h2>一.抽象语法树(AST,Abstract Syntax Tree)</h2>
         <div style="height: 400px;"></div>
         <div style="position: relative;">
           <img v-bind:src="ast" style="height: 700px; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
         </div>
-        <div style="height: 1000px;"></div>
+        <div style="height: 1000px;"></div> -->
 
-        <h2>二.控制流图(CFG,Control Flow Graph)</h2>
+        <h2>一.控制流图(CFG,Control Flow Graph)</h2>
         <div style="height: 400px;"></div>
         <div style="position: relative;">
           <img v-bind:src="cfg" style="height: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
         </div>
         
         <div style="height: 900px;"></div>
-        <h2>三.程序依赖图(PDG,Program Dependency Graph)</h2>
+        <h2>二.程序依赖图(PDG,Program Dependency Graph)</h2>
         <div style="height: 400px;"></div>
         <div style="position: relative;">
           <img v-bind:src="pdg" style="height: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
         </div>
         <div style="height: 800px;"></div>
-        <h2>四.调用关系图(CG,Call Graph)</h2>
+        <h2>三.调用关系图(CG,Call Graph)</h2>
         <div style="height: 400px;"></div>
         <div style="position: relative;">
           <img v-bind:src="cg" style="width: 700px;position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
         </div>
         <div style="height: 400px;"></div>
-        <h2>五.代码度量(Code Metrics)</h2>
+        <h2>四.代码度量(Code Metrics)</h2>
           <div>
             <h3>源代码行数统计</h3>
               <el-table :data="rowData" style="width: 600px" v-if="refresh">
@@ -240,6 +240,7 @@ export default {
            
     },
 
+
     getReport(){
       setTimeout(() => {
         this.increase();
@@ -310,6 +311,7 @@ export default {
             astbinaryData.push(res);
             let url = window.URL.createObjectURL(new Blob(astbinaryData));		// 获取对象url
             this.ast = url	// 给变量赋值
+           
         }),
 
         CfgPNG(this.selectFile.id).then(res => {

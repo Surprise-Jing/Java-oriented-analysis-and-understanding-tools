@@ -8,6 +8,9 @@ import com.github.javaparser.printer.configuration.PrinterConfiguration;
 
 import java.util.Set;
 
+/**
+ * 打印切片的代码结果
+ */
 public class SelectivePrettyPrinter implements Printer {
     Set<Node> selectedNodes;
 

@@ -9,9 +9,17 @@ import com.nju.boot.nodes.GraphNode;
 import java.util.HashSet;
 import java.util.Set;
 
+/***
+ * 建立数据依赖边的类
+ */
 public class DataDependencyBuilder {
+    /***
+     * 建立的依赖图对象
+     */
     DependenceGraph dependenceGraph;
-
+    /***
+     * 对象的acfg图
+     */
     CFG acfg;
     public DataDependencyBuilder(DependenceGraph dependenceGraph) {
         this.dependenceGraph = dependenceGraph;

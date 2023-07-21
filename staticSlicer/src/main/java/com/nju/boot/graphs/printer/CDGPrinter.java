@@ -11,6 +11,9 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * CDG的打印类
+ */
 public class CDGPrinter extends GraphPrinter{
 
     public CDGPrinter(CDG cdg, Writer writer) {

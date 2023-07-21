@@ -1,0 +1,9 @@
+public class Prog3 {
+
+    public void func06(int a) {
+
+        int b = 2;
+
+        System.out.println(a);
+    }
+}

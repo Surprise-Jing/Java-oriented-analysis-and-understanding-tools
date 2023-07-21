@@ -9,7 +9,7 @@ import com.nju.boot.nodes.GraphNode;
 import com.nju.boot.slicer.AbstractSlicer;
 import com.nju.boot.slicer.DataFlowEquationSlicer;
 import com.nju.boot.graphs.Graphs;
-import com.nju.boot.util.PathUtils;
+import com.nju.boot.PathUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

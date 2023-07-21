@@ -1,0 +1,14 @@
+digraph G {
+  0 [ label="ENTER fun01" ];
+  2 [ label="switch (a)" ];
+  3 [ label="case 0" ];
+  4 [ label="case 1" ];
+  5 [ label="default" ];
+  0 -> 2 [ ];
+  2 -> 3 [ ];
+  2 -> 5 [ ];
+  3 -> 4 [ ];
+  2 -> 4 [ ];
+  2 -> 5 [ ];
+  2 -> 5 [ ];
+}

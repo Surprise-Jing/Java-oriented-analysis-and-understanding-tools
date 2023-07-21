@@ -18,12 +18,14 @@
       <el-button @click="download_img">下载图片</el-button>
         <!-- 生成ast树 -->
         <div class="ast" id="ast">
+          <div  id="ast">
             <orgtree :data="testData" :horizontal="true" name="test" :label-class-name="labelClassName"    
             collapsable    @on-expand="onExpand" @on-node-mouseover="onMouseover" @on-node-mouseout="onMouseout"/> 
             <!-- 创建浮窗盒子 -->
             <div v-show="BasicSwich" class="floating">    
               <p>ID:{{BasicInfo.id}}</p>    <p>Name:{{BasicInfo.label}}</p>
             </div>
+          </div>
         </div>
         
   </div>
@@ -44,12 +46,15 @@
       },
       data () {
         return {
+          //用户可选文件列表
           fileData:[],
+          //用户选择的文件id
           selectFile:{
               id:''
           },
           BasicSwich:false,	
           BasicInfo:{id:null,label:null},
+          //图的数据
           testData:{},
           scal:1,
         }
@@ -58,6 +63,7 @@
           this.getFileMethod()
       },
       methods: {
+        //获取文件列表
         getFileMethod(){
           getFile(localStorage.getItem("uid")).then(res => {
           if(res.success){
@@ -71,6 +77,7 @@
             });
           }}
         )},
+        //获取Ast树信息
         getAst(val){
           getAST(val).then(res => {
             if(res.success){
@@ -85,7 +92,7 @@
             })}
           })
         },
-  
+        //节点折叠
         collapse(list) {   
           var _this = this;    
           list.forEach(
@@ -95,6 +102,7 @@
               }        
               child.children && _this.collapse(child.children);	
             });},
+          //节点展开
         onExpand(e,data) {    
           if ("expand" in data) {       
             data.expand = !data.expand;    	
@@ -105,15 +113,19 @@
           else {        
             this.$set(data, "expand", true);    
           }},
+        //设置标签格式
         renderLabelClass (node) {
           return 'label-class-blue'
         },
+        //设置选中节点格式
         renderCurrentClass (node) {
           return 'label-bg-blue'
         },
+        //鼠标移出节点触发
         onMouseout(e, data) {    
           this.BasicSwich = false
         },
+        //鼠标移入节点触发
         onMouseover(e, data) {    
           this.BasicInfo = data;    
           this.BasicSwich = true;    
@@ -121,7 +133,8 @@
           floating.style.left = e.clientX +'px';    
           floating.style.top = e.clientY+'px';
         },
-        toggleExpand(data, val) {//一键展开
+        //val为true时一键展开
+        toggleExpand(data, val) {
           var _this = this;
           if (Array.isArray(data)) {
               data.forEach(function(item) {
@@ -137,10 +150,11 @@
               }
           }
         },
+       //一件展开，与button绑定
         expandall(){
           this.toggleExpand(this.testData,true)
         },
-
+        //缩小功能
         narrow() {
         this.$nextTick(() => {
             // imageWrapper 获取元素
@@ -150,6 +164,7 @@
             imageWrapper.style.transformOrigin = '0 0';
           })
         },
+        //放大功能
         enlarge() {
           this.$nextTick(() => {
             // imageWrapper 获取元素
@@ -159,8 +174,8 @@
             imageWrapper.style.transformOrigin = '0 0';
           })
        },
-       download_img(){  //下载图片
-        
+       //下载图片
+       download_img(){  
         AstPNG(this.selectFile.id).then(res => {
             let astbinaryData = [];
             astbinaryData.push(res);
@@ -169,7 +184,6 @@
 
             FileSaver(url,"ast.png")
         })
-        
        },
 
 
@@ -203,11 +217,9 @@
     text-align: left;    
     font-size: 12px;
   }
- .ast{
-  overflow: scroll;
- }
+
   .astGraph{
-  
+  overflow: scroll;
   }
   </style>
   

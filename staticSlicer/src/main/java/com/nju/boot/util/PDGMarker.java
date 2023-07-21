@@ -10,6 +10,9 @@ import com.nju.boot.slicer.SlicerCriterion;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 图遍历法使用的标记器，从切片准则标记PDG图中的节点
+ */
 public class PDGMarker {
     PDG pdg;
     public PDGMarker(PDG pdg) {
@@ -21,9 +24,14 @@ public class PDGMarker {
         _variables.add(variable);
         SlicerCriterion criterion = new SlicerCriterion(_variables,lineNumber,pdg);
         Set<GraphNode<?>> nodes = criterion.getNodes();
-        Set<String> variables = new HashSet<>();
-        variables.add(variable);
-        nodes.stream().forEach(node->backTraverse(node,variables));
+
+        nodes.stream().forEach(node->{
+            Set<String> variables = new HashSet<>();
+            variables.add(variable);
+            if(node.getDefinedVariables().contains(variable))
+                variables.addAll(node.getUsedVariables());
+            backTraverse(node,variables);
+        });
         pdg.setMarkedNodes(markedVertices);
 
     }

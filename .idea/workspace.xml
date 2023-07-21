@@ -4,14 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="">
+    <list default="true" id="9028e2d7-3fc4-4a2d-994b-43e7e7523720" name="Changes" comment="完善测试文件">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/dto/ResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/entity/dto/ResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/JwtTokenUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/JwtTokenUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/PathUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/nju/boot/utils/PathUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/.env.development" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/DataFlowEquationSlicer.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/DataFlowEquationSlicer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicExecuter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicExecuter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicSlicer.java" beforeDir="false" afterPath="$PROJECT_DIR$/dynamicSlicer/src/main/java/com/ibm/jdi/DynamicSlicer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/target/surefire-reports/TEST-com.ibm.jdi.test.DynamicSlicerTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamicSlicer/target/surefire-reports/com.ibm.jdi.test.DynamicSlicerTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/SlicerCriterion.java" beforeDir="false" afterPath="$PROJECT_DIR$/staticSlicer/src/main/java/com/nju/boot/slicer/SlicerCriterion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/staticSlicer/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +42,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="newdev" />
+        <entry key="$PROJECT_DIR$" value="data-flow-pdg" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -56,16 +70,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Java-oriented-master/Java-oriented-master/Documents/TestReport&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/面向Java的分析和理解工具/code",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Java-oriented-analysis-and-understanding-tools\backend\file" />
@@ -127,8 +141,8 @@
         <item itemvalue="Application.MainApplication" />
         <item itemvalue="JUnit.DynamicSlicerTest.programExecute" />
         <item itemvalue="JUnit.DynamicSlicerTest" />
-        <item itemvalue="Application.MainApplication" />
         <item itemvalue="JUnit.DynamicSlicerTest.programExecute" />
+        <item itemvalue="JUnit.DynamicSlicerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -154,13 +168,28 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/dev" />
+                        <option value="dev" />
                       </list>
                     </value>
                   </entry>
                 </map>
               </option>
             </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="chi3bian" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>
@@ -188,6 +217,12 @@
     </SUITE>
     <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$PDGSlicerTest.ic" NAME="PDGSlicerTest Coverage Results" MODIFIED="1689489674912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.nju.boot.slicer.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$DynamicSlicerTest_programExecute.ic" NAME="DynamicSlicerTest.programExecute 覆盖结果" MODIFIED="1688995037427" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.ibm.jdi.test.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$GraphsTest_testWrongFile.ic" NAME="GraphsTest.testWrongFile Coverage Results" MODIFIED="1689502940827" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.nju.boot.graphs.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/Java_oriented_analysis_and_understanding_tools$PDGSlicerTest_testWrongLine.ic" NAME="PDGSlicerTest.testWrongLine Coverage Results" MODIFIED="1689489132903" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.nju.boot.slicer.*</FILTER>

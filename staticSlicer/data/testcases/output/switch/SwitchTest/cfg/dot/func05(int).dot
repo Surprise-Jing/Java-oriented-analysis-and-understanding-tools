@@ -1,0 +1,27 @@
+digraph G {
+  0 [ label="ENTER func05" ];
+  1 [ label="EXIT func05" ];
+  2 [ label="a = 3;" ];
+  3 [ shape="diamond" label="switch (a)" ];
+  4 [ label="case 0" ];
+  5 [ label="a++;" ];
+  6 [ label="break;" ];
+  7 [ label="case 1" ];
+  8 [ label="break;" ];
+  9 [ label="default" ];
+  10 [ label="break;" ];
+  11 [ label="System.out.println(a);" ];
+  0 -> 2;
+  2 -> 3;
+  3 -> 4;
+  4 -> 5;
+  5 -> 6;
+  3 -> 7;
+  7 -> 8;
+  3 -> 9;
+  9 -> 10;
+  6 -> 11;
+  8 -> 11;
+  10 -> 11;
+  11 -> 1;
+}

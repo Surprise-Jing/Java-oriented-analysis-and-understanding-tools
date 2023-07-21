@@ -7,10 +7,21 @@ import com.nju.boot.nodes.GraphNode;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * ACFG的Builder
+ * */
 public class ACFGBuilder extends CFGBuilder {
+    /**
+     * 待连接的伪判断节点
+     */
     List<GraphNode<?>> jumpVertexes = new ArrayList<>();
 
+    /**
+     * 连向return语句如果没有执行，
+     * 下一个将会执行的节点
+     * @param returnStmt
+     * @param arg
+     */
     @Override
     public void visit(ReturnStmt returnStmt, Void arg) {
         GraphNode<ReturnStmt> node = connectTo(returnStmt);
@@ -18,6 +29,13 @@ public class ACFGBuilder extends CFGBuilder {
         clearProcessing();
         jumpVertexes.add(node);
     }
+
+    /**
+     * 连向swith语句如果没有执行
+     * 下一个会执行的语句
+     * @param switchStmt
+     * @param arg
+     */
 
     @Override
     public void visit(SwitchStmt switchStmt, Void arg) {
@@ -53,10 +71,15 @@ public class ACFGBuilder extends CFGBuilder {
             }
         }
         processingNodes.remove(condNode);
-
+        jumpVertexes.add(condNode);
         processingNodes.addAll(breakStack.pop());
     }
 
+    /**
+     * 连接待连接节点
+     * 对于伪判断节点，使用伪控制流边进行连接
+     * @param node
+     */
     @Override
     protected void connectTo(GraphNode<?> node) {
         ACFG acfg = (ACFG) this.cfg;
@@ -73,6 +96,12 @@ public class ACFGBuilder extends CFGBuilder {
         super.clearProcessing();
     }
 
+    /**
+     * 指向continue语句如果没有执行
+     * 下一句会执行的语句
+     * @param continueStmt
+     * @param arg
+     */
     @Override
     public void visit(ContinueStmt continueStmt, Void arg) {
         GraphNode<ContinueStmt> node = connectTo(continueStmt);
@@ -83,6 +112,13 @@ public class ACFGBuilder extends CFGBuilder {
         jumpVertexes.add(node);
 
     }
+
+    /**
+     * 指向break语句如果没有执行
+     * 下一句会执行的语句
+     * @param breakStmt
+     * @param arg
+     */
 
     @Override
     public void visit(BreakStmt breakStmt, Void arg) {

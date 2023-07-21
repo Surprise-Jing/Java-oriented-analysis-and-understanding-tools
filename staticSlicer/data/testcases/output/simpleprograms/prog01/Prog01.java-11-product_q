@@ -1,0 +1,14 @@
+public class Prog01 {
+
+    public void f() {
+
+
+        int product_q = 1;
+        for (a = 0; a < N; a++) {
+
+            product_q *= a;
+        }
+
+        System.out.println(product_q);
+    }
+}

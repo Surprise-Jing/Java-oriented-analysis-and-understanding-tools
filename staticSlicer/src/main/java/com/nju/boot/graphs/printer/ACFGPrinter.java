@@ -12,6 +12,9 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * ACFG的打印类
+ */
 public class ACFGPrinter extends CFGPrinter{
     public ACFGPrinter(ACFG cfg, Writer writer) {
         super(cfg, writer);
@@ -21,12 +24,26 @@ public class ACFGPrinter extends CFGPrinter{
     }
 
 
-
+    /**
+     * 为exporter添加节点、边的属性提供者
+     * @param exporter
+     */
     @Override
     protected void setUpExporter(BaseExporter<GraphNode<?>, Edge> exporter) {
+        exporter.setVertexAttributeProvider(v->{
+            Map<String, Attribute> map = new HashMap<>();
+                map.put("label",DefaultAttribute.createAttribute(v.getInstruction()));
+            return map;
+        });
+        /**
+         * 如果是伪边
+         */
         exporter.setEdgeAttributeProvider(e->{
             Map<String, Attribute> map = new HashMap<>();
             if(e instanceof DummyEdge)
+            /**
+             * 以虚线表示
+             */
                 map.put("style",DefaultAttribute.createAttribute("dashed"));
             return map;
         });

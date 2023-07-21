@@ -9,6 +9,10 @@ import org.checkerframework.checker.units.qual.A;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * 控制依赖图
+ * 可以从ACFG和函数名构建
+ */
 public class CDG extends DependenceGraph{
 
 
@@ -27,6 +31,10 @@ public class CDG extends DependenceGraph{
         buildFromACFG(acfg);
     }
 
+    /**
+     *
+     * @return json格式输出
+     */
     @Override
     public String toString() {
         StringWriter stringWriter = new StringWriter();

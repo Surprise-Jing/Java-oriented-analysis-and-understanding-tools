@@ -6,7 +6,7 @@ public class WhileNested {
             }
         }
     }
-    public void func02(int a,int b){
+    public void funcContinue(int a,int b){
         while(a<10){
             while(b<10){
                 b++;
@@ -15,7 +15,7 @@ public class WhileNested {
             a++;
         }
     }
-    public void func03(int a,int b){
+    public void funcBreak(int a,int b){
         while(a<10){
             while(b<10){
                 b++;
@@ -24,7 +24,7 @@ public class WhileNested {
             a++;
         }
     }
-    public void func04(int a,int b){
+    public void funcContinue02(int a,int b){
         while(a<10){
             while(b<10){
                 b++;

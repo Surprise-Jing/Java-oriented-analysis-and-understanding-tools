@@ -6,6 +6,9 @@ import com.nju.boot.graphs.printer.PDGPrinter;
 
 import java.io.Writer;
 
+/***
+ * 数据依赖图，边都是数据依赖关系
+ */
 public class DDG extends DependenceGraph{
     public void buildFromACFG(ACFG acfg){
         if(built)return;

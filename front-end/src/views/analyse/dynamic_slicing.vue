@@ -15,6 +15,9 @@
         width="30%"
         :before-close="handleClose"
         append-to-body>
+        动态切片支持包含顺序Sequence、条件if-else、循环while/for/foreach、分支switch、跳转break/continue <br><br>
+        输入参数： 行号n，程序全部输入 <br><br>
+        注意：<br>
 
         1、该软件系统只能对没有错误且可运行（即必须包含main函数）的Java文件进行动态切片，其中文件名必须与类名相同。<br>
         2、切片时请输入正确的代码行数和整个程序对应的所有输入内容，输入以空格隔开。若程序不需要输入，则无需填写输入变量内容。<br>
@@ -26,7 +29,7 @@
       <div class="input_x">
         请输入行数:<el-input  type="number" min="1" class="getrow" v-model="rowNumber"></el-input>
         <br>
-        请输入变量:<el-input class="getvar" v-model="variable"></el-input>
+        请输入程序输入:<el-input class="getvar" v-model="variable"></el-input>
         <el-button @click="input_ok">确定</el-button>
       </div>
       <div class="choose_file" >
@@ -95,6 +98,7 @@ export default {
       getFileContext(val).then(res => {
           if(res.success){
             this.content1 = res.data.content;
+            this.content2='';
             //console.log(this.code);
            // this.$forceUpdate()
           }
